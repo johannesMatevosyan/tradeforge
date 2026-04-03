@@ -1,0 +1,78 @@
+# -----------------------------
+# Node.js / Nx / Angular
+# -----------------------------
+node_modules/
+dist/
+build/
+.tmp/
+.cache/
+.angular/
+nx-cache/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -----------------------------
+# Environment variables (IMPORTANT)
+# -----------------------------
+.env
+.env.local
+.env.*.local
+
+# -----------------------------
+# OS files
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# IDE / Editor
+# -----------------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# -----------------------------
+# Coverage / Testing
+# -----------------------------
+coverage/
+
+# -----------------------------
+# Angular specific
+# -----------------------------
+.angular/cache/
+
+# -----------------------------
+# NestJS build
+# -----------------------------
+dist/apps/
+dist/libs/
+
+# -----------------------------
+# Temporary files
+# -----------------------------
+tmp/
+temp/
+
+# -----------------------------
+# Package manager
+# -----------------------------
+.pnpm-store/
+.npm/
+
+# -----------------------------
+# Docker (if you add later)
+# -----------------------------
+docker-data/
+
+# -----------------------------
+# Misc
+# -----------------------------
+*.local
