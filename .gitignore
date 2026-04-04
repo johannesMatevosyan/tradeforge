@@ -76,3 +76,8 @@ docker-data/
 # Misc
 # -----------------------------
 *.local
+
+
+
+.nx/cache
+.nx/workspace-data
