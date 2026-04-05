@@ -22,7 +22,11 @@
   },
   "homepage": "https://github.com/johannesMatevosyan/tradeforge#readme",
   "devDependencies": {
-    "nx": "22.6.4"
+    "@nx/angular": "^22.6.4",
+    "@nx/js": "^22.6.4",
+    "@nx/nest": "^22.6.4",
+    "nx": "22.6.4",
+    "typescript": "^5.9.3"
   },
   "nx": {}
 }
