@@ -81,3 +81,4 @@ docker-data/
 
 .nx/cache
 .nx/workspace-data
+.angular
