@@ -1,1 +1,15 @@
-<p>main-shell works!</p>
+<div class="layout">
+  <aside class="sidebar-area">
+    <app-sidebar></app-sidebar>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar-area">
+      <app-topbar></app-topbar>
+    </header>
+
+    <main class="page-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

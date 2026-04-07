@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
-import { ShellFeatureLayout } from './shell-feature-layout/shell-feature-layout';
+import { MainShellComponent } from './main-shell/main-shell';
 
 export const shellFeatureLayoutRoutes: Route[] = [
-  { path: '', component: ShellFeatureLayout },
+  { path: '', component: MainShellComponent },
 ];

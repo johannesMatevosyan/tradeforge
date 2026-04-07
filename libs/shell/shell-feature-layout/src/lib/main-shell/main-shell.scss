@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.sidebar-area {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 0;
+}
+
+.main-area {
+  display: grid;
+  grid-template-rows: 64px 1fr;
+  min-width: 0;
+  min-height: 0;
+}
+
+.topbar-area {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 0;
+}
+
+.page-area {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 24px;
+}
