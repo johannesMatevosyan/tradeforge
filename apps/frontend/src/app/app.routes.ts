@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
+import { DashboardComponent } from '@tradeforge/feature-dashboard';
 import { MainShellComponent } from '@tradeforge/shell-feature-layout';
-import { AppComponent } from './app';
 
 export const appRoutes: Route[] = [
   {
@@ -14,7 +14,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'dashboard',
-        component: AppComponent, // temporary page
+        component: DashboardComponent, // temporary page
       },
     ],
   },
