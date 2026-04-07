@@ -5,3 +5,5 @@ export * from './lib/shell-feature-layout/shell-feature-layout';
 export * from './lib/main-shell/main-shell';
 
 export * from './lib/sidebar';
+
+export * from './lib/topbar';
