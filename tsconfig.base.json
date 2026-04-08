@@ -13,7 +13,10 @@
       "@tradeforge/shell-feature-layout": [
         "libs/shell/shell-feature-layout/src/index.ts"
       ],
-      "@tradeforge/feature-dashboard": ["libs/dashboard/feature-dashboard/src/index.ts"]
+      "@tradeforge/feature-dashboard": [
+        "libs/dashboard/feature-dashboard/src/index.ts"
+      ],
+      "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
