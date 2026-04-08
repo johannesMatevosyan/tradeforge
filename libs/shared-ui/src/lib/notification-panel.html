@@ -1,1 +1,101 @@
-<p>notification-panel works!</p>
+<div class="notification-panel">
+  <div class="panel-header">
+    <div class="panel-title-row">
+      <h2 class="panel-title">Notifications</h2>
+
+      <div class="panel-actions">
+        <button type="button" class="icon-button" aria-label="Open in full page">
+          ↗
+        </button>
+
+        <button type="button" class="icon-button" aria-label="More actions">
+          ⋮
+        </button>
+      </div>
+    </div>
+
+    <div class="panel-toolbar">
+      <div class="tabs">
+        <button
+          type="button"
+          class="tab"
+          [class.active]="activeFilter() === 'all'"
+          (click)="setFilter('all')"
+        >
+          All
+        </button>
+
+        <button
+          type="button"
+          class="tab"
+          [class.active]="activeFilter() === 'unread'"
+          (click)="setFilter('unread')"
+        >
+          Unread
+          @if (unreadCount() > 0) {
+            <span class="tab-count">{{ unreadCount() }}</span>
+          }
+        </button>
+      </div>
+
+      <label class="toggle-row">
+        <span>Only show unread</span>
+        <button
+          type="button"
+          class="toggle"
+          [class.active]="unreadOnly()"
+          (click)="toggleUnreadOnly()"
+          [attr.aria-pressed]="unreadOnly()"
+        >
+          <span class="toggle-thumb"></span>
+        </button>
+      </label>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    @if (visibleNotifications().length > 0) {
+      <div class="notification-list">
+        @for (item of visibleNotifications(); track trackById($index, item)) {
+          <button
+            type="button"
+            class="notification-item"
+            [class.unread]="!item.isRead"
+            (click)="onNotificationClick(item)"
+          >
+            <div class="avatar">
+              @if (item.actorAvatarUrl) {
+                <img [src]="item.actorAvatarUrl" [alt]="item.actorName" />
+              } @else {
+                <span>{{ item.actorName.charAt(0) }}</span>
+              }
+            </div>
+
+            <div class="content">
+              <div class="top-line">
+                <div class="title">{{ item.title }}</div>
+
+                @if (!item.isRead) {
+                  <span class="unread-dot"></span>
+                }
+              </div>
+
+              <div class="time">{{ item.createdAtLabel }}</div>
+
+              <div class="message">{{ item.message }}</div>
+
+              @if (item.meta) {
+                <div class="meta">{{ item.meta }}</div>
+              }
+            </div>
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-title">No notifications</div>
+        <div class="empty-text">You're all caught up.</div>
+      </div>
+    }
+  </div>
+</div>

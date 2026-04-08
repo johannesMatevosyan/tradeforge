@@ -3,7 +3,15 @@
 
   <div class="topbar-actions">
     <button type="button">Search</button>
-    <button type="button">Notifications</button>
+    <button type="button" (click)="toggleNotifications()">Notifications</button>
     <button type="button">Profile</button>
   </div>
+  @if (isNotificationsOpen()) {
+    <div class="notifications-popover">
+      <app-notification-panel
+        [notifications]="notifications"
+        (notificationClick)="handleNotificationClick($event)"
+      />
+    </div>
+  }
 </div>
