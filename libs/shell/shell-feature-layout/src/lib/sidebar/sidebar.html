@@ -2,7 +2,10 @@
   <div class="logo">TradeForge</div>
 
   <nav class="nav">
-    <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="dashboard" [size]="18"></app-icon>
+      <span class="nav-item__text">Dashboard</span>
+    </a>
     <a class="nav-item" routerLink="/markets" routerLinkActive="active">Markets</a>
     <a class="nav-item" routerLink="/trading" routerLinkActive="active">Trading</a>
     <a class="nav-item" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>

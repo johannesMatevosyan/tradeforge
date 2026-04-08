@@ -1,0 +1,17 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.app-icon {
+  display: block;
+  color: currentColor;
+  flex: 0 0 auto;
+}
+
+.app-icon--img {
+  display: block;
+  object-fit: contain;
+}

@@ -1,1 +1,20 @@
-<p>app-icon works!</p>
+@if (coinSrc) {
+  <img
+    class="app-icon app-icon--img"
+    [src]="coinSrc"
+    [attr.width]="size"
+    [attr.height]="size"
+    [alt]="decorative ? '' : name"
+    [attr.aria-hidden]="decorative ? 'true' : null"
+  />
+} @else {
+  @if (lucideIcon; as icon) {
+    <lucide-angular
+      class="app-icon"
+      [img]="icon"
+      [size]="size"
+      [strokeWidth]="strokeWidth"
+      [attr.aria-hidden]="decorative ? 'true' : null"
+    ></lucide-angular>
+  }
+}

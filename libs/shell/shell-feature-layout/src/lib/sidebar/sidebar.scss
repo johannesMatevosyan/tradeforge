@@ -28,6 +28,18 @@
   color: #cbd5e1;
   text-decoration: none;
   transition: background-color 0.2s ease;
+  cursor: pointer;
+
+  .nav-item__icon {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .nav-item__text {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
 }
 
 .nav-item:hover,

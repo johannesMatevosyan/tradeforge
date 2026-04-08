@@ -10,6 +10,10 @@
       "@tradeforge/shared-types": ["libs/shared-types/src/index.ts"],
       "@tradeforge/shared-utils": ["libs/shared-utils/src/index.ts"],
       "@tradeforge/shared-ui": ["libs/shared-ui/src/index.ts"],
+      "@tradeforge/shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
+      "@tradeforge/shared-ui-icons/app-icon": [
+        "libs/shared-ui-icons/src/lib/app-icon/app-icon.ts"
+      ],
       "@tradeforge/shell-feature-layout": [
         "libs/shell/shell-feature-layout/src/index.ts"
       ],

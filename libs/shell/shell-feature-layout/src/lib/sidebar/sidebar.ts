@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { AppIconComponent } from '../../../../../shared-ui-icons/src/lib/app-icon/app-icon';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  imports: [AppIconComponent],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.scss',
+  styleUrls: ['./sidebar.scss'],
+  standalone: true,
 })
 export class SidebarComponent {}
