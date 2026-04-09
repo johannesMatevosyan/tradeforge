@@ -1,10 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-profile-account',
-  imports: [],
+  selector: 'app-profile-account',
+  imports: [CommonModule],
   templateUrl: './profile-account.html',
-  styleUrl: './profile-account.scss',
+  styleUrls: ['./profile-account.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileAccountComponent {}

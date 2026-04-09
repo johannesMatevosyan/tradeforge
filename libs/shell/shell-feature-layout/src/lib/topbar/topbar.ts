@@ -1,11 +1,12 @@
 import { Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 
 
 @Component({
   selector: 'app-topbar',
-  imports: [NotificationPanelComponent, AppIconComponent],
+  imports: [NotificationPanelComponent, AppIconComponent, RouterLink],
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.scss'],
   standalone: true,

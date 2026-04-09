@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ProfileSidebarComponent } from '../profile-sidebar/profile-sidebar';
 
 @Component({
-  selector: 'lib-profile-shell',
-  imports: [],
+  selector: 'app-profile-shell',
+  imports: [ProfileSidebarComponent, RouterOutlet],
   templateUrl: './profile-shell.html',
-  styleUrl: './profile-shell.scss',
+  styleUrls: ['./profile-shell.scss'],
+  standalone: true,
 })
 export class ProfileShellComponent {}

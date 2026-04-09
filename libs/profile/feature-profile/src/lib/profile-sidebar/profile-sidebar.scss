@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.profile-sidebar {
+  padding: 20px;
+  border-radius: 16px;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-sidebar__title {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.profile-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-sidebar__link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #cbd5e1;
+  transition: background-color 0.2s ease;
+}
+
+.profile-sidebar__link:hover,
+.profile-sidebar__link.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}

@@ -16,6 +16,11 @@ export const appRoutes: Route[] = [
         path: 'dashboard',
         component: DashboardComponent, // temporary page
       },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('@tradeforge/feature-profile').then((m) => m.featureProfileRoutes),
+      },
     ],
   },
 ];
