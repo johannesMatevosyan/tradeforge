@@ -2,9 +2,15 @@
   <div class="page-title">Dashboard</div>
 
   <div class="topbar-actions">
-    <button type="button">Search</button>
-    <button type="button" (click)="toggleNotifications()">Notifications</button>
-    <button type="button">Profile</button>
+    <button type="button">
+      <app-icon name="search" [size]="22"></app-icon>
+    </button>
+    <button type="button" class="notifications-button" (click)="toggleNotifications()">
+      <app-icon name="bell" [size]="22"></app-icon>
+    </button>
+    <button type="button" class="profile-button">
+      <app-icon name="user" [size]="22"></app-icon>
+    </button>
   </div>
   @if (isNotificationsOpen()) {
     <div class="notifications-popover">

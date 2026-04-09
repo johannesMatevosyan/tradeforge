@@ -1,32 +1,34 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
-    ArrowLeftRight,
-    Bell,
-    ChartColumn,
-    LayoutDashboard,
-    LogOut,
-    LucideAngularModule,
-    LucideIconData,
-    Mail,
-    Newspaper,
-    Search,
-    Settings,
-    User,
-    Wallet,
+  Activity,
+  ArrowLeftRight,
+  Bell,
+  BriefcaseBusiness,
+  ChartCandlestick,
+  ChartNoAxesCombined,
+  LayoutDashboard,
+  ListVideo,
+  LogOut,
+  LucideAngularModule,
+  LucideIconData,
+  Search,
+  Settings,
+  User
 } from 'lucide-angular';
 
 export type AppIconName =
   | 'dashboard'
-  | 'chart'
-  | 'transactions'
-  | 'wallet'
-  | 'news'
-  | 'mail'
-  | 'settings'
+  | 'chart-candlestick'
+  | 'activity'
+  | 'briefcase-business'
+  | 'arrow-left-right'
+  | 'list-video'
+  | 'chart-no-axes-combined'
   | 'logout'
   | 'bell'
   | 'search'
+  | 'settings'
   | 'user'
   | 'btc'
   | 'eth'
@@ -54,18 +56,20 @@ export class AppIconComponent {
     switch (this.name) {
       case 'dashboard':
         return LayoutDashboard;
-      case 'chart':
-        return ChartColumn;
-      case 'transactions':
+      case 'chart-candlestick':
+        return ChartCandlestick;
+      case 'briefcase-business':
+        return BriefcaseBusiness;
+      case 'arrow-left-right':
         return ArrowLeftRight;
-      case 'wallet':
-        return Wallet;
-      case 'news':
-        return Newspaper;
-      case 'mail':
-        return Mail;
+      case 'list-video':
+        return ListVideo;
+      case 'chart-no-axes-combined':
+        return ChartNoAxesCombined;
       case 'settings':
         return Settings;
+      case 'activity':
+        return Activity;
       case 'logout':
         return LogOut;
       case 'bell':

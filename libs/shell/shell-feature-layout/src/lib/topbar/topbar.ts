@@ -1,12 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
+import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 
 
 @Component({
   selector: 'app-topbar',
-  imports: [NotificationPanelComponent],
+  imports: [NotificationPanelComponent, AppIconComponent],
   templateUrl: './topbar.html',
-  styleUrl: './topbar.scss',
+  styleUrls: ['./topbar.scss'],
   standalone: true,
 })
 export class TopbarComponent {

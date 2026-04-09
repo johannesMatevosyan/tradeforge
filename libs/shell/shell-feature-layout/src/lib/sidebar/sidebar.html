@@ -2,16 +2,37 @@
   <div class="logo">TradeForge</div>
 
   <nav class="nav">
-    <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+    <a class="nav-item" routerLink="/dashboard" title="Dashboard" routerLinkActive="active">
       <app-icon class="nav-item__icon" name="dashboard" [size]="18"></app-icon>
       <span class="nav-item__text">Dashboard</span>
     </a>
-    <a class="nav-item" routerLink="/markets" routerLinkActive="active">Markets</a>
-    <a class="nav-item" routerLink="/trading" routerLinkActive="active">Trading</a>
-    <a class="nav-item" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
-    <a class="nav-item" routerLink="/orders" routerLinkActive="active">Orders</a>
-    <a class="nav-item" routerLink="/watchlist" routerLinkActive="active">Watchlist</a>
-    <a class="nav-item" routerLink="/analytics" routerLinkActive="active">Analytics</a>
-    <a class="nav-item" routerLink="/settings" routerLinkActive="active">Settings</a>
+    <a class="nav-item" routerLink="/markets" title="Markets" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="activity" [size]="18"></app-icon>
+      <span class="nav-item__text">Markets</span>
+    </a>
+    <a class="nav-item" routerLink="/trading" title="Trading" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="chart-candlestick" [size]="18"></app-icon>
+      <span class="nav-item__text">Trading</span>
+    </a>
+    <a class="nav-item" routerLink="/portfolio" title="Portfolio" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="briefcase-business" [size]="18"></app-icon>
+      <span class="nav-item__text">Portfolio</span>
+    </a>
+    <a class="nav-item" routerLink="/orders" title="Orders" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="arrow-left-right" [size]="18"></app-icon>
+      <span class="nav-item__text">Orders</span>
+    </a>
+    <a class="nav-item" routerLink="/watchlist" title="Watchlist" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="list-video" [size]="18"></app-icon>
+      <span class="nav-item__text">Watchlist</span>
+    </a>
+    <a class="nav-item" routerLink="/analytics" title="Analytics" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="chart-no-axes-combined" [size]="18"></app-icon>
+      <span class="nav-item__text">Analytics</span>
+    </a>
+    <a class="nav-item" routerLink="/settings" title="Settings" routerLinkActive="active">
+      <app-icon class="nav-item__icon" name="settings" [size]="18"></app-icon>
+      <span class="nav-item__text">Settings</span>
+    </a>
   </nav>
 </div>
