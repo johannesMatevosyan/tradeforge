@@ -1,16 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MainShell } from './main-shell';
+import { provideRouter } from '@angular/router';
+import { MainShellComponent } from './main-shell';
 
-describe('MainShell', () => {
-  let component: MainShell;
-  let fixture: ComponentFixture<MainShell>;
+describe('MainShellComponent', () => {
+  let component: MainShellComponent;
+  let fixture: ComponentFixture<MainShellComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainShell],
+      imports: [MainShellComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MainShell);
+    fixture = TestBed.createComponent(MainShellComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

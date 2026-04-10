@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { ProfileShellComponent } from './profile-shell';
 
 describe('ProfileShellComponent', () => {
@@ -8,6 +9,7 @@ describe('ProfileShellComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProfileShellComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfileShellComponent);
