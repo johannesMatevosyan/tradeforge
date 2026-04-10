@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { DashboardComponent } from '@tradeforge/feature-dashboard';
+import { NotFoundComponent } from '@tradeforge/shared-ui';
 import { MainShellComponent } from '@tradeforge/shell-feature-layout';
 
 export const appRoutes: Route[] = [
@@ -20,6 +21,10 @@ export const appRoutes: Route[] = [
         path: 'profile',
         loadChildren: () =>
           import('@tradeforge/feature-profile').then((m) => m.featureProfileRoutes),
+      },
+      {
+        path: '**',
+        component: NotFoundComponent,
       },
     ],
   },

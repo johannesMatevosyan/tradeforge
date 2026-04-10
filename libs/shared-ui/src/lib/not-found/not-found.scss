@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.not-found__content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.code {
+  font-size: 72px;
+  font-weight: 800;
+  color: #64748b;
+}
+
+h1 {
+  margin: 12px 0;
+  font-size: 28px;
+  color: #f8fafc;
+}
+
+p {
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
+}
