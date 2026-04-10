@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node -e \"console.log('No root tests configured. Use Nx project tests.')\""
   },
   "repository": {
     "type": "git",
