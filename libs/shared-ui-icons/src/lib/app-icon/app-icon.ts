@@ -51,6 +51,7 @@ export class AppIconComponent {
   @Input() size = 20;
   @Input() strokeWidth = 2;
   @Input() decorative = true;
+  @Input() color = 'currentColor';
 
   get lucideIcon(): LucideIconData | null {
     switch (this.name) {

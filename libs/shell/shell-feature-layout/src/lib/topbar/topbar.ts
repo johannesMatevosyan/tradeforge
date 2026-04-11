@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
@@ -6,13 +7,15 @@ import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 
 @Component({
   selector: 'app-topbar',
-  imports: [NotificationPanelComponent, AppIconComponent, RouterLink],
+  imports: [FormsModule, NotificationPanelComponent, AppIconComponent, RouterLink],
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.scss'],
   standalone: true,
 })
 export class TopbarComponent {
-    readonly isNotificationsOpen = signal(false);
+  readonly searchTerm = signal('');
+  readonly isNotificationsOpen = signal(false);
+  isFocused = false;
 
   notifications: NotificationItem[] = [
     {
@@ -41,5 +44,17 @@ export class TopbarComponent {
 
   handleNotificationClick(item: NotificationItem): void {
     console.log('Open notification', item);
+  }
+
+  onSearchFocus(): void {
+    this.isFocused = true;
+  }
+
+  onSearchBlur(): void {
+    this.isFocused = false;
+  }
+
+  onSearchChange(value: string): void {
+    this.searchTerm.set(value);
   }
 }

@@ -1,10 +1,26 @@
 <div class="topbar">
   <div class="page-title">Dashboard</div>
 
+  <div class="topbar-center">
+    <label class="search-box">
+      <input
+        type="text"
+        name="search"
+        placeholder="Search markets, orders, assets..."
+        aria-label="Search"
+        (focus)="onSearchFocus()"
+        (blur)="onSearchBlur()"
+        [ngModel]="searchTerm()"
+        (ngModelChange)="onSearchChange($event)"
+      />
+      <button type="button">
+        <app-icon name="search" [size]="22" [color]="isFocused ? '#3b82f6' : '#64748b'"></app-icon>
+      </button>
+    </label>
+  </div>
+
   <div class="topbar-actions">
-    <button type="button">
-      <app-icon name="search" [size]="22"></app-icon>
-    </button>
+
     <button type="button" class="notifications-button" (click)="toggleNotifications()">
       <app-icon name="bell" [size]="22"></app-icon>
     </button>
