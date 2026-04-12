@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { ICreateWatchlistItemDto, IWatchlistItem, WatchlistService } from './watchlist.service';
+import { CreateWatchlistItemDto } from './dto/create-watchlist-item';
+import { IWatchlistItem, WatchlistService } from './watchlist.service';
 
 @Controller('watchlist')
 export class WatchlistController {
@@ -11,7 +12,7 @@ export class WatchlistController {
   }
 
   @Post()
-  create(@Body() payload: ICreateWatchlistItemDto): IWatchlistItem {
+  create(@Body() payload: CreateWatchlistItemDto): IWatchlistItem {
     return this.watchlistService.create(payload);
   }
 
