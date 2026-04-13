@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
 
 export interface SymbolItem {
@@ -12,56 +13,28 @@ export interface SymbolItem {
 
 @Injectable()
 export class SymbolsService {
-      private readonly symbols: SymbolItem[] = [
-    {
-      id: '1',
-      code: 'BTCUSD',
-      baseAsset: 'BTC',
-      quoteAsset: 'USD',
-      description: 'Bitcoin / US Dollar',
-      isActive: true,
-    },
-    {
-      id: '2',
-      code: 'ETHUSD',
-      baseAsset: 'ETH',
-      quoteAsset: 'USD',
-      description: 'Ethereum / US Dollar',
-      isActive: true,
-    },
-    {
-      id: '3',
-      code: 'EURUSD',
-      baseAsset: 'EUR',
-      quoteAsset: 'USD',
-      description: 'Euro / US Dollar',
-      isActive: true,
-    },
-    {
-      id: '4',
-      code: 'XAUUSD',
-      baseAsset: 'XAU',
-      quoteAsset: 'USD',
-      description: 'Gold / US Dollar',
-      isActive: true,
-    },
-  ];
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll(query: GetSymbolsQueryDto): SymbolItem[] {
+  async findAll(query: GetSymbolsQueryDto) {
     const { search, isActive } = query;
 
-    return this.symbols.filter((symbol) => {
-      const matchesSearch =
-        !search ||
-        symbol.code.toLowerCase().includes(search.toLowerCase()) ||
-        symbol.baseAsset.toLowerCase().includes(search.toLowerCase()) ||
-        symbol.quoteAsset.toLowerCase().includes(search.toLowerCase()) ||
-        symbol.description.toLowerCase().includes(search.toLowerCase());
-
-      const matchesActive =
-        typeof isActive !== 'boolean' || symbol.isActive === isActive;
-
-      return matchesSearch && matchesActive;
+    return this.prisma.symbol.findMany({
+      where: {
+        ...(typeof isActive === 'boolean' ? { isActive } : {}),
+        ...(search
+          ? {
+              OR: [
+                { code: { contains: search, mode: 'insensitive' } },
+                { baseAsset: { contains: search, mode: 'insensitive' } },
+                { quoteAsset: { contains: search, mode: 'insensitive' } },
+                { description: { contains: search, mode: 'insensitive' } },
+              ],
+            }
+          : {}),
+      },
+      orderBy: {
+        code: 'asc',
+      },
     });
   }
 }
