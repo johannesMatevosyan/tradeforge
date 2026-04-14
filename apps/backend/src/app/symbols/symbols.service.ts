@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
 
@@ -36,5 +36,19 @@ export class SymbolsService {
         code: 'asc',
       },
     });
+  }
+
+  async findOneByCode(code: string) {
+    const symbol = await this.prisma.symbol.findUnique({
+      where: {
+        code: code.toUpperCase(),
+      },
+    });
+
+    if (!symbol) {
+      throw new NotFoundException(`Symbol with code "${code}" not found.`);
+    }
+
+    return symbol;
   }
 }
