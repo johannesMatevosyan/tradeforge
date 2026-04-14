@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
 import { SymbolsService } from './symbols.service';
@@ -23,5 +23,27 @@ export class SymbolsController {
   @Get(':code')
   async findOneByCode(@Param('code') code: string) {
     return this.symbolsService.findOneByCode(code);
+  }
+
+  @ApiOperation({ summary: 'Activate symbol by code' })
+  @ApiParam({
+    name: 'code',
+    example: 'XAUUSD',
+    description: 'Trading symbol code',
+  })
+  @Patch(':code/activate')
+  async activate(@Param('code') code: string) {
+    return this.symbolsService.activate(code);
+  }
+
+  @ApiOperation({ summary: 'Deactivate symbol by code' })
+  @ApiParam({
+    name: 'code',
+    example: 'BTCUSD',
+    description: 'Trading symbol code',
+  })
+  @Patch(':code/deactivate')
+  async deactivate(@Param('code') code: string) {
+    return this.symbolsService.deactivate(code);
   }
 }

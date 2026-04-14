@@ -39,16 +39,50 @@ export class SymbolsService {
   }
 
   async findOneByCode(code: string) {
+    const normalizedCode = code.toUpperCase();
     const symbol = await this.prisma.symbol.findUnique({
       where: {
-        code: code.toUpperCase(),
+        code: normalizedCode,
       },
     });
 
     if (!symbol) {
-      throw new NotFoundException(`Symbol with code "${code}" not found.`);
+      throw new NotFoundException(`Symbol with code "${normalizedCode}" not found.`);
     }
 
     return symbol;
+  }
+
+  async activate(code: string) {
+    return this.updateActiveStatus(code, true);
+  }
+
+  async deactivate(code: string) {
+    return this.updateActiveStatus(code, false);
+  }
+
+  private async updateActiveStatus(code: string, isActive: boolean) {
+    const normalizedCode = code.toUpperCase();
+
+    const existingSymbol = await this.prisma.symbol.findUnique({
+      where: {
+        code: normalizedCode,
+      },
+    });
+
+    if (!existingSymbol) {
+      throw new NotFoundException(
+        `Symbol with code "${normalizedCode}" not found.`,
+      );
+    }
+
+    return this.prisma.symbol.update({
+      where: {
+        code: normalizedCode,
+      },
+      data: {
+        isActive,
+      },
+    });
   }
 }
