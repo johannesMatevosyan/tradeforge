@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
+import { SymbolResponseDto } from './dto/symbol-respomnse.dto';
 
 export interface SymbolItem {
   id: string;
@@ -61,7 +62,7 @@ export class SymbolsService {
     return this.updateActiveStatus(code, false);
   }
 
-  private async updateActiveStatus(code: string, isActive: boolean) {
+  private async updateActiveStatus(code: string, isActive: boolean): Promise<SymbolResponseDto> {
     const normalizedCode = code.toUpperCase();
 
     const existingSymbol = await this.prisma.symbol.findUnique({
@@ -76,7 +77,7 @@ export class SymbolsService {
       );
     }
 
-    return this.prisma.symbol.update({
+    const updatedSymbol = await this.prisma.symbol.update({
       where: {
         code: normalizedCode,
       },
@@ -84,5 +85,25 @@ export class SymbolsService {
         isActive,
       },
     });
+
+    return this.toResponseDto(updatedSymbol);
+  }
+
+  private toResponseDto(symbol: {
+    id: string;
+    code: string;
+    baseAsset: string;
+    quoteAsset: string;
+    description: string | null;
+    isActive: boolean;
+  }): SymbolResponseDto {
+    return {
+      id: symbol.id,
+      code: symbol.code,
+      baseAsset: symbol.baseAsset,
+      quoteAsset: symbol.quoteAsset,
+      description: symbol.description || '',
+      isActive: symbol.isActive,
+    };
   }
 }

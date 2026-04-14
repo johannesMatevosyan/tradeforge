@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
+import { SymbolResponseDto } from './dto/symbol-respomnse.dto';
 import { SymbolsService } from './symbols.service';
 
 @ApiTags('symbols')
@@ -14,14 +15,17 @@ export class SymbolsController {
     return this.symbolsService.findAll(query);
   }
 
-  @ApiOperation({ summary: 'Get a single trading symbol by its code' })
+  @ApiOperation({ summary: 'Get one symbol by code' })
   @ApiParam({
     name: 'code',
     example: 'BTCUSD',
     description: 'Trading symbol code',
   })
+  @ApiOkResponse({
+    type: SymbolResponseDto,
+  })
   @Get(':code')
-  async findOneByCode(@Param('code') code: string) {
+  async findOne(@Param('code') code: string): Promise<SymbolResponseDto> {
     return this.symbolsService.findOneByCode(code);
   }
 
@@ -31,8 +35,11 @@ export class SymbolsController {
     example: 'XAUUSD',
     description: 'Trading symbol code',
   })
+  @ApiOkResponse({
+    type: SymbolResponseDto,
+  })
   @Patch(':code/activate')
-  async activate(@Param('code') code: string) {
+  async activate(@Param('code') code: string): Promise<SymbolResponseDto> {
     return this.symbolsService.activate(code);
   }
 
@@ -42,8 +49,11 @@ export class SymbolsController {
     example: 'BTCUSD',
     description: 'Trading symbol code',
   })
+  @ApiOkResponse({
+    type: SymbolResponseDto,
+  })
   @Patch(':code/deactivate')
-  async deactivate(@Param('code') code: string) {
+  async deactivate(@Param('code') code: string): Promise<SymbolResponseDto> {
     return this.symbolsService.deactivate(code);
   }
 }
