@@ -1,151 +1,143 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateWatchlistItemDto } from './dto/create-watchlist-item.dto';
 import { WatchlistItemResponseDto } from './dto/watchlist-item-response.dto';
-
-export interface IWatchlistItem {
-  id: string;
-  symbolCode: string;
-  displayName: string;
-}
-
-export interface ICreateWatchlistItemDto {
-  symbolCode: string;
-  displayName: string;
-}
 
 @Injectable()
 export class WatchlistService {
-    constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-    private readonly demoUserEmail = 'demo@tradeforge.local';
+  private readonly demoUserEmail = 'demo@tradeforge.local';
 
-    async findAll(): Promise<WatchlistItemResponseDto[]> {
-        const user = await this.getDemoUser();
+  async findAll(): Promise<WatchlistItemResponseDto[]> {
+    const user = await this.getDemoUser();
 
-        const items = await this.prisma.watchlistItem.findMany({
-            where: {
-                userId: user.id,
-            },
-            include: {
-                symbol: true,
-            },
-            orderBy: {
-                createdAt: 'desc',
-            },
-        });
+    const items = await this.prisma.watchlistItem.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        symbol: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
 
-        return items.map((item) => this.toResponseDto(item));
+    return items.map((item) => this.toResponseDto(item));
+  }
+
+  async create(
+    payload: CreateWatchlistItemDto,
+  ): Promise<WatchlistItemResponseDto> {
+    const user = await this.getDemoUser();
+    const normalizedCode = payload.symbolCode.toUpperCase();
+
+    const symbol = await this.prisma.symbol.findUnique({
+      where: {
+        code: normalizedCode,
+      },
+    });
+
+    if (!symbol) {
+      throw new NotFoundException(
+        `Symbol with code "${normalizedCode}" not found.`,
+      );
     }
 
-    async create(createWatchlistItemDto: ICreateWatchlistItemDto): Promise<WatchlistItemResponseDto> {
-        const user = await this.getDemoUser();
-        const normalizedCode = createWatchlistItemDto.symbolCode.toUpperCase();
+    const existingItem = await this.prisma.watchlistItem.findUnique({
+      where: {
+        userId_symbolId: {
+          userId: user.id,
+          symbolId: symbol.id,
+        },
+      },
+      include: {
+        symbol: true,
+      },
+    });
 
-        const symbol = await this.prisma.symbol.findUnique({
-            where: {
-                code: normalizedCode,
-            },
-        });
-
-        if (!symbol) {
-            throw new NotFoundException(
-                `Symbol with code "${normalizedCode}" not found.`,
-            );
-        }
-
-        const existingItem = await this.prisma.watchlistItem.findUnique({
-            where: {
-                userId_symbolId: {
-                    userId: user.id,
-                    symbolId: symbol.id,
-                },
-            },
-            include: {
-                symbol: true,
-            },
-        });
-
-        if (existingItem) {
-            throw new ConflictException(
-                `Symbol "${normalizedCode}" is already in watchlist.`,
-            );
-        }
-
-        const createdItem = await this.prisma.watchlistItem.create({
-            data: {
-                userId: user.id,
-                symbolId: symbol.id,
-            },
-            include: {
-                symbol: true,
-            },
-        });
-
-        return this.toResponseDto(createdItem);
+    if (existingItem) {
+      throw new ConflictException(
+        `Symbol "${normalizedCode}" is already in watchlist.`,
+      );
     }
 
-    async remove(id: string): Promise<WatchlistItemResponseDto> {
-        const user = await this.getDemoUser();
+    const createdItem = await this.prisma.watchlistItem.create({
+      data: {
+        userId: user.id,
+        symbolId: symbol.id,
+      },
+      include: {
+        symbol: true,
+      },
+    });
 
-        const existingItem = await this.prisma.watchlistItem.findFirst({
-            where: {
-                id,
-                userId: user.id,
-            },
-            include: {
-                symbol: true,
-            },
-        });
+    return this.toResponseDto(createdItem);
+  }
 
-        if (!existingItem) {
-            throw new NotFoundException(`Watchlist item with id "${id}" not found.`);
-        }
+  async remove(id: string): Promise<WatchlistItemResponseDto> {
+    const user = await this.getDemoUser();
 
-        await this.prisma.watchlistItem.delete({
-            where: {
-                id,
-            },
-        });
+    const existingItem = await this.prisma.watchlistItem.findFirst({
+      where: {
+        id,
+        userId: user.id,
+      },
+      include: {
+        symbol: true,
+      },
+    });
 
-        return this.toResponseDto(existingItem);
+    if (!existingItem) {
+      throw new NotFoundException(`Watchlist item with id "${id}" not found.`);
     }
 
-    private async getDemoUser() {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                email: this.demoUserEmail,
-            },
-        });
+    await this.prisma.watchlistItem.delete({
+      where: {
+        id,
+      },
+    });
 
-        if (!user) {
-            throw new NotFoundException('Demo user not found.');
-        }
+    return this.toResponseDto(existingItem);
+  }
 
-        return user;
+  private async getDemoUser() {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: this.demoUserEmail,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Demo user not found.');
     }
 
-    private toResponseDto(item: {
-        id: string;
-        symbolId: string;
-        symbol: {
-            code: string;
-            description: string | null;
-            baseAsset: string;
-            quoteAsset: string;
-            isActive: boolean;
-        };
-    }): WatchlistItemResponseDto {
-        const displayName =
-        item.symbol.description?.trim() ||
-        `${item.symbol.baseAsset} / ${item.symbol.quoteAsset}`;
+    return user;
+  }
 
-        return {
-            id: item.id,
-            symbolId: item.symbolId,
-            symbolCode: item.symbol.code,
-            displayName,
-            label: `${item.symbol.code} - ${displayName}`,
-            isActive: item.symbol.isActive,
-        };
-    }
+  private toResponseDto(item: {
+    id: string;
+    symbolId: string;
+    symbol: {
+      code: string;
+      description: string | null;
+      baseAsset: string;
+      quoteAsset: string;
+      isActive: boolean;
+    };
+  }): WatchlistItemResponseDto {
+    const displayName =
+      item.symbol.description?.trim() ||
+      `${item.symbol.baseAsset} / ${item.symbol.quoteAsset}`;
+
+    return {
+      id: item.id,
+      symbolId: item.symbolId,
+      symbolCode: item.symbol.code,
+      displayName,
+      label: `${item.symbol.code} - ${displayName}`,
+      isActive: item.symbol.isActive,
+    };
+  }
 }
