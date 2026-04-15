@@ -19,6 +19,15 @@ export class WatchlistController {
     return this.watchlistService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get one watchlist item by id' })
+  @ApiOkResponse({
+    type: WatchlistItemResponseDto,
+  })
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<WatchlistItemResponseDto> {
+    return this.watchlistService.findOne(id);
+  }
+
   @ApiOperation({ summary: 'Add symbol to watchlist' })
   @ApiOkResponse({
     type: WatchlistItemResponseDto,

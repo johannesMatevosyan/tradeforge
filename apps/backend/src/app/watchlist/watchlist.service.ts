@@ -5,27 +5,47 @@ import { WatchlistItemResponseDto } from './dto/watchlist-item-response.dto';
 
 @Injectable()
 export class WatchlistService {
-  constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-  private readonly demoUserEmail = 'demo@tradeforge.local';
+    private readonly demoUserEmail = 'demo@tradeforge.local';
 
-  async findAll(): Promise<WatchlistItemResponseDto[]> {
-    const user = await this.getDemoUser();
+    async findAll(): Promise<WatchlistItemResponseDto[]> {
+        const user = await this.getDemoUser();
 
-    const items = await this.prisma.watchlistItem.findMany({
-      where: {
-        userId: user.id,
-      },
-      include: {
-        symbol: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+        const items = await this.prisma.watchlistItem.findMany({
+            where: {
+                userId: user.id,
+            },
+            include: {
+                symbol: true,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
 
-    return items.map((item) => this.toResponseDto(item));
-  }
+        return items.map((item) => this.toResponseDto(item));
+    }
+
+    async findOne(id: string): Promise<WatchlistItemResponseDto> {
+        const user = await this.getDemoUser();
+
+        const item = await this.prisma.watchlistItem.findFirst({
+            where: {
+                id,
+                userId: user.id,
+            },
+            include: {
+                symbol: true,
+            },
+        });
+
+        if (!item) {
+            throw new NotFoundException(`Watchlist item with id "${id}" not found.`);
+        }
+
+        return this.toResponseDto(item);
+   }
 
   async create(
     payload: CreateWatchlistItemDto,
