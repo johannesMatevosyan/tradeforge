@@ -37,4 +37,16 @@ export class SymbolResponseDto {
         description: 'Indicates if the trading symbol is active',
     })
     isActive!: boolean;
+
+    @ApiProperty({
+        example: 'Bitcoin / US Dollar',
+        description: 'Display name for UI usage',
+    })
+    displayName!: string;
+
+    @ApiProperty({
+        example: 'BTCUSD - Bitcoin / US Dollar',
+        description: 'Combined symbol label for dropdowns and selectors',
+    })
+    label!: string;
 }

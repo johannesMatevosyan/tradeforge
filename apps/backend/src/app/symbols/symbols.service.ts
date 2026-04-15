@@ -51,7 +51,21 @@ export class SymbolsService {
       throw new NotFoundException(`Symbol with code "${normalizedCode}" not found.`);
     }
 
-    return symbol;
+    const displayName =
+    symbol.description?.trim() || `${symbol.baseAsset} / ${symbol.quoteAsset}`;
+
+    const label = `${symbol.code} - ${displayName}`;
+
+    return {
+      id: symbol.id,
+      code: symbol.code,
+      baseAsset: symbol.baseAsset,
+      quoteAsset: symbol.quoteAsset,
+      description: symbol.description,
+      isActive: symbol.isActive,
+      displayName,
+      label,
+    };
   }
 
   async activate(code: string) {
@@ -86,7 +100,15 @@ export class SymbolsService {
       },
     });
 
-    return this.toResponseDto(updatedSymbol);
+    const displayName =
+      updatedSymbol.description ?? `${updatedSymbol.baseAsset} / ${updatedSymbol.quoteAsset}`;
+    const label = `${updatedSymbol.code} - ${displayName}`;
+
+    return this.toResponseDto({
+      ...updatedSymbol,
+      displayName,
+      label,
+    });
   }
 
   private toResponseDto(symbol: {
@@ -96,6 +118,8 @@ export class SymbolsService {
     quoteAsset: string;
     description: string | null;
     isActive: boolean;
+    displayName: string;
+    label: string;
   }): SymbolResponseDto {
     return {
       id: symbol.id,
@@ -104,6 +128,8 @@ export class SymbolsService {
       quoteAsset: symbol.quoteAsset,
       description: symbol.description || '',
       isActive: symbol.isActive,
+      displayName: symbol.displayName,
+      label: symbol.label,
     };
   }
 }
