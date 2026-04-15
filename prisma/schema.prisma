@@ -22,4 +22,26 @@ model Symbol {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  watchlistItems WatchlistItem[]
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  watchlistItems WatchlistItem[]
+}
+
+model WatchlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  symbolId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symbol Symbol @relation(fields: [symbolId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, symbolId])
 }

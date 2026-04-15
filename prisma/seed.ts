@@ -15,6 +15,17 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
+  await prisma.user.upsert({
+    where: {
+      email: 'demo@tradeforge.local',
+    },
+    update: {},
+    create: {
+      email: 'demo@tradeforge.local',
+      name: 'Demo User',
+    },
+  });
+
   const result = await prisma.symbol.createMany({
     data: [
       {
