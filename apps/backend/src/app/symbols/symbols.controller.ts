@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
+import { SymbolCodeParamDto } from './dto/symbol-code-param.dto';
 import { SymbolResponseDto } from './dto/symbol-respomnse.dto';
 import { SymbolsService } from './symbols.service';
 
@@ -25,8 +26,8 @@ export class SymbolsController {
     type: SymbolResponseDto,
   })
   @Get(':code')
-  async findOne(@Param('code') code: string): Promise<SymbolResponseDto> {
-    return this.symbolsService.findOneByCode(code);
+  async findOne(@Param() params: SymbolCodeParamDto): Promise<SymbolResponseDto> {
+    return this.symbolsService.findOneByCode(params.code);
   }
 
   @ApiOperation({ summary: 'Activate symbol by code' })
@@ -39,8 +40,8 @@ export class SymbolsController {
     type: SymbolResponseDto,
   })
   @Patch(':code/activate')
-  async activate(@Param('code') code: string): Promise<SymbolResponseDto> {
-    return this.symbolsService.activate(code);
+  async activate(@Param() params: SymbolCodeParamDto): Promise<SymbolResponseDto> {
+    return this.symbolsService.activate(params.code);
   }
 
   @ApiOperation({ summary: 'Deactivate symbol by code' })
@@ -53,7 +54,7 @@ export class SymbolsController {
     type: SymbolResponseDto,
   })
   @Patch(':code/deactivate')
-  async deactivate(@Param('code') code: string): Promise<SymbolResponseDto> {
-    return this.symbolsService.deactivate(code);
+  async deactivate(@Param() params: SymbolCodeParamDto): Promise<SymbolResponseDto> {
+    return this.symbolsService.deactivate(params.code);
   }
 }
