@@ -2,7 +2,7 @@ import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
 import { SymbolCodeParamDto } from './dto/symbol-code-param.dto';
-import { SymbolResponseDto } from './dto/symbol-respomnse.dto';
+import { SymbolResponseDto } from './dto/symbol-response.dto';
 import { SymbolsService } from './symbols.service';
 
 @ApiTags('symbols')

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GetSymbolsQueryDto } from './dto/get-symbols-query.dto';
-import { SymbolResponseDto } from './dto/symbol-respomnse.dto';
+import { SymbolResponseDto } from './dto/symbol-response.dto';
 
 export interface SymbolItem {
   id: string;
