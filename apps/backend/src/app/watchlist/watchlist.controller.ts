@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiConflictResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateWatchlistItemDto } from './dto/create-watchlist-item.dto';
+import { WatchlistIdParamDto } from './dto/watchlist-id-param.dto';
 import { WatchlistItemResponseDto } from './dto/watchlist-item-response.dto';
 import { WatchlistService } from './watchlist.service';
 
@@ -24,8 +25,8 @@ export class WatchlistController {
     type: WatchlistItemResponseDto,
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<WatchlistItemResponseDto> {
-    return this.watchlistService.findOne(id);
+  async findOne(@Param() params: WatchlistIdParamDto): Promise<WatchlistItemResponseDto> {
+    return this.watchlistService.findOne(params.id);
   }
 
   @ApiOperation({ summary: 'Add symbol to watchlist' })
@@ -47,7 +48,7 @@ export class WatchlistController {
     type: WatchlistItemResponseDto,
   })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<WatchlistItemResponseDto> {
-    return this.watchlistService.remove(id);
+  async remove(@Param() params: WatchlistIdParamDto): Promise<WatchlistItemResponseDto> {
+    return this.watchlistService.remove(params.id);
   }
 }
