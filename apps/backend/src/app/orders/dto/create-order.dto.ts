@@ -1,5 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNumberString, IsOptional, IsString, Length, Matches, ValidateIf } from 'class-validator';
+import {
+  IsEnum,
+  IsNumberString,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+  ValidateIf,
+} from 'class-validator';
 
 export enum OrderSideDto {
   BUY = 'BUY',
@@ -28,13 +36,16 @@ export class CreateOrderDto {
   @IsEnum(OrderTypeDto)
   type!: OrderTypeDto;
 
-  @ApiProperty({ example: '0.50', description: 'Quantity as decimal string' })
+  @ApiProperty({
+    example: '0.50',
+    description: 'Quantity as decimal string, must be greater than 0',
+  })
   @IsNumberString() // property is a string containing only numeric characters
   quantity!: string;
 
   @ApiPropertyOptional({
     example: '65000.00',
-    description: 'Required for LIMIT orders',
+    description: 'Required for LIMIT orders, must be greater than 0',
   })
   @IsOptional()
   @ValidateIf((o) => o.type === OrderTypeDto.LIMIT)
