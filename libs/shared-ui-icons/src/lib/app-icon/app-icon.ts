@@ -14,7 +14,8 @@ import {
   LucideIconData,
   Search,
   Settings,
-  User
+  User,
+  X
 } from 'lucide-angular';
 
 export type AppIconName =
@@ -33,7 +34,8 @@ export type AppIconName =
   | 'btc'
   | 'eth'
   | 'sol'
-  | 'ltc';
+  | 'ltc'
+  | 'x';
 
 @Component({
   selector: 'app-icon',
@@ -79,6 +81,8 @@ export class AppIconComponent {
         return Search;
       case 'user':
         return User;
+      case 'x':
+        return X;
       default:
         return null;
     }

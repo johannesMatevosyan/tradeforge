@@ -3,6 +3,11 @@
 
   <div class="topbar-center">
     <label class="search-box">
+      @if (searchTerm()) {
+        <button type="button" class="clear-search-button" aria-label="Clear search" (click)="clearSearch()">
+          <app-icon name="x" [size]="18" [color]="'#64748b'"></app-icon>
+        </button>
+      }
       <input
         type="text"
         name="search"
@@ -13,7 +18,7 @@
         [ngModel]="searchTerm()"
         (ngModelChange)="onSearchChange($event)"
       />
-      <button type="button">
+      <button type="button" class="search-button">
         <app-icon name="search" [size]="22" [color]="isFocused ? '#3b82f6' : '#64748b'"></app-icon>
       </button>
     </label>

@@ -61,10 +61,17 @@
     border: 1px solid transparent;
     cursor: pointer;
     padding: 5px;
-    width: 48px;
     height: 100%;
+  }
+  .search-button {
+    width: 48px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+  }
+  .clear-search-button {
+    width: 35px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 }
 
@@ -84,7 +91,7 @@
   outline: none;
   background: transparent;
   color: #f8fafc;
-  padding: 0 12px 0 8px;
+  padding: 0 12px 0 4px;
 }
 
 .search-box input::placeholder {

@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SearchService } from '@tradeforge/data-access';
 import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 
@@ -13,7 +14,8 @@ import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
   standalone: true,
 })
 export class TopbarComponent {
-  readonly searchTerm = signal('');
+  private readonly searchService = inject(SearchService);
+  readonly searchTerm = this.searchService.searchTerm;
   readonly isNotificationsOpen = signal(false);
   isFocused = false;
 
@@ -55,6 +57,10 @@ export class TopbarComponent {
   }
 
   onSearchChange(value: string): void {
-    this.searchTerm.set(value);
+    this.searchService.setSearchTerm(value);
+  }
+
+  clearSearch(): void {
+    this.searchService.clear();
   }
 }
