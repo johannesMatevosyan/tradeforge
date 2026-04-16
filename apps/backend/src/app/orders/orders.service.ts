@@ -1,41 +1,52 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { OrderSide, OrderStatus, OrderType } from 'generated/prisma/enums';
+import { OrderSide, OrderStatus, OrderType } from '@prisma/generated';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto, OrderTypeDto } from './dto/create-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
 
 @Injectable()
 export class OrdersService {
-      constructor(private readonly prismaService: PrismaService) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
-  private readonly demoUserEmail = 'demo@tradeforge.local';
+    private readonly demoUserEmail = 'demo@tradeforge.local';
 
-  async findAll(): Promise<OrderResponseDto[]> {
-    const user = await this.getDemoUser();
+    async findAll(): Promise<OrderResponseDto[]> {
+      const user = await this.getDemoUser();
 
-    const orders = await this.prismaService.order.findMany({
-      where: { userId: user.id },
-      include: { symbol: true },
-      orderBy: { createdAt: 'desc' },
-    });
+      const orders = await this.prismaService.order.findMany({
+        where: {
+          userId: user.id,
+        },
+        include: {
+          symbol: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
 
-    return orders.map((order) => this.toResponseDto(order));
-  }
-
-  async findOne(id: string): Promise<OrderResponseDto> {
-    const user = await this.getDemoUser();
-
-    const order = await this.prismaService.order.findFirst({
-      where: { id, userId: user.id },
-      include: { symbol: true },
-    });
-
-    if (!order) {
-      throw new NotFoundException(`Order with id "${id}" not found.`);
+      return orders.map((order) => this.toResponseDto(order));
     }
 
-    return this.toResponseDto(order);
-  }
+    async findOne(id: string): Promise<OrderResponseDto> {
+      const user = await this.getDemoUser();
+
+      const order = await this.prismaService.order.findFirst({
+        where: {
+          id,
+          userId: user.id,
+        },
+        include: {
+          symbol: true,
+        },
+      });
+
+      if (!order) {
+        throw new NotFoundException(`Order with id "${id}" not found.`);
+      }
+
+      return this.toResponseDto(order);
+    }
 
     async create(payload: CreateOrderDto): Promise<OrderResponseDto> {
       const user = await this.getDemoUser();
@@ -45,18 +56,24 @@ export class OrdersService {
       this.validatePrice(payload.price, payload.type);
 
       const symbol = await this.prismaService.symbol.findUnique({
-        where: { code: normalizedCode },
+        where: {
+          code: normalizedCode,
+        },
       });
 
       if (!symbol) {
-        throw new NotFoundException(`Symbol with code "${normalizedCode}" not found.`);
+        throw new NotFoundException(
+          `Symbol with code "${normalizedCode}" not found.`,
+        );
       }
 
       if (!symbol.isActive) {
-        throw new BadRequestException(`Symbol "${normalizedCode}" is inactive.`);
+        throw new BadRequestException(
+          `Symbol "${normalizedCode}" is inactive.`,
+        );
       }
 
-      const created = await this.prismaService.order.create({
+      const createdOrder = await this.prismaService.order.create({
         data: {
           userId: user.id,
           symbolId: symbol.id,
@@ -66,40 +83,89 @@ export class OrdersService {
           price: payload.price ?? null,
           status: OrderStatus.OPEN,
         },
-        include: { symbol: true },
+        include: {
+          symbol: true,
+        },
       });
 
-      return this.toResponseDto(created);
+      return this.toResponseDto(createdOrder);
     }
 
     async cancel(id: string): Promise<OrderResponseDto> {
       const user = await this.getDemoUser();
 
-      const existing = await this.prismaService.order.findFirst({
-        where: { id, userId: user.id },
-        include: { symbol: true },
+      const existingOrder = await this.prismaService.order.findFirst({
+        where: {
+          id,
+          userId: user.id,
+        },
+        include: {
+          symbol: true,
+        },
       });
 
-      if (!existing) {
+      if (!existingOrder) {
         throw new NotFoundException(`Order with id "${id}" not found.`);
       }
 
-      if (existing.status !== OrderStatus.OPEN) {
+      if (existingOrder.status !== OrderStatus.OPEN) {
         throw new BadRequestException('Only OPEN orders can be cancelled.');
       }
 
-      const updated = await this.prismaService.order.update({
-        where: { id },
-        data: { status: OrderStatus.CANCELLED },
-        include: { symbol: true },
+      const updatedOrder = await this.prismaService.order.update({
+        where: {
+          id,
+        },
+        data: {
+          status: OrderStatus.CANCELLED,
+        },
+        include: {
+          symbol: true,
+        },
       });
 
-      return this.toResponseDto(updated);
+      return this.toResponseDto(updatedOrder);
+    }
+
+    private validateQuantity(quantity: string): void {
+      const parsedQuantity = Number(quantity);
+
+      if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) {
+        throw new BadRequestException('Quantity must be greater than 0.');
+      }
+
+      if (parsedQuantity < 0.0001) {
+        throw new BadRequestException('Quantity must be at least 0.0001.');
+      }
+    }
+
+    private validatePrice(price: string | undefined, type: OrderTypeDto): void {
+      if (type === OrderTypeDto.MARKET && price) {
+        throw new BadRequestException(
+          'Price must not be provided for MARKET orders.',
+        );
+      }
+
+      if (type === OrderTypeDto.LIMIT) {
+        if (!price) {
+          throw new BadRequestException(
+            'Price is required for LIMIT orders.',
+          );
+        }
+
+        const parsedPrice = Number(price);
+
+        if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
+          throw new BadRequestException('Price must be greater than 0.');
+        }
+      }
     }
 
     private async getDemoUser() {
       const user = await this.prismaService.user.findUnique({
-        where: { email: this.demoUserEmail },
+        where: {
+          email: this.demoUserEmail,
+        },
       });
 
       if (!user) {
@@ -118,11 +184,11 @@ export class OrdersService {
       price: unknown;
       status: string;
       symbol: {
-          code: string;
-          description: string | null;
-          baseAsset: string;
-          quoteAsset: string;
-          isActive: boolean;
+        code: string;
+        description: string | null;
+        baseAsset: string;
+        quoteAsset: string;
+        isActive: boolean;
       };
     }): OrderResponseDto {
       const displayName =
@@ -130,52 +196,16 @@ export class OrdersService {
         `${order.symbol.baseAsset} / ${order.symbol.quoteAsset}`;
 
       return {
-          id: order.id,
-          symbolId: order.symbolId,
-          symbolCode: order.symbol.code,
-          displayName,
-          side: order.side,
-          type: order.type,
-          quantity: String(order.quantity),
-          price: order.price == null ? null : String(order.price),
-          status: order.status,
-          isActive: order.symbol.isActive,
+        id: order.id,
+        symbolId: order.symbolId,
+        symbolCode: order.symbol.code,
+        displayName,
+        side: order.side,
+        type: order.type,
+        quantity: String(order.quantity),
+        price: order.price == null ? null : String(order.price),
+        status: order.status,
+        isActive: order.symbol.isActive,
       };
-    }
-
-    private validateQuantity(quantity: string): void {
-        const parsedQuantity = Number(quantity);
-
-        if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) {
-            throw new BadRequestException('Quantity must be greater than 0.');
-        }
-
-        if (parsedQuantity < 0.0001) {
-            throw new BadRequestException(
-              'Quantity must be at least 0.0001.',
-            );
-        }
-    }
-
-    private validatePrice(price: string | undefined, type: OrderTypeDto): void {
-        if (type === OrderTypeDto.MARKET && price) {
-          throw new BadRequestException(
-            'Price must not be provided for MARKET orders.',
-          );
-        }
-
-        if (type === OrderTypeDto.LIMIT) {
-          if (!price) {
-            throw new BadRequestException(
-              'Price is required for LIMIT orders.',
-            );
-          }
-
-          const parsedPrice = Number(price);
-
-          if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
-            throw new BadRequestException('Price must be greater than 0.');
-          }
-        }
     }
 }
