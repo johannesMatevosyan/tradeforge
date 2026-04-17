@@ -105,3 +105,14 @@
 .search-box:focus-within {
   border-color: #3b82f6;
 }
+
+.search-box input:-webkit-autofill,
+.search-box input:-webkit-autofill:hover,
+.search-box input:-webkit-autofill:focus,
+.search-box input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  box-shadow: 0 0 0 1000px transparent inset;
+  background-image: none !important;
+  transition: background-color 9999s ease-in-out 0s;
+}

@@ -10,9 +10,10 @@
       }
       <input
         type="text"
-        name="search"
+        name="market-search"
         placeholder="Search markets, orders, assets..."
         aria-label="Search"
+        autocomplete="off"
         (focus)="onSearchFocus()"
         (blur)="onSearchBlur()"
         [ngModel]="searchTerm()"
