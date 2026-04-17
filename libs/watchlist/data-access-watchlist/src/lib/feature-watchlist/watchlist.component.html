@@ -1,0 +1,20 @@
+<section class="watchlist">
+  <h3>Watchlist</h3>
+
+  @if (isLoading()) {
+    <div class="watchlist-state">Loading watchlist...</div>
+  } @else if (error()) {
+    <div class="watchlist-state">{{ error() }}</div>
+  } @else if (filteredItems().length === 0) {
+    <div class="watchlist-state">No matching symbols found.</div>
+  } @else {
+    <ul class="watchlist-data">
+      @for (item of filteredItems(); track item.id) {
+        <li class="watchlist-data-item">
+          <strong>{{ item.symbolCode }}</strong>
+          <span>{{ item.displayName }}</span>
+        </li>
+      }
+    </ul>
+  }
+</section>

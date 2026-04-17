@@ -1,0 +1,25 @@
+.watchlist {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.watchlist-state {
+  margin-top: 20px;
+  color: #94a3b8;
+}
+
+.watchlist-data {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+
+  .watchlist-data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    line-height: 150%;
+  }
+}
