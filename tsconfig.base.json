@@ -9,7 +9,13 @@
     "paths": {
       "@prisma/generated": ["generated/prisma/client"],
       "@tradeforge/shared-types": ["libs/shared-types/src/index.ts"],
-      "@tradeforge/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@tradeforge/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@tradeforge/watchlist/feature-watchlist": [
+        "libs/watchlist/data-access-watchlist/src/lib/feature-watchlist/watchlist.component.ts"
+      ],
+      "@tradeforge/watchlist/data-access-watchlist": [
+        "libs/watchlist/data-access-watchlist/src/index.ts"
+      ],
       "@tradeforge/shared-utils": ["libs/shared-utils/src/index.ts"],
       "@tradeforge/shared-ui": ["libs/shared-ui/src/index.ts"],
       "@tradeforge/shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
@@ -27,7 +33,10 @@
       ],
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
-      "data-access": ["libs/shared/data-access/src/index.ts"]
+      "shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "shared/data-access-watchlist": [
+        "libs/watchlist/data-access-watchlist/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

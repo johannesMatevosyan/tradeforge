@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SearchService } from '@tradeforge/data-access';
 import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
+import { SearchService } from '@tradeforge/shared/data-access';
 
 
 @Component({

@@ -1,29 +1,17 @@
-import { Injectable } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { Injectable, computed, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-    private readonly searchSubject = new Subject<string>();
-
-    readonly searchTerm = toSignal(
-        this.searchSubject.pipe(
-        startWith(''),
-        debounceTime(300),
-        distinctUntilChanged()
-        ),
-        { initialValue: '' }
-    );
+    private readonly _searchTerm = signal('');
+    readonly searchTerm = computed(() => this._searchTerm());
 
     setSearchTerm(value: string): void {
-        this.searchSubject.next(value.trim());
+        this._searchTerm.set(value);
     }
 
     clear(): void {
-        this.searchSubject.next('');
+        this._searchTerm.set('');
     }
 }
-

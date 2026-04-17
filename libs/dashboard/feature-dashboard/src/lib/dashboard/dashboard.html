@@ -4,10 +4,25 @@
     <p>Welcome to TradeForge</p>
   </div>
 
-  <div class="dashboard-grid">
-    <section class="card">Portfolio Summary</section>
-    <section class="card">Watchlist</section>
-    <section class="card">Market Overview</section>
-    <section class="card">Recent Orders</section>
+  <div class="dashboard-layout">
+    <main class="dashboard-main">
+      <section class="card dashboard-summary">
+        Portfolio Summary
+      </section>
+
+      <section class="card dashboard-market">
+        Market Overview
+      </section>
+
+      <section class="card dashboard-orders">
+        Recent Orders
+      </section>
+    </main>
+
+    <aside class="dashboard-side">
+      <section class="card dashboard-watchlist">
+        <app-watchlist></app-watchlist>
+      </section>
+    </aside>
   </div>
 </div>
