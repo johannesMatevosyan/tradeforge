@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "node -e \"console.log('No root tests configured. Use Nx project tests.')\""
+    "test": "node -e \"console.log('No root tests configured. Use Nx project tests.')\"",
+    "seed": "ts-node prisma/seed.ts"
   },
   "repository": {
     "type": "git",
