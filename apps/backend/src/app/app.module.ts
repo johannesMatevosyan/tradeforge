@@ -17,7 +17,7 @@ import { WatchlistModule } from './watchlist/watchlist.module';
     WatchlistModule,
     OrdersModule,
     AuthModule,
-    UsersModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
