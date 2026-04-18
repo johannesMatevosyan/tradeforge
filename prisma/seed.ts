@@ -1,6 +1,7 @@
 import { PrismaPg } from '@prisma/adapter-pg';
+import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
-import { PrismaClient } from '../generated/prisma/client';
+import { PrismaClient, UserRole } from '../generated/prisma/client';
 
 console.log('🌱 Seed script started');
 
@@ -15,14 +16,40 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
+  const adminPasswordHash = await bcrypt.hash('Admin123!', 10);
+  const viewerPasswordHash = await bcrypt.hash('Viewer123!', 10);
+
+  await prisma.user.upsert({
+    where: {
+      email: 'admin@tradeforge.local',
+    },
+    update: {
+      name: 'Admin User',
+      role: UserRole.ADMIN,
+      passwordHash: adminPasswordHash,
+    },
+    create: {
+      email: 'admin@tradeforge.local',
+      name: 'Admin User',
+      passwordHash: adminPasswordHash,
+      role: UserRole.ADMIN,
+    },
+  });
+
   await prisma.user.upsert({
     where: {
       email: 'demo@tradeforge.local',
     },
-    update: {},
+    update: {
+      name: 'Demo Viewer',
+      role: UserRole.VIEWER,
+      passwordHash: viewerPasswordHash,
+    },
     create: {
       email: 'demo@tradeforge.local',
-      name: 'Demo User',
+      name: 'Demo Viewer',
+      passwordHash: viewerPasswordHash,
+      role: UserRole.VIEWER,
     },
   });
 
@@ -60,6 +87,7 @@ async function main() {
   console.log('Inserted rows:', result.count);
 
   const rows = await prisma.symbol.findMany();
+  console.log('Seeded symbols:', rows.length);
 }
 
 main()
