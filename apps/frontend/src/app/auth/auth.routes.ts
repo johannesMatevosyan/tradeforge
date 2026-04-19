@@ -3,6 +3,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 
 export const AUTH_ROUTES: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    {
+        path: 'forbidden',
+        loadComponent: () =>
+            import('./pages/forbidden/forbidden.component').then(
+                (m) => m.ForbiddenComponent,
+            ),
+    }
 ];
