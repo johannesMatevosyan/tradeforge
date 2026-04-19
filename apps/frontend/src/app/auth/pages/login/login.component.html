@@ -1,1 +1,30 @@
-<p>login works!</p>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2 class="auth-form-title">Login</h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div>
+                <label>Email:</label><br />
+                <input type="email" formControlName="email" />
+            </div>
+
+            <div>
+                <label>Password:</label><br />
+                <input type="password" formControlName="password" />
+            </div>
+
+            <br />
+
+            <button type="submit">Login</button>
+        </form>
+
+        @if (errorMessage()) {
+            <p style="color: red">{{ errorMessage() }}</p>
+        }
+
+        <br />
+
+        <a routerLink="/auth/register">Go to Register</a>
+  </div>
+</div>
+
