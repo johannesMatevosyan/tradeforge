@@ -1,0 +1,62 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
+
+import { UserRole } from '@tradeforge/shared-types';
+import { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from '../models/auth.models';
+
+const TOKEN_KEY = 'auth_token';
+const USER_KEY = 'auth_user';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+    private readonly apiUrl = '/api/auth';
+
+    private _currentUser = signal<AuthUser | null>(this.loadUser());
+    readonly currentUser = this._currentUser.asReadonly();
+
+    constructor(private readonly http: HttpClient, private readonly router: Router) {}
+
+    login(payload: LoginRequest) {
+        return this.http.post<AuthResponse>(`${this.apiUrl}/login`, payload).pipe(
+        tap((res) => this.persist(res)),
+        );
+    }
+
+    register(payload: RegisterRequest) {
+        return this.http.post<AuthResponse>(`${this.apiUrl}/register`, payload).pipe(
+        tap((res) => this.persist(res)),
+        );
+    }
+
+    logout(): void {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
+        this._currentUser.set(null);
+        this.router.navigate(['/auth/login']);
+    }
+
+    isAuthenticated(): boolean {
+        return !!localStorage.getItem(TOKEN_KEY);
+    }
+
+    hasRole(role: UserRole): boolean {
+        return this._currentUser()?.role === role;
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem(TOKEN_KEY);
+    }
+
+    private persist(res: AuthResponse): void {
+        localStorage.setItem(TOKEN_KEY, res.accessToken);
+        localStorage.setItem(USER_KEY, JSON.stringify(res.user));
+        this._currentUser.set(res.user);
+    }
+
+    private loadUser(): AuthUser | null {
+        const raw = localStorage.getItem(USER_KEY);
+        return raw ? (JSON.parse(raw) as AuthUser) : null;
+    }
+}
