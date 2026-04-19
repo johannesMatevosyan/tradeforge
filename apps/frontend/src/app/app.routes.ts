@@ -18,6 +18,10 @@ export const appRoutes: Route[] = [
         component: DashboardComponent, // temporary page
       },
       {
+        path: 'auth',
+        loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+      },
+      {
         path: 'profile',
         loadChildren: () =>
           import('@tradeforge/feature-profile').then((m) => m.featureProfileRoutes),
