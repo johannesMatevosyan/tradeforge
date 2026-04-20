@@ -33,6 +33,9 @@
     <a type="button" class="profile-button" routerLink="/profile">
       <app-icon name="user" [size]="22"></app-icon>
     </a>
+    <button type="button" class="logout-button" (click)="logout()">
+      <app-icon name="logout" [size]="22"></app-icon>
+    </button>
   </div>
   @if (isNotificationsOpen()) {
     <div class="notifications-popover">

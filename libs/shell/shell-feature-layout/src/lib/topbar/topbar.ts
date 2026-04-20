@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
@@ -14,6 +14,7 @@ import { SearchService } from '@tradeforge/shared/data-access';
   standalone: true,
 })
 export class TopbarComponent {
+  @Output() logoutClicked = new EventEmitter<void>();
   private readonly searchService = inject(SearchService);
   readonly searchTerm = this.searchService.searchTerm;
   readonly isNotificationsOpen = signal(false);
@@ -62,5 +63,9 @@ export class TopbarComponent {
 
   clearSearch(): void {
     this.searchService.clear();
+  }
+
+  logout(): void {
+    this.logoutClicked.emit();
   }
 }
