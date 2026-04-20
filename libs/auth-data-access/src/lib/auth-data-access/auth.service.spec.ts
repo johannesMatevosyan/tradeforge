@@ -3,8 +3,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { AuthResponse, AuthUser } from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
-import { AuthResponse, AuthUser } from '../models/auth.models';
 import { AuthService } from './auth.service';
 
 const mockUser: AuthUser = {

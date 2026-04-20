@@ -1,11 +1,5 @@
-import { UserRole } from '@tradeforge/shared-types';
-
-export interface AuthUser {
-  id: string;
-  email: string;
-  name?: string | null;
-  role: UserRole;
-}
+import { AuthUser } from '@tradeforge/shared-types';
+export type { AuthUser };
 
 export interface AuthResponse {
   accessToken: string;

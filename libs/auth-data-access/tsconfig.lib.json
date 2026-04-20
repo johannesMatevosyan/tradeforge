@@ -7,7 +7,7 @@
     "inlineSources": true,
     "types": []
   },
-  "include": ["src/**/*.ts", "../../apps/frontend/src/app/auth/auth.routes.ts"],
+  "include": ["src/**/*.ts", "../../apps/frontend/src/app/auth/auth.routes.ts", "src/lib/auth-data-access/auth.models.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",

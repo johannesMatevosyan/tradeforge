@@ -13,14 +13,13 @@ export class AuthService {
     private readonly apiUrl = '/api/auth';
 
     private _currentUser = signal<AuthUser | null>(this.loadUser());
-    readonly currentUser = this._currentUser.asReadonly();
+    readonly currentUser$ = this._currentUser.asReadonly();
 
     constructor(private readonly http: HttpClient, private readonly router: Router) {}
 
     getMe() {
         return this.http.get<AuthUser>('/api/auth/me').pipe(
             tap((user) => {
-                console.log('Fetched current user:', user);
                 localStorage.setItem(USER_KEY, JSON.stringify(user));
                 this._currentUser.set(user);
             })
