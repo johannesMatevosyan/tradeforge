@@ -9,7 +9,12 @@
     "paths": {
       "@prisma/generated": ["generated/prisma/client"],
       "@tradeforge/shared-types": ["libs/shared-types/src/index.ts"],
-      "@tradeforge/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@tradeforge/shared/data-access": [
+        "libs/shared/data-access/src/index.ts"
+      ],
+      "@tradeforge/auth-data-access": [
+        "libs/auth-data-access/src/index.ts"
+      ],
       "@tradeforge/watchlist/feature-watchlist": [
         "libs/watchlist/data-access-watchlist/src/lib/feature-watchlist/watchlist.component.ts"
       ],
@@ -34,9 +39,11 @@
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
       "shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "shared/auth-data-access": ["libs/auth-data-access/src/index.ts"],
       "shared/data-access-watchlist": [
         "libs/watchlist/data-access-watchlist/src/index.ts"
-      ]
+      ],
+      "auth-data-access": ["libs/auth-data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
