@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
-
+import { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
-import { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from './auth.models';
+import { tap } from 'rxjs';
 
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
@@ -18,15 +17,25 @@ export class AuthService {
 
     constructor(private readonly http: HttpClient, private readonly router: Router) {}
 
+    getMe() {
+        return this.http.get<AuthUser>('/api/auth/me').pipe(
+            tap((user) => {
+                console.log('Fetched current user:', user);
+                localStorage.setItem(USER_KEY, JSON.stringify(user));
+                this._currentUser.set(user);
+            })
+        );
+    }
+
     login(payload: LoginRequest) {
         return this.http.post<AuthResponse>(`${this.apiUrl}/login`, payload).pipe(
-        tap((res) => this.persist(res)),
+            tap((res) => this.persist(res)),
         );
     }
 
     register(payload: RegisterRequest) {
         return this.http.post<AuthResponse>(`${this.apiUrl}/register`, payload).pipe(
-        tap((res) => this.persist(res)),
+            tap((res) => this.persist(res)),
         );
     }
 
