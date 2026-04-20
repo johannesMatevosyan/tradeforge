@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 
 import { UserRole } from '@tradeforge/shared-types';
-import { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from '../models/auth.models';
+import { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from './auth.models';
 
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';

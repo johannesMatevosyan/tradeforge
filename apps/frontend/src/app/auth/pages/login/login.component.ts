@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '@tradeforge/auth-data-access';
 import { UserRole } from "@tradeforge/shared-types";
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',

@@ -1,8 +1,8 @@
 import { Route } from '@angular/router';
+import { authGuard } from '@tradeforge/auth-data-access';
 import { DashboardComponent } from '@tradeforge/feature-dashboard';
 import { NotFoundComponent } from '@tradeforge/shared-ui';
 import { MainShellComponent } from '@tradeforge/shell-feature-layout';
-import { authGuard } from './auth/auth.guard';
 
 export const appRoutes: Route[] = [
     {

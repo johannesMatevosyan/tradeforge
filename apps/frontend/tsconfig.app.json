@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "types": []
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/app/auth/auth.routes.ts", "../../libs/auth-data-access/src/lib/auth-data-access/role.guard.ts", "../../libs/auth-data-access/src/lib/auth-data-access/auth.guard.ts", "../../libs/auth-data-access/src/lib/auth-data-access/auth.models.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
