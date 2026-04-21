@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserRole } from '@tradeforge/shared-types';
 import { PrismaService } from '../prisma/prisma.service';
+import { UpdateMeDto } from './dto/update-me.dto';
 
 @Injectable()
 export class UsersService {
@@ -44,6 +45,21 @@ export class UsersService {
             passwordHash: data.passwordHash,
             name: data.name,
             role: UserRole.VIEWER, // hardcoded
+            },
+        });
+    }
+
+    updateMe(userId: string, dto: UpdateMeDto) {
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                name: dto.name,
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
             },
         });
     }
