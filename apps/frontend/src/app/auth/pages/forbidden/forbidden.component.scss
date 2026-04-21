@@ -1,3 +1,44 @@
 :host {
   display: block;
+  text-align: center;
 }
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
+  background: #0f172a;
+}
+
+.auth-card {
+  width: 360px;
+  padding: 32px;
+  background: #1b2028;
+  border-radius: 12px;
+}
+
+.auth-card h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #e0e0e0;
+}
+
+.auth-card p {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: #e0e0e0;
+}
+
+.auth-card a {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  color: #3b82f6;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
