@@ -26,6 +26,17 @@ async function bootstrap() {
     .setTitle('TradeForge API')
     .setDescription('Backend API for the TradeForge trading platform')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
