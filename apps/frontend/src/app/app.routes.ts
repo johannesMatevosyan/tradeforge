@@ -11,13 +11,6 @@ export const appRoutes: Route[] = [
       loadChildren: () => import('./auth/auth.routes').then(m => m.AUTH_ROUTES),
     },
     {
-      path: 'admin',
-      canActivate: [roleGuard],
-      data: { role: UserRole.ADMIN },
-      loadComponent: () =>
-        import('./pages/admin/admin.component').then((m) => m.AdminComponent),
-    },
-    {
       path: '',
       component: MainShellComponent, // Main shell wrapper
       canActivateChild: [authGuard],
@@ -30,6 +23,13 @@ export const appRoutes: Route[] = [
         {
           path: 'dashboard',
           component: DashboardComponent, // temporary page
+        },
+        {
+          path: 'admin',
+          canActivate: [roleGuard],
+          data: { role: UserRole.ADMIN },
+          loadComponent: () =>
+            import('./pages/admin/admin.component').then((m) => m.AdminComponent),
         },
         {
           path: 'profile',
