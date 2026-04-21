@@ -25,3 +25,7 @@ export interface UserListItem {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UpdateProfileRequest {
+  name?: string;
+}

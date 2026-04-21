@@ -5,6 +5,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
+import { UpdateMeDto } from "./dto/update-me.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 
@@ -15,7 +16,7 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get('me')
-    getMe(@CurrentUser() user: { id: string; email: string; role: string }) {
+    getMe(@CurrentUser() user: { id: string; email: string; name: string, role: UserRole }) {
         return user;
     }
 
@@ -23,6 +24,14 @@ export class UsersController {
     @Roles(UserRole.ADMIN)
     findAll() {
         return this.usersService.findAll();
+    }
+
+    @Patch('me')
+    updateMe(
+        @CurrentUser() user: { id: string },
+        @Body() dto: UpdateMeDto,
+    ) {
+        return this.usersService.updateMe(user.id, dto);
     }
 
     @Patch(':id')

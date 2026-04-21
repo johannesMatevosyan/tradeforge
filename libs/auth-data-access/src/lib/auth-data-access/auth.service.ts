@@ -1,7 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthResponse, AuthUser, LoginRequest, RegisterRequest, UserListItem } from '@tradeforge/auth-data-access';
+import {
+    AuthResponse,
+    AuthUser,
+    LoginRequest,
+    RegisterRequest,
+    UpdateProfileRequest,
+    UserListItem
+} from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
 import { tap } from 'rxjs';
 
@@ -59,6 +66,18 @@ export class AuthService {
 
     getToken(): string | null {
         return localStorage.getItem(TOKEN_KEY);
+    }
+
+    updateProfile(payload: UpdateProfileRequest) {
+        return this.http.patch<AuthUser>('/api/users/me', payload).pipe(
+            tap((updatedUser) => {
+                const currentToken = this.getToken();
+                if (currentToken) {
+                    localStorage.setItem(USER_KEY, JSON.stringify(updatedUser));
+                    this._currentUser.set(updatedUser);
+                }
+            }),
+        );
     }
 
     private persist(res: AuthResponse): void {
