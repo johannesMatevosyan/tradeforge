@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from '@tradeforge/auth-data-access';
+import { AuthResponse, AuthUser, LoginRequest, RegisterRequest, UserListItem } from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
 import { tap } from 'rxjs';
 
@@ -24,6 +24,10 @@ export class AuthService {
                 this._currentUser.set(user);
             })
         );
+    }
+
+    getUsers() {
+        return this.http.get<UserListItem[]>('/api/users');
     }
 
     login(payload: LoginRequest) {

@@ -15,13 +15,35 @@ export class UsersService {
         return this.prisma.user.findUnique({ where: { id } });
     }
 
-    create(data: { email: string; passwordHash: string; name?: string; role?: UserRole }) {
+    create(data: {
+        email: string;
+        passwordHash: string;
+        name?: string;
+        role?: UserRole
+    }) {
         return this.prisma.user.create({
             data: {
                 email: data.email,
                 passwordHash: data.passwordHash,
                 name: data.name,
                 role: data.role ?? UserRole.VIEWER,
+
+            },
+        });
+    }
+
+    // explicit for public registration
+    createViewer(data: {
+        email: string;
+        passwordHash: string;
+        name?: string;
+    }) {
+        return this.prisma.user.create({
+            data: {
+            email: data.email,
+            passwordHash: data.passwordHash,
+            name: data.name,
+            role: UserRole.VIEWER, // hardcoded
             },
         });
     }
@@ -29,6 +51,14 @@ export class UsersService {
     findAll() {
         return this.prisma.user.findMany({
             orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            },
         });
     }
 
