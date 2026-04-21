@@ -7,6 +7,7 @@ import {
   BriefcaseBusiness,
   ChartCandlestick,
   ChartNoAxesCombined,
+  FolderKanban,
   LayoutDashboard,
   ListVideo,
   LogOut,
@@ -35,7 +36,8 @@ export type AppIconName =
   | 'eth'
   | 'sol'
   | 'ltc'
-  | 'x';
+  | 'x'
+  | 'folder-kanban';
 
 @Component({
   selector: 'app-icon',
@@ -83,6 +85,8 @@ export class AppIconComponent {
         return User;
       case 'x':
         return X;
+      case 'folder-kanban':
+        return FolderKanban;
       default:
         return null;
     }
