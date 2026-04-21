@@ -20,7 +20,17 @@
         <input id="email" type="email" formControlName="email" />
       </div>
 
-      <button type="submit">Save changes</button>
+      @if (successMessage()) {
+        <p class="success-message">{{ successMessage() }}</p>
+      }
+
+      @if (errorMessage()) {
+        <p class="error-message">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Saving...' : 'Save changes' }}
+      </button>
     </form>
   </div>
 
