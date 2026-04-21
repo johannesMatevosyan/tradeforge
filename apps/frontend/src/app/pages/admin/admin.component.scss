@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.admin-page {
+  padding: 24px;
+}
+
+.users-table {
+  display: grid;
+  gap: 1px;
+  border: 1px solid #2b3440;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.users-table__row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr 0.8fr 1.2fr;
+  gap: 16px;
+  padding: 14px 16px;
+}
+
+.users-table__head {
+  font-weight: 600;
+}

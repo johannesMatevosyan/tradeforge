@@ -1,0 +1,28 @@
+<div class="admin-page">
+  <h1>Admin</h1>
+  <p>User management overview</p>
+
+  @if (users$ | async; as users) {
+    @if (users.length > 0) {
+      <div class="users-table">
+        <div class="users-table__head users-table__row">
+          <div>Name</div>
+          <div>Email</div>
+          <div>Role</div>
+          <div>Created</div>
+        </div>
+
+        @for (user of users; track user.id) {
+          <div class="users-table__row">
+            <div>{{ user.name || '—' }}</div>
+            <div>{{ user.email }}</div>
+            <div>{{ user.role }}</div>
+            <div>{{ user.createdAt | date: 'medium' }}</div>
+          </div>
+        }
+      </div>
+    } @else {
+      <p>No users found.</p>
+    }
+  }
+</div>
