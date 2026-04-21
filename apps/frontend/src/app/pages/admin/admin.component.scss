@@ -1,26 +1,84 @@
-:host {
-  display: block;
-}
-
 .admin-page {
   padding: 24px;
+  background: #0f172a;
+  min-height: 100%;
+  height: 100vh;
+  color: #f8fafc;
+}
+
+.admin-header {
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: #94a3b8;
+  }
+}
+
+.admin-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .users-table {
-  display: grid;
-  gap: 1px;
-  border: 1px solid #2b3440;
-  border-radius: 12px;
-  overflow: hidden;
+  width: 100%;
 }
 
 .users-table__row {
   display: grid;
   grid-template-columns: 1.2fr 1.8fr 0.8fr 1.2fr;
   gap: 16px;
-  padding: 14px 16px;
+  padding: 16px 20px;
+  align-items: center;
 }
 
 .users-table__head {
-  font-weight: 600;
+  background: #0f172a;
+  font-weight: 700;
+  color: #cbd5e1;
+  border-bottom: 1px solid #334155;
+}
+
+.users-table__row:not(.users-table__head) {
+  border-bottom: 1px solid #334155;
+}
+
+.users-table__row:last-child {
+  border-bottom: none;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.role-badge--admin {
+  background: rgba(37, 99, 235, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+}
+
+.role-badge--viewer {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.empty-state {
+  padding: 24px;
+  color: #cbd5e1;
 }
