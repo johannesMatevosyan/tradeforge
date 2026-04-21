@@ -1,4 +1,4 @@
-import { AuthUser } from '@tradeforge/shared-types';
+import { AuthUser, UserRole } from '@tradeforge/shared-types';
 export type { AuthUser };
 
 export interface AuthResponse {
@@ -15,4 +15,13 @@ export interface RegisterRequest {
   name?: string;
   email: string;
   password: string;
+}
+
+export interface UserListItem {
+  id: string;
+  email: string;
+  name?: string | null;
+  role: UserRole;
+  createdAt: string;
+  updatedAt: string;
 }
