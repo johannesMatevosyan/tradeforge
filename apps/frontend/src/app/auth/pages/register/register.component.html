@@ -1,1 +1,36 @@
-<p>register.component works!</p>
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Register</h1>
+    <p class="auth-subtitle">Create a new TradeForge account</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>
+        <span>Name</span>
+        <input type="text" formControlName="name" />
+      </label>
+
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" formControlName="password" />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error-message">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Creating account...' : 'Register' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Already have an account?
+      <a routerLink="/auth/login">Login</a>
+    </p>
+  </div>
+</div>
