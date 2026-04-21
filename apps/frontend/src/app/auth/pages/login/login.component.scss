@@ -36,7 +36,17 @@ input {
 
 button {
   padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .error {
