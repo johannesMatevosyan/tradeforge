@@ -5,23 +5,23 @@
   </div>
 
   <div class="profile-account__card">
-    <form class="profile-account__form">
+    <form
+      class="profile-account__form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
       <div class="form-row">
         <label for="fullName">Full name</label>
-        <input id="fullName" type="text" value="Hovhannes Matevosyan" />
+        <input id="fullName" type="text" formControlName="fullName" />
       </div>
 
       <div class="form-row">
         <label for="email">Email</label>
-        <input id="email" type="email" value="example@email.com" />
+        <input id="email" type="email" formControlName="email" />
       </div>
 
-      <div class="form-row">
-        <label for="phone">Phone</label>
-        <input id="phone" type="text" value="+374 ..." />
-      </div>
-
-      <button type="button">Save changes</button>
+      <button type="submit">Save changes</button>
     </form>
   </div>
+
 </div>
