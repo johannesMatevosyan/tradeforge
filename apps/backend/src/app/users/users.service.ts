@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRole } from '@tradeforge/shared-types';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -100,6 +101,36 @@ export class UsersService {
     findAll() {
         return this.prisma.user.findMany({
             orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+    }
+
+    async createByAdmin(dto: CreateUserDto) {
+        const existingUser = await this.prisma.user.findUnique({
+            where: { email: dto.email },
+            select: { id: true },
+        });
+
+        if (existingUser) {
+            throw new ConflictException('Email already exists');
+        }
+
+        const passwordHash = await bcrypt.hash(dto.password, 10);
+
+        return this.prisma.user.create({
+            data: {
+                email: dto.email,
+                passwordHash,
+                name: dto.name,
+                role: dto.role ?? UserRole.VIEWER,
+            },
             select: {
                 id: true,
                 email: true,

@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { UserRole } from "@tradeforge/shared-types";
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateMeDto } from "./dto/update-me.dto";
 import { UpdatePasswordDto } from "./dto/update-password.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -50,6 +51,12 @@ export class UsersController {
         @Body() dto: UpdateUserDto,
     ) {
         return this.usersService.update(id, dto);
+    }
+
+    @Post()
+    @Roles(UserRole.ADMIN)
+    createByAdmin(@Body() dto: CreateUserDto) {
+        return this.usersService.createByAdmin(dto);
     }
 
     @Patch(':id')
