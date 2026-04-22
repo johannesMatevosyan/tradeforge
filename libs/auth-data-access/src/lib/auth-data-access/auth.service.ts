@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {
     AuthResponse,
     AuthUser,
+    CreateUserRequest,
     LoginRequest,
     RegisterRequest,
     UpdateProfileRequest,
@@ -86,6 +87,11 @@ export class AuthService {
         newPassword: string;
     }) {
         return this.http.patch('/api/users/me/password', payload);
+    }
+
+
+    createUser(payload: CreateUserRequest) {
+        return this.http.post<UserListItem>('/api/users', payload);
     }
 
     updateUser(userId: string, payload: UpdateUserRequest) {
