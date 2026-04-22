@@ -92,6 +92,10 @@ export class AuthService {
         return this.http.patch<UserListItem>(`/api/users/${userId}`, payload);
     }
 
+    getCurrentUser(): AuthUser | null {
+        return this._currentUser();
+    }
+
     private persist(res: AuthResponse): void {
         localStorage.setItem(TOKEN_KEY, res.accessToken);
         localStorage.setItem(USER_KEY, JSON.stringify(res.user));
