@@ -6,6 +6,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { UpdateMeDto } from "./dto/update-me.dto";
+import { UpdatePasswordDto } from "./dto/update-password.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 
@@ -32,6 +33,14 @@ export class UsersController {
         @Body() dto: UpdateMeDto,
     ) {
         return this.usersService.updateMe(user.id, dto);
+    }
+
+    @Patch('me/password')
+    updatePassword(
+    @CurrentUser() user: { id: string },
+    @Body() dto: UpdatePasswordDto,
+    ) {
+        return this.usersService.updatePassword(user.id, dto);
     }
 
     @Patch(':id')

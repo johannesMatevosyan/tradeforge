@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRole } from '@tradeforge/shared-types';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateMeDto } from './dto/update-me.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -62,6 +64,36 @@ export class UsersService {
                 role: true,
             },
         });
+    }
+
+    async updatePassword(userId: string, dto: UpdatePasswordDto) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            throw new UnauthorizedException('User not found');
+        }
+
+        const isMatch = await bcrypt.compare(
+            dto.currentPassword,
+            user.passwordHash,
+        );
+
+        if (!isMatch) {
+            throw new UnauthorizedException('Current password is incorrect');
+        }
+
+        const newHash = await bcrypt.hash(dto.newPassword, 10);
+
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                passwordHash: newHash,
+            },
+        });
+
+        return { message: 'Password updated successfully' };
     }
 
     findAll() {
