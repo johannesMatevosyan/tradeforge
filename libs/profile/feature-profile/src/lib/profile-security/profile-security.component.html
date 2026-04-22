@@ -6,23 +6,76 @@
 
   <div class="profile-account__card">
   <form class="profile-account__form" [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
+    <div class="form-row relative">
       <label for="currentPassword">Current password</label>
       <input
         id="currentPassword"
-        type="password"
+        [type]="showCurrentPassword() ? 'text' : 'password'"
         formControlName="currentPassword"
       />
+
+      <button
+          type="button"
+          class="password-toggle"
+          (click)="toggleCurrentPasswordVisibility()"
+        >
+          {{ showCurrentPassword() ? 'Hide' : 'Show' }}
+      </button>
     </div>
 
-    <div class="form-row">
-      <label for="newPassword">New password</label>
-      <input
-        id="newPassword"
-        type="password"
-        formControlName="newPassword"
-      />
+    <div class="form-row relative">
+        <label for="newPassword">New password</label>
+        <input
+          id="newPassword"
+          [type]="showNewPassword() ? 'text' : 'password'"
+          formControlName="newPassword"
+        />
+
+        <button
+            type="button"
+            class="password-toggle"
+            (click)="toggleNewPasswordVisibility()"
+          >
+          {{ showNewPassword() ? 'Hide' : 'Show' }}
+        </button>
     </div>
+
+
+    @if (
+      passwordForm.controls.newPassword.touched &&
+      passwordForm.controls.newPassword.errors?.['required']
+    ) {
+      <p class="error-message">New password is required.</p>
+    }
+
+    @if (
+      passwordForm.controls.newPassword.touched &&
+      passwordForm.controls.newPassword.errors?.['minlength']
+    ) {
+      <p class="error-message">Password must be at least 6 characters.</p>
+    }
+
+      @if (passwordStrength().label) {
+        <div class="password-strength">
+          <div class="password-strength__bar">
+            <span
+              class="password-strength__fill"
+              [class.password-strength__fill--weak]="passwordStrength().level === 'weak'"
+              [class.password-strength__fill--medium]="passwordStrength().level === 'medium'"
+              [class.password-strength__fill--strong]="passwordStrength().level === 'strong'"
+            ></span>
+          </div>
+
+          <span
+            class="password-strength__label"
+            [class.password-strength__label--weak]="passwordStrength().level === 'weak'"
+            [class.password-strength__label--medium]="passwordStrength().level === 'medium'"
+            [class.password-strength__label--strong]="passwordStrength().level === 'strong'"
+          >
+            {{ passwordStrength().label }}
+          </span>
+        </div>
+      }
 
     @if (successMessage()) {
       <p class="success-message">{{ successMessage() }}</p>
