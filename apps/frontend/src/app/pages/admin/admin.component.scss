@@ -83,6 +83,17 @@
   color: #cbd5e1;
 }
 
+.current-user-badge {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .role-select {
   width: 100%;
   max-width: 140px;

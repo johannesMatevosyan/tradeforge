@@ -111,7 +111,7 @@ export class UsersService {
         });
     }
 
-    async updateByAdmin(userId: string, dto: UpdateUserDto) {
+    async updateByAdmin(currentUserId: string, userId: string, dto: UpdateUserDto) {
         const existing = await this.prisma.user.findUnique({
             where: { id: userId },
             select: { id: true, role: true },
@@ -121,11 +121,18 @@ export class UsersService {
             throw new BadRequestException('User not found');
         }
 
+        if (
+            currentUserId === userId &&
+            dto.role === UserRole.VIEWER
+        ) {
+            throw new BadRequestException('You cannot remove your own admin role.');
+        }
+
         return this.prisma.user.update({
             where: { id: userId },
             data: {
-                ...(dto.name !== undefined && { name: dto.name }),
-                ...(dto.role !== undefined && { role: dto.role }),
+            ...(dto.name !== undefined && { name: dto.name }),
+            ...(dto.role !== undefined && { role: dto.role }),
             },
             select: {
                 id: true,
