@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AuthService, UserListItem } from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
@@ -6,7 +6,7 @@ import { UserRole } from '@tradeforge/shared-types';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [AsyncPipe, DatePipe, CommonModule],
+  imports: [DatePipe, CommonModule],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
