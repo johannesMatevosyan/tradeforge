@@ -20,14 +20,11 @@
         <input id="email" type="email" formControlName="email" />
       </div>
 
-      @if (successMessage()) {
-        <p class="success-message">{{ successMessage() }}</p>
-      }
+      <ng-template #loading>
+        <p>Loading...</p>
+      </ng-template>
 
-      @if (errorMessage()) {
-        <p class="error-message">{{ errorMessage() }}</p>
-      }
-
+      <ng-container *ngTemplateOutlet="formMessages"></ng-container>
       <button type="submit" [disabled]="isSaving()">
         {{ isSaving() ? 'Saving...' : 'Save changes' }}
       </button>
@@ -35,3 +32,14 @@
   </div>
 
 </div>
+
+
+<ng-template #formMessages>
+  @if (successMessage()) {
+    <p class="success-message">{{ successMessage() }}</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  }
+</ng-template>
