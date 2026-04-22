@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@tradeforge/auth-data-access';
 import { UserRole } from "@tradeforge/shared-types";
 
@@ -16,6 +16,7 @@ export class LoginComponent {
     private readonly fb = inject(FormBuilder);
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
 
     readonly errorMessage = signal<string | null>(null);
     readonly isSubmitting = signal(false);
@@ -36,10 +37,17 @@ export class LoginComponent {
 
       this.authService.login(this.form.getRawValue()).subscribe({
         next: (response) => {
-          const target =
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+
+          if (returnUrl && returnUrl.startsWith('/')) {
+            this.router.navigateByUrl(returnUrl);
+            return;
+          }
+
+          const fallback =
             response.user.role === UserRole.ADMIN ? '/admin' : '/dashboard';
 
-          this.router.navigateByUrl(target);
+          this.router.navigateByUrl(fallback);
         },
         error: (error) => {
           const message =
