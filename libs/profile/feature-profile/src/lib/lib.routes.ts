@@ -18,6 +18,13 @@ export const featureProfileRoutes: Route[] = [
             (m) => m.ProfileAccountComponent
           ),
       },
+      {
+        path: 'security',
+        loadComponent: () =>
+          import('./profile-security/profile-security.component').then(
+            (m) => m.ProfileSecurityComponent,
+          ),
+      },
     ],
   },
 ];

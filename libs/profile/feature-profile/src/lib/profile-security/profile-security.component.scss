@@ -1,0 +1,115 @@
+.profile-card {
+  max-width: 720px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  color: #f8fafc;
+}
+
+/* Header */
+.profile-card__header {
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+}
+
+/* Form */
+.profile-form {
+  display: grid;
+  gap: 18px;
+}
+
+/* Input rows */
+.form-row {
+  display: grid;
+  gap: 8px;
+}
+
+.form-row label {
+  font-size: 14px;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.form-row input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #f8fafc;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus */
+.form-row input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+/* Error state */
+.form-row input.ng-invalid.ng-touched {
+  border-color: #f87171;
+}
+
+/* Button */
+button {
+  margin-top: 8px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.success-message {
+  margin: 0;
+  color: #86efac;
+  font-size: 14px;
+}
+
+.error-message {
+  margin: 0;
+  color: #f87171;
+  font-size: 14px;
+}
+
+/* Optional: subtle divider */
+.profile-form::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: #334155;
+  margin-bottom: 12px;
+}
