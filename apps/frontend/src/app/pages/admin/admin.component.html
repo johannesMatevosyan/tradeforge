@@ -14,6 +14,42 @@
     <p class="error-message">{{ errorMessage() }}</p>
   }
 
+  <div class="admin-card create-user-card">
+    <div class="create-user-card__header">
+      <h2>Create user</h2>
+      <p>Add a new viewer or admin account.</p>
+    </div>
+
+    <form class="create-user-form" [formGroup]="createUserForm" (ngSubmit)="onCreateUser()">
+      <div class="form-row">
+        <label for="newUserName">Name</label>
+        <input id="newUserName" type="text" formControlName="name" />
+      </div>
+
+      <div class="form-row">
+        <label for="newUserEmail">Email</label>
+        <input id="newUserEmail" type="email" formControlName="email" />
+      </div>
+
+      <div class="form-row">
+        <label for="newUserPassword">Password</label>
+        <input id="newUserPassword" type="password" formControlName="password" />
+      </div>
+
+      <div class="form-row">
+        <label for="newUserRole">Role</label>
+        <select id="newUserRole" class="role-select" formControlName="role">
+          <option [value]="userRole.VIEWER">VIEWER</option>
+          <option [value]="userRole.ADMIN">ADMIN</option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="isCreating()">
+        {{ isCreating() ? 'Creating...' : 'Create user' }}
+      </button>
+    </form>
+  </div>
+
   @if (isLoading()) {
     <div class="admin-card empty-state">
       <p>Loading users...</p>
