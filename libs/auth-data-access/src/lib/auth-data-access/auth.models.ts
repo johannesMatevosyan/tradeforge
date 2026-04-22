@@ -29,3 +29,8 @@ export interface UserListItem {
 export interface UpdateProfileRequest {
   name?: string;
 }
+
+export interface UpdateUserRequest {
+  name?: string;
+  role?: UserRole;
+}
