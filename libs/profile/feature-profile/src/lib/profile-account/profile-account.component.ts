@@ -6,8 +6,8 @@ import { AuthService } from '@tradeforge/auth-data-access';
 @Component({
   selector: 'app-profile-account',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './profile-account.html',
-  styleUrls: ['./profile-account.scss'],
+  templateUrl: './profile-account.component.html',
+  styleUrls: ['./profile-account.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

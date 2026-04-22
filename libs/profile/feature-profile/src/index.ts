@@ -4,4 +4,4 @@ export * from './lib/profile-shell/profile-shell';
 
 export * from './lib/profile-sidebar/profile-sidebar';
 
-export * from './lib/profile-account/profile-account';
+export * from './lib/profile-account/profile-account.component';

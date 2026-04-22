@@ -14,7 +14,7 @@ export const featureProfileRoutes: Route[] = [
       {
         path: 'account',
         loadComponent: () =>
-          import('./profile-account/profile-account').then(
+          import('./profile-account/profile-account.component').then(
             (m) => m.ProfileAccountComponent
           ),
       },
