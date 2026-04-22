@@ -1,17 +1,28 @@
-# TradeForge
+# TradeForge — Trading Platform (Angular + NestJS)
 
-TradeForge is a trading platform prototype built with Angular and NestJS.
+## Overview
+TradeForge is a trading platform built with Angular and NestJS, focusing on scalable architecture, modular design, and real-time trading concepts.
 
 ## Tech Stack
-- Angular
-- NestJS
-- Nx
-- PostgreSQL
-- Redis
-- WebSocket
+- Frontend: Angular (v16+), RxJS
+- Backend: NestJS, REST APIs
+- Architecture: Nx Monorepo
+- State: NgRx
+- Styling: SCSS
 
-## Run locally
+## Architecture
+- Nx monorepo with shared libraries
+- Modular feature-based structure
+- Separation of UI, domain, and data layers
+
+## Features
+- Trading dashboard (UI)
+- Watchlist management
+- Orders module (in progress)
+- Authentication (planned)
+
+## Getting Started
 ```bash
 npm install
-npm run start:frontend
-npm run start:backend
+npx nx serve frontend
+npx nx serve backend
