@@ -22,13 +22,15 @@
               <div>{{ user.name || '—' }}</div>
               <div>{{ user.email }}</div>
               <div>
-                <span
-                  class="role-badge"
-                  [class.role-badge--admin]="user.role === 'ADMIN'"
-                  [class.role-badge--viewer]="user.role === 'VIEWER'"
+                <select
+                  class="role-select"
+                  [value]="user.role"
+                  [disabled]="updatingUserId() === user.id"
+                  (change)="changeRole(user.id, $any($event.target).value)"
                 >
-                  {{ user.role }}
-                </span>
+                  <option [value]="userRole.ADMIN">ADMIN</option>
+                  <option [value]="userRole.VIEWER">VIEWER</option>
+                </select>
               </div>
               <div>{{ user.createdAt | date: 'medium' }}</div>
             </div>

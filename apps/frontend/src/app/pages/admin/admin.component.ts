@@ -1,6 +1,7 @@
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AuthService, UserListItem } from '@tradeforge/auth-data-access';
+import { UserRole } from '@tradeforge/shared-types';
 import { catchError, Observable, of, shareReplay } from 'rxjs';
 
 @Component({
@@ -13,6 +14,12 @@ import { catchError, Observable, of, shareReplay } from 'rxjs';
 })
 export class AdminComponent {
     private readonly authService = inject(AuthService);
+    readonly userRole = UserRole;
+    readonly users = signal<UserListItem[]>([]);
+    readonly isLoading = signal(true);
+    readonly updatingUserId = signal<string | null>(null);
+    readonly successMessage = signal<string | null>(null);
+    readonly errorMessage = signal<string | null>(null);
 
     readonly users$: Observable<UserListItem[]> = this.authService.getUsers().pipe(
       shareReplay(1),
@@ -21,4 +28,26 @@ export class AdminComponent {
         return of([] as UserListItem[]);
       }),
     );
+
+    changeRole(userId: string, role: UserRole): void {
+      this.successMessage.set(null);
+      this.errorMessage.set(null);
+      this.updatingUserId.set(userId);
+
+      this.authService.updateUser(userId, { role }).subscribe({
+        next: (updatedUser) => {
+          this.users.update((users) =>
+            users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
+          );
+          this.successMessage.set('User role updated successfully.');
+          this.updatingUserId.set(null);
+        },
+        error: (error) => {
+          const message =
+            error?.error?.message ?? 'Failed to update user role.';
+          this.errorMessage.set(message);
+          this.updatingUserId.set(null);
+        },
+      });
+    }
 }
