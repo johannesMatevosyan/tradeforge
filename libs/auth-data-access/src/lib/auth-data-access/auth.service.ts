@@ -80,6 +80,13 @@ export class AuthService {
         );
     }
 
+    updatePassword(payload: {
+        currentPassword: string;
+        newPassword: string;
+    }) {
+        return this.http.patch('/api/users/me/password', payload);
+    }
+
     private persist(res: AuthResponse): void {
         localStorage.setItem(TOKEN_KEY, res.accessToken);
         localStorage.setItem(USER_KEY, JSON.stringify(res.user));
