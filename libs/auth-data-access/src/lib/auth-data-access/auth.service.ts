@@ -7,6 +7,7 @@ import {
     LoginRequest,
     RegisterRequest,
     UpdateProfileRequest,
+    UpdateUserRequest,
     UserListItem
 } from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
@@ -85,6 +86,10 @@ export class AuthService {
         newPassword: string;
     }) {
         return this.http.patch('/api/users/me/password', payload);
+    }
+
+    updateUser(userId: string, payload: UpdateUserRequest) {
+        return this.http.patch<UserListItem>(`/api/users/${userId}`, payload);
     }
 
     private persist(res: AuthResponse): void {
