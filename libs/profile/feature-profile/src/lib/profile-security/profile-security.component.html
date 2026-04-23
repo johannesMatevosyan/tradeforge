@@ -12,6 +12,7 @@
         id="currentPassword"
         [type]="showCurrentPassword() ? 'text' : 'password'"
         formControlName="currentPassword"
+        autocomplete="off"
       />
 
       <button
@@ -29,6 +30,7 @@
           id="newPassword"
           [type]="showNewPassword() ? 'text' : 'password'"
           formControlName="newPassword"
+          autocomplete="off"
         />
 
         <button

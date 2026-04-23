@@ -15,12 +15,12 @@
     <form class="create-user-form" [formGroup]="createUserForm" (ngSubmit)="onCreateUser()">
       <div class="form-row">
         <label for="newUserName">Name</label>
-        <input id="newUserName" type="text" formControlName="name" />
+        <input id="newUserName" type="text" formControlName="name" autocomplete="off" />
       </div>
 
       <div class="form-row">
         <label for="newUserEmail">Email</label>
-        <input id="newUserEmail" type="email" formControlName="email" />
+        <input id="newUserEmail" type="email" formControlName="email" autocomplete="off" />
 
         @if (
           createUserForm.controls.email.touched &&
@@ -39,7 +39,7 @@
 
       <div class="form-row">
         <label for="newUserPassword">Password</label>
-        <input id="newUserPassword" type="password" formControlName="password" />
+        <input id="newUserPassword" type="password" formControlName="password" autocomplete="off" />
           @if (
             createUserForm.controls.password.touched &&
             createUserForm.controls.password.errors?.['required']
@@ -94,6 +94,7 @@
           id="userSearch"
           type="text"
           placeholder="Search by name or email"
+          autocomplete="off"
           [value]="searchTerm()"
           (input)="onSearchInput($event)"
         />
