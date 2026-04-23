@@ -30,7 +30,7 @@
     <button type="button" class="notifications-button" (click)="toggleNotifications()">
       <app-icon name="bell" [size]="22"></app-icon>
     </button>
-    <a type="button" class="profile-button" routerLink="/profile">
+    <a class="profile-button" routerLink="/profile">
       <app-icon name="user" [size]="22"></app-icon>
     </a>
     @if (user$(); as user) {
