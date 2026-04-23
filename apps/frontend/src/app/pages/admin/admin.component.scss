@@ -1,8 +1,8 @@
 .admin-page {
-  padding: 24px;
+  padding: 24px 24px 48px 24px;
   background: #0f172a;
-  min-height: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   color: #f8fafc;
 }
 
@@ -35,7 +35,7 @@
 
 .users-table__row {
   display: grid;
-  grid-template-columns: 1.1fr 1.7fr 0.9fr 1.2fr 0.8fr;
+  grid-template-columns: 1.1fr 1.5fr 1.1fr 0.8fr 1.2fr 0.8fr;
   gap: 16px;
   padding: 16px 20px;
   align-items: center;
@@ -230,4 +230,68 @@
 .toolbar-field select:focus {
   outline: none;
   border-color: #3b82f6;
+}
+
+
+.users-table__row--inactive {
+  opacity: 0.72;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  min-width: 90px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.status-badge--active {
+  background: rgba(34, 197, 94, 0.14);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+.status-badge--inactive {
+  background: rgba(148, 163, 184, 0.14);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.status-button {
+  padding: 4px 12px;
+  min-width: 100px;
+  border-radius: 10px;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.status-button--deactivate {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.status-button--deactivate:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.status-button--activate {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.status-button--activate:hover:not(:disabled) {
+  background: rgba(34, 197, 94, 0.18);
+}
+
+.status-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

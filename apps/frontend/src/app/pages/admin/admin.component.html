@@ -132,15 +132,6 @@
 
             <div>{{ user.email }}</div>
 
-            <div>
-              <span
-                class="status-badge"
-                [class.status-badge--active]="user.isActive"
-                [class.status-badge--inactive]="!user.isActive"
-              >
-                {{ user.isActive ? 'ACTIVE' : 'INACTIVE' }}
-              </span>
-            </div>
 
             <div>
               <select
@@ -154,11 +145,24 @@
               </select>
             </div>
 
+            <div>
+              <span
+                class="status-badge"
+                [class.status-badge--active]="user.isActive"
+                [class.status-badge--inactive]="!user.isActive"
+              >
+                {{ user.isActive ? 'ACTIVE' : 'INACTIVE' }}
+              </span>
+            </div>
+
             <div>{{ user.createdAt | date: 'medium' }}</div>
+
             <div>
               <button
                 type="button"
                 class="status-button"
+                [class.status-button--deactivate]="user.isActive"
+                [class.status-button--activate]="!user.isActive"
                 [disabled]="isCurrentUser(user.id) || changingStatusUserId() === user.id"
                 (click)="toggleUserStatus(user.id, !user.isActive)"
               >
