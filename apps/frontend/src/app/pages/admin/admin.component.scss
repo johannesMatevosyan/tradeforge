@@ -56,28 +56,6 @@
   border-bottom: none;
 }
 
-.role-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-
-.role-badge--admin {
-  background: rgba(37, 99, 235, 0.2);
-  color: #93c5fd;
-  border: 1px solid rgba(96, 165, 250, 0.35);
-}
-
-.role-badge--viewer {
-  background: rgba(148, 163, 184, 0.15);
-  color: #cbd5e1;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-
 .empty-state {
   padding: 24px;
   color: #cbd5e1;
@@ -107,16 +85,6 @@
 .role-select:focus {
   outline: none;
   border-color: #3b82f6;
-}
-
-.success-message {
-  margin: 0 0 16px;
-  color: #86efac;
-}
-
-.error-message {
-  margin: 0 0 16px;
-  color: #f87171;
 }
 
 .create-user-card {
@@ -230,11 +198,6 @@
 .toolbar-field select:focus {
   outline: none;
   border-color: #3b82f6;
-}
-
-
-.users-table__row--inactive {
-  opacity: 0.72;
 }
 
 .status-badge {

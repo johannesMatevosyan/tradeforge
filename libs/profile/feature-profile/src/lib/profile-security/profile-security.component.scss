@@ -181,12 +181,3 @@ button:disabled {
   color: #f87171;
   font-size: 14px;
 }
-
-/* Optional: subtle divider */
-.profile-form::before {
-  content: '';
-  display: block;
-  height: 1px;
-  background: #334155;
-  margin-bottom: 12px;
-}
