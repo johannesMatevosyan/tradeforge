@@ -22,6 +22,7 @@ export interface UserListItem {
   email: string;
   name?: string | null;
   role: UserRole;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -33,6 +34,7 @@ export interface UpdateProfileRequest {
 export interface UpdateUserRequest {
   name?: string;
   role?: UserRole;
+  isActive?: boolean;
 }
 
 export interface CreateUserRequest {

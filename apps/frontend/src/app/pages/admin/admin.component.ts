@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, UserListItem } from '@tradeforge/auth-data-access';
 import { UserRole } from '@tradeforge/shared-types';
@@ -25,12 +25,32 @@ export class AdminComponent {
   readonly successMessage = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
   readonly deletingUserId = signal<string | null>(null);
+  readonly searchTerm = signal('');
+  readonly roleFilter = signal<'ALL' | UserRole>('ALL');
+  readonly changingStatusUserId = signal<string | null>(null);
 
   readonly createUserForm = this.fb.nonNullable.group({
     name: [''],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     role: [UserRole.VIEWER as UserRole],
+  });
+
+  readonly filteredUsers = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const role = this.roleFilter();
+
+    return this.users().filter((user) => {
+      const matchesTerm =
+        !term ||
+        (user.name ?? '').toLowerCase().includes(term) ||
+        user.email.toLowerCase().includes(term);
+
+      const matchesRole =
+        role === 'ALL' || user.role === role;
+
+      return matchesTerm && matchesRole;
+    });
   });
 
   constructor() {
@@ -135,15 +155,17 @@ export class AdminComponent {
     });
   }
 
-  deleteUser(userId: string): void {
+  toggleUserStatus(userId: string, isActive: boolean): void {
     const targetUser = this.users().find((user) => user.id === userId);
 
     if (!targetUser) {
       return;
     }
 
+    const actionLabel = isActive ? 'activate' : 'deactivate';
+
     const confirmed = window.confirm(
-      `Delete user "${targetUser.email}"? This action cannot be undone.`,
+      `${actionLabel[0].toUpperCase() + actionLabel.slice(1)} user "${targetUser.email}"?`,
     );
 
     if (!confirmed) {
@@ -152,19 +174,23 @@ export class AdminComponent {
 
     this.successMessage.set(null);
     this.errorMessage.set(null);
-    this.deletingUserId.set(userId);
+    this.changingStatusUserId.set(userId);
 
-    this.authService.deleteUser(userId).subscribe({
-      next: (response) => {
-        this.users.update((users) => users.filter((user) => user.id !== userId));
-        this.successMessage.set(response.message || 'User deleted successfully.');
-        this.deletingUserId.set(null);
+    this.authService.updateUserStatus(userId, { isActive }).subscribe({
+      next: (updatedUser) => {
+        this.users.update((users) =>
+          users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
+        );
+        this.successMessage.set(
+          `User ${isActive ? 'activated' : 'deactivated'} successfully.`,
+        );
+        this.changingStatusUserId.set(null);
       },
       error: (error) => {
         const message =
-          error?.error?.message ?? 'Failed to delete user.';
+          error?.error?.message ?? 'Failed to update user status.';
         this.errorMessage.set(message);
-        this.deletingUserId.set(null);
+        this.changingStatusUserId.set(null);
       },
     });
   }
@@ -175,5 +201,15 @@ export class AdminComponent {
 
   isCurrentUser(userId: string): boolean {
     return this.currentUser?.id === userId;
+  }
+
+  onSearchInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchTerm.set(value);
+  }
+
+  onRoleFilterChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value as 'ALL' | UserRole;
+    this.roleFilter.set(value);
   }
 }

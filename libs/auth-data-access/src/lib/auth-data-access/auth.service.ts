@@ -106,6 +106,10 @@ export class AuthService {
         return this.http.delete<{ message: string }>(`/api/users/${userId}`);
     }
 
+    updateUserStatus(userId: string, payload: { isActive: boolean }) {
+        return this.http.patch<UserListItem>(`/api/users/${userId}/status`, payload);
+    }
+
     private persist(res: AuthResponse): void {
         localStorage.setItem(TOKEN_KEY, res.accessToken);
         localStorage.setItem(USER_KEY, JSON.stringify(res.user));

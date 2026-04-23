@@ -6,14 +6,6 @@
     </div>
   </div>
 
-  @if (successMessage()) {
-    <p class="success-message">{{ successMessage() }}</p>
-  }
-
-  @if (errorMessage()) {
-    <p class="error-message">{{ errorMessage() }}</p>
-  }
-
   <div class="admin-card create-user-card">
     <div class="create-user-card__header">
       <h2>Create user</h2>
@@ -29,11 +21,38 @@
       <div class="form-row">
         <label for="newUserEmail">Email</label>
         <input id="newUserEmail" type="email" formControlName="email" />
+
+        @if (
+          createUserForm.controls.email.touched &&
+          createUserForm.controls.email.errors?.['required']
+        ) {
+          <p class="field-error">Email is required.</p>
+        }
+
+        @if (
+          createUserForm.controls.email.touched &&
+          createUserForm.controls.email.errors?.['email']
+        ) {
+          <p class="field-error">Enter a valid email address.</p>
+        }
       </div>
 
       <div class="form-row">
         <label for="newUserPassword">Password</label>
         <input id="newUserPassword" type="password" formControlName="password" />
+          @if (
+            createUserForm.controls.password.touched &&
+            createUserForm.controls.password.errors?.['required']
+          ) {
+            <p class="field-error">Password is required.</p>
+          }
+
+          @if (
+            createUserForm.controls.password.touched &&
+            createUserForm.controls.password.errors?.['minlength']
+          ) {
+            <p class="field-error">Password must be at least 6 characters.</p>
+          }
       </div>
 
       <div class="form-row">
@@ -43,6 +62,14 @@
           <option [value]="userRole.ADMIN">ADMIN</option>
         </select>
       </div>
+
+        @if (errorMessage()) {
+          <p class="error-message form-message">{{ errorMessage() }}</p>
+        }
+
+        @if (successMessage()) {
+          <p class="success-message form-message">{{ successMessage() }}</p>
+        }
 
       <button type="submit" [disabled]="isCreating()">
         {{ isCreating() ? 'Creating...' : 'Create user' }}
@@ -54,18 +81,47 @@
     <div class="admin-card empty-state">
       <p>Loading users...</p>
     </div>
-  } @else if (users().length > 0) {
+  } @else if (filteredUsers().length > 0) {
+
+    <div class="admin-toolbar">
+      <div class="toolbar-field">
+        <label for="userSearch">Search</label>
+        <input
+          id="userSearch"
+          type="text"
+          placeholder="Search by name or email"
+          [value]="searchTerm()"
+          (input)="onSearchInput($event)"
+        />
+      </div>
+
+      <div class="toolbar-field">
+        <label for="roleFilter">Role</label>
+        <select
+          id="roleFilter"
+          class="role-select"
+          [value]="roleFilter()"
+          (change)="onRoleFilterChange($event)"
+        >
+          <option value="ALL">ALL</option>
+          <option [value]="userRole.ADMIN">ADMIN</option>
+          <option [value]="userRole.VIEWER">VIEWER</option>
+        </select>
+      </div>
+    </div>
+
     <div class="admin-card">
       <div class="users-table">
         <div class="users-table__head users-table__row">
           <div>Name</div>
           <div>Email</div>
           <div>Role</div>
+          <div>Status</div>
           <div>Created</div>
           <div>Actions</div>
         </div>
 
-        @for (user of users(); track user.id) {
+        @for (user of filteredUsers(); track user.id) {
           <div class="users-table__row">
             <div>
               {{ user.name || '—' }}
@@ -75,6 +131,16 @@
             </div>
 
             <div>{{ user.email }}</div>
+
+            <div>
+              <span
+                class="status-badge"
+                [class.status-badge--active]="user.isActive"
+                [class.status-badge--inactive]="!user.isActive"
+              >
+                {{ user.isActive ? 'ACTIVE' : 'INACTIVE' }}
+              </span>
+            </div>
 
             <div>
               <select
@@ -89,20 +155,29 @@
             </div>
 
             <div>{{ user.createdAt | date: 'medium' }}</div>
-
-              <div>
-                <button
-                  type="button"
-                  class="delete-button"
-                  [disabled]="!canDeleteUser(user.id) || deletingUserId() === user.id"
-                  (click)="deleteUser(user.id)"
-                >
-                  {{ deletingUserId() === user.id ? 'Deleting...' : 'Delete' }}
-                </button>
-              </div>
+            <div>
+              <button
+                type="button"
+                class="status-button"
+                [disabled]="isCurrentUser(user.id) || changingStatusUserId() === user.id"
+                (click)="toggleUserStatus(user.id, !user.isActive)"
+              >
+                {{
+                  changingStatusUserId() === user.id
+                    ? 'Updating...'
+                    : user.isActive
+                      ? 'Deactivate'
+                      : 'Activate'
+                }}
+              </button>
+            </div>
           </div>
         }
       </div>
+    </div>
+  } @else if (users().length > 0) {
+    <div class="admin-card empty-state">
+      <p>No users match the current filters.</p>
     </div>
   } @else {
     <div class="admin-card empty-state">

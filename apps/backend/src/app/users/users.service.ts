@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
@@ -106,6 +107,7 @@ export class UsersService {
                 email: true,
                 name: true,
                 role: true,
+                isActive: true,
                 createdAt: true,
                 updatedAt: true,
             },
@@ -115,7 +117,7 @@ export class UsersService {
     async createByAdmin(dto: CreateUserDto) {
         const existingUser = await this.prisma.user.findUnique({
             where: { email: dto.email },
-            select: { id: true },
+            select: { id: true, isActive: true },
         });
 
         if (existingUser) {
@@ -145,7 +147,7 @@ export class UsersService {
     async updateByAdmin(currentUserId: string, userId: string, dto: UpdateUserDto) {
         const existing = await this.prisma.user.findUnique({
             where: { id: userId },
-            select: { id: true, role: true },
+            select: { id: true, role: true, isActive: true },
         });
 
         if (!existing) {
@@ -208,5 +210,40 @@ export class UsersService {
         });
 
         return { message: 'User deleted successfully' };
+    }
+
+    async updateStatusByAdmin(
+        currentUserId: string,
+        userId: string,
+        dto: UpdateUserStatusDto,
+    ) {
+        const existing = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, isActive: true },
+        });
+
+        if (!existing) {
+            throw new BadRequestException('User not found');
+        }
+
+        if (currentUserId === userId && dto.isActive === false) {
+            throw new BadRequestException('You cannot deactivate your own account.');
+        }
+
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                isActive: dto.isActive,
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                isActive: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
     }
 }

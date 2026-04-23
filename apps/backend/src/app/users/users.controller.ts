@@ -8,6 +8,7 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateMeDto } from "./dto/update-me.dto";
 import { UpdatePasswordDto } from "./dto/update-password.dto";
+import { UpdateUserStatusDto } from "./dto/update-user-status.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 
@@ -76,5 +77,15 @@ export class UsersController {
         @Param('id') id: string,
     ) {
         return this.usersService.removeByAdmin(currentUser.id, id);
+    }
+
+    @Patch(':id/status')
+    @Roles(UserRole.ADMIN)
+    updateStatusByAdmin(
+        @CurrentUser() currentUser: { id: string; role: UserRole },
+        @Param('id') id: string,
+        @Body() dto: UpdateUserStatusDto,
+    ) {
+        return this.usersService.updateStatusByAdmin(currentUser.id, id, dto);
     }
 }
