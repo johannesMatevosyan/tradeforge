@@ -63,13 +63,17 @@
         </select>
       </div>
 
-        @if (errorMessage()) {
-          <p class="error-message form-message">{{ errorMessage() }}</p>
-        }
+      @if (successMessage()) {
+        <div class="feedback-message feedback-message--success">
+          {{ successMessage() }}
+        </div>
+      }
 
-        @if (successMessage()) {
-          <p class="success-message form-message">{{ successMessage() }}</p>
-        }
+      @if (errorMessage()) {
+        <div class="feedback-message feedback-message--error">
+          {{ errorMessage() }}
+        </div>
+      }
 
       <button type="submit" [disabled]="isCreating()">
         {{ isCreating() ? 'Creating...' : 'Create user' }}

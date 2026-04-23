@@ -67,8 +67,7 @@ export class AdminComponent {
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Failed to load users', error);
-        this.errorMessage.set('Failed to load users.');
+        this.showError('Failed to load users. ' + (error?.message ? ` ${error.message}` : ''));
         this.isLoading.set(false);
       },
     });
@@ -95,13 +94,13 @@ export class AdminComponent {
         this.users.update((users) =>
           users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
         );
-        this.successMessage.set('User role updated successfully.');
+        this.showSuccess('User role updated successfully.');
         this.updatingUserId.set(null);
       },
       error: (error) => {
         const message =
           error?.error?.message ?? 'Failed to update user role.';
-        this.errorMessage.set(message);
+        this.showError(message);
         this.updatingUserId.set(null);
       },
     });
@@ -149,7 +148,7 @@ export class AdminComponent {
             : error.error.message;
         }
 
-        this.errorMessage.set(message);
+        this.showError(message);
         this.isCreating.set(false);
       },
     });
@@ -181,14 +180,15 @@ export class AdminComponent {
         this.users.update((users) =>
           users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
         );
-        this.successMessage.set(
-          `User ${isActive ? 'activated' : 'deactivated'} successfully.`,
-        );
+      this.showSuccess(
+        `User "${updatedUser.email}" has been ${isActive ? 'activated' : 'deactivated'}.`,
+      );
         this.changingStatusUserId.set(null);
       },
       error: (error) => {
         const message =
-          error?.error?.message ?? 'Failed to update user status.';
+          error?.error?.message ?? `Failed to ${isActive ? 'activate' : 'deactivate'} user.`;
+
         this.errorMessage.set(message);
         this.changingStatusUserId.set(null);
       },
@@ -211,5 +211,15 @@ export class AdminComponent {
   onRoleFilterChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value as 'ALL' | UserRole;
     this.roleFilter.set(value);
+  }
+
+  private showSuccess(message: string): void {
+    this.successMessage.set(message);
+    setTimeout(() => this.successMessage.set(null), 3000);
+  }
+
+  private showError(message: string): void {
+    this.errorMessage.set(message);
+    setTimeout(() => this.errorMessage.set(null), 4000);
   }
 }

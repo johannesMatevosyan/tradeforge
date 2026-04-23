@@ -295,3 +295,24 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.feedback-message {
+  margin: 0 0 16px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.feedback-message--success {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.24);
+}
+
+.feedback-message--error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.24);
+}
