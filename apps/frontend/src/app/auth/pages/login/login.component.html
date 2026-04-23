@@ -1,30 +1,31 @@
 <div class="auth-wrapper">
   <div class="auth-card">
-    <h2 class="auth-form-title">Login</h2>
+    <h1 class="auth-form-title">Login</h1>
+    <p class="auth-subtitle">Access your TradeForge account</p>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div>
-                <label>Email:</label><br />
-                <input type="email" formControlName="email" />
-            </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label>
+            <span>Email</span>
+            <input type="email" formControlName="email" />
+        </label>
 
-            <div>
-                <label>Password:</label><br />
-                <input type="password" formControlName="password" />
-            </div>
+        <label>
+            <span>Password</span>
+            <input type="password" formControlName="password" />
+        </label>
 
-            <br />
+        <button type="submit">Login</button>
+    </form>
 
-            <button type="submit">Login</button>
-        </form>
+    @if (errorMessage()) {
+        <p class="error-message">{{ errorMessage() }}</p>
+    }
 
-        @if (errorMessage()) {
-            <p class="error">{{ errorMessage() }}</p>
-        }
+    <br />
 
-        <br />
-
-        <a routerLink="/auth/register">Go to Register</a>
+    <p class="auth-footer">
+        Don't have an account? <a routerLink="/auth/register">Go to Register</a>
+    </p>
   </div>
 </div>
 

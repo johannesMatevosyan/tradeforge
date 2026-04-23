@@ -1,6 +1,6 @@
-<div class="auth-page">
+<div class="auth-wrapper">
   <div class="auth-card">
-    <h1>Register</h1>
+    <h1 class="auth-form-title">Register</h1>
     <p class="auth-subtitle">Create a new TradeForge account</p>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -29,8 +29,7 @@
     </form>
 
     <p class="auth-footer">
-      Already have an account?
-      <a routerLink="/auth/login">Login</a>
+      Already have an account? <a routerLink="/auth/login">Login</a>
     </p>
   </div>
 </div>
