@@ -62,6 +62,7 @@
           <div>Email</div>
           <div>Role</div>
           <div>Created</div>
+          <div>Actions</div>
         </div>
 
         @for (user of users(); track user.id) {
@@ -88,6 +89,17 @@
             </div>
 
             <div>{{ user.createdAt | date: 'medium' }}</div>
+
+              <div>
+                <button
+                  type="button"
+                  class="delete-button"
+                  [disabled]="!canDeleteUser(user.id) || deletingUserId() === user.id"
+                  (click)="deleteUser(user.id)"
+                >
+                  {{ deletingUserId() === user.id ? 'Deleting...' : 'Delete' }}
+                </button>
+              </div>
           </div>
         }
       </div>

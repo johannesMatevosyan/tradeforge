@@ -102,6 +102,10 @@ export class AuthService {
         return this._currentUser();
     }
 
+    deleteUser(userId: string) {
+        return this.http.delete<{ message: string }>(`/api/users/${userId}`);
+    }
+
     private persist(res: AuthResponse): void {
         localStorage.setItem(TOKEN_KEY, res.accessToken);
         localStorage.setItem(USER_KEY, JSON.stringify(res.user));

@@ -24,6 +24,7 @@ export class AdminComponent {
   readonly isCreating = signal(false);
   readonly successMessage = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
+  readonly deletingUserId = signal<string | null>(null);
 
   readonly createUserForm = this.fb.nonNullable.group({
     name: [''],
@@ -132,6 +133,44 @@ export class AdminComponent {
         this.isCreating.set(false);
       },
     });
+  }
+
+  deleteUser(userId: string): void {
+    const targetUser = this.users().find((user) => user.id === userId);
+
+    if (!targetUser) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Delete user "${targetUser.email}"? This action cannot be undone.`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.successMessage.set(null);
+    this.errorMessage.set(null);
+    this.deletingUserId.set(userId);
+
+    this.authService.deleteUser(userId).subscribe({
+      next: (response) => {
+        this.users.update((users) => users.filter((user) => user.id !== userId));
+        this.successMessage.set(response.message || 'User deleted successfully.');
+        this.deletingUserId.set(null);
+      },
+      error: (error) => {
+        const message =
+          error?.error?.message ?? 'Failed to delete user.';
+        this.errorMessage.set(message);
+        this.deletingUserId.set(null);
+      },
+    });
+  }
+
+  canDeleteUser(userId: string): boolean {
+    return this.currentUser?.id !== userId;
   }
 
   isCurrentUser(userId: string): boolean {
