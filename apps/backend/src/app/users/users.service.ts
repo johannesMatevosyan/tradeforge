@@ -188,4 +188,25 @@ export class UsersService {
             where: { id },
         });
     }
+
+    async removeByAdmin(currentUserId: string, userId: string) {
+        if (currentUserId === userId) {
+            throw new BadRequestException('You cannot delete your own account.');
+        }
+
+        const existing = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true },
+        });
+
+        if (!existing) {
+            throw new BadRequestException('User not found');
+        }
+
+        await this.prisma.user.delete({
+            where: { id: userId },
+        });
+
+        return { message: 'User deleted successfully' };
+    }
 }
