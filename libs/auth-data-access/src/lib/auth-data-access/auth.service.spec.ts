@@ -102,7 +102,7 @@ describe('AuthService', () => {
 
       expect(localStorage.getItem('auth_token')).toBe('mock-jwt-token');
       expect(JSON.parse(localStorage.getItem('auth_user')!)).toEqual(mockUser);
-      expect(service.currentUser()).toEqual(mockUser);
+      expect(service.getCurrentUser()).toEqual(mockUser);
       expect(service.isAuthenticated()).toBe(true);
     });
   });
@@ -119,7 +119,7 @@ describe('AuthService', () => {
       req.flush(mockAuthResponse);
 
       expect(localStorage.getItem('auth_token')).toBe('mock-jwt-token');
-      expect(service.currentUser()).toEqual(mockUser);
+      expect(service.getCurrentUser()).toEqual(mockUser);
     });
   });
 
@@ -134,7 +134,7 @@ describe('AuthService', () => {
 
       expect(localStorage.getItem('auth_token')).toBeNull();
       expect(localStorage.getItem('auth_user')).toBeNull();
-      expect(service.currentUser()).toBeNull();
+      expect(service.getCurrentUser()).toBeNull();
       expect(service.isAuthenticated()).toBe(false);
       expect(routerSpy.navigate).toHaveBeenCalledWith(['/auth/login']);
     });

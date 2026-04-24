@@ -5,7 +5,7 @@
     <label class="search-box">
       @if (searchTerm()) {
         <button type="button" class="clear-search-button" aria-label="Clear search" (click)="clearSearch()">
-          <app-icon name="x" [size]="18" [color]="'#64748b'"></app-icon>
+          <lib-app-icon name="x" [size]="18" [color]="'#64748b'"></lib-app-icon>
         </button>
       }
       <input
@@ -20,7 +20,7 @@
         (ngModelChange)="onSearchChange($event)"
       />
       <button type="button" class="search-button">
-        <app-icon name="search" [size]="22" [color]="isFocused ? '#3b82f6' : '#64748b'"></app-icon>
+        <lib-app-icon name="search" [size]="22" [color]="isFocused ? '#3b82f6' : '#64748b'"></lib-app-icon>
       </button>
     </label>
   </div>
@@ -28,21 +28,21 @@
   <div class="topbar-actions">
 
     <button type="button" class="notifications-button" (click)="toggleNotifications()">
-      <app-icon name="bell" [size]="22"></app-icon>
+      <lib-app-icon name="bell" [size]="22"></lib-app-icon>
     </button>
     <a class="profile-button" routerLink="/profile">
-      <app-icon name="user" [size]="22"></app-icon>
+      <lib-app-icon name="user" [size]="22"></lib-app-icon>
     </a>
     @if (user$(); as user) {
       <div class="topbar-user">
         @if (user?.role === 'ADMIN') {
           <button type="button" (click)="goToAdmin()" title="Admin Panel">
-            <app-icon name="folder-kanban" [size]="22"></app-icon>
+            <lib-app-icon name="folder-kanban" [size]="22"></lib-app-icon>
           </button>
         }
         <span class="topbar-user-name">{{ user?.name || user?.email }}</span>
         <button type="button" class="logout-button" (click)="logout()">
-          <app-icon name="logout" [size]="22"></app-icon>
+          <lib-app-icon name="logout" [size]="22"></lib-app-icon>
         </button>
       </div>
     }

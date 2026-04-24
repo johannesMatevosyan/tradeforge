@@ -1,0 +1,29 @@
+<div class="ticker">
+  <div class="ticker__header">
+    <h3>Market Overview</h3>
+    <span>Live prices</span>
+  </div>
+
+  <div class="ticker__list">
+    @for (item of (prices$ | async) ?? []; track item.symbol) {
+        <div
+          class="ticker__row"
+          [ngClass]="{
+            'price-up': item.direction === 'up',
+            'price-down': item.direction === 'down'
+          }"
+        >
+          <div>
+            <div class="ticker__symbol">{{ item.symbol }}</div>
+            <div class="ticker__time">
+              {{ item.timestamp | date: 'HH:mm:ss' }}
+            </div>
+          </div>
+
+          <div class="ticker__price">
+            {{ item.price | number: '1.2-2' }}
+          </div>
+        </div>
+    }
+  </div>
+</div>

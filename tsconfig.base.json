@@ -12,9 +12,7 @@
       "@tradeforge/shared/data-access": [
         "libs/shared/data-access/src/index.ts"
       ],
-      "@tradeforge/auth-data-access": [
-        "libs/auth-data-access/src/index.ts"
-      ],
+      "@tradeforge/auth-data-access": ["libs/auth-data-access/src/index.ts"],
       "@tradeforge/watchlist/feature-watchlist": [
         "libs/watchlist/data-access-watchlist/src/lib/feature-watchlist/watchlist.component.ts"
       ],
@@ -36,6 +34,12 @@
       "@tradeforge/feature-profile": [
         "libs/profile/feature-profile/src/index.ts"
       ],
+      "@tradeforge/market-data/market-data-access": [
+        "libs/market-data/data-access/src/index.ts"
+      ],
+      "@tradeforge/market-data/market-feature-ticker": [
+        "libs/market-data/feature-ticker/src/index.ts"
+      ],
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
       "shared/data-access": ["libs/shared/data-access/src/index.ts"],
@@ -43,7 +47,11 @@
       "shared/data-access-watchlist": [
         "libs/watchlist/data-access-watchlist/src/index.ts"
       ],
-      "auth-data-access": ["libs/auth-data-access/src/index.ts"]
+      "auth-data-access": ["libs/auth-data-access/src/index.ts"],
+      "market-data/data-access": ["libs/market-data/data-access/src/index.ts"],
+      "market-data/feature-ticker": [
+        "libs/market-data/feature-ticker/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
