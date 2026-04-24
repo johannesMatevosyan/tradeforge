@@ -40,7 +40,7 @@ export type AppIconName =
   | 'folder-kanban';
 
 @Component({
-  selector: 'app-icon',
+  selector: 'lib-app-icon',
   imports: [
     CommonModule,
     LucideAngularModule,
