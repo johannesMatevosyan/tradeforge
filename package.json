@@ -87,7 +87,9 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/platform-socket.io": "^11.1.19",
     "@nestjs/swagger": "^11.2.7",
+    "@nestjs/websockets": "^11.1.19",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "axios": "^1.6.0",
@@ -100,6 +102,7 @@
     "prisma": "^7.7.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0",
+    "socket.io": "^4.8.3",
     "tslib": "^2.3.0"
   }
 }
