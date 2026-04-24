@@ -52,3 +52,19 @@
   color: #f8fafc;
   font-variant-numeric: tabular-nums;
 }
+
+.price-up {
+  border: 1px solid rgba(34, 197, 94, 0.5);
+}
+
+.price-down {
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.price-up .ticker__price {
+  color: #22c55e;
+}
+
+.price-down .ticker__price {
+  color: #ef4444;
+}
