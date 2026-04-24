@@ -1,19 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AsyncPipe, CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
 
 @Component({
   selector: 'lib-feature-ticker',
-  imports: [],
+  imports: [AsyncPipe, CommonModule, DecimalPipe, DatePipe],
   standalone: true,
   templateUrl: './feature-ticker.html',
   styleUrl: './feature-ticker.scss',
 })
-export class MarketDataFeatureTicker implements OnInit {
+export class MarketDataFeatureTicker {
   private readonly ws = inject(MarketDataWs);
-
-  ngOnInit(): void {
-    this.ws.prices$().subscribe((data) => {
-      console.log('WS prices:', data);
-    });
-  }
+  readonly prices$ = this.ws.prices$();
 }
