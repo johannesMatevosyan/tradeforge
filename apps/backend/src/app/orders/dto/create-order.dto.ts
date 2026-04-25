@@ -40,15 +40,20 @@ export class CreateOrderDto {
     example: '0.50',
     description: 'Quantity as decimal string, must be greater than 0',
   })
-  @IsNumberString() // property is a string containing only numeric characters
+  @IsNumberString()
+  @Matches(/^(?!0+(\.0+)?$)\d+(\.\d+)?$/, {
+    message: 'Quantity must be greater than 0',
+  })
   quantity!: string;
 
   @ApiPropertyOptional({
     example: '65000.00',
     description: 'Required for LIMIT orders, must be greater than 0',
   })
-  @IsOptional()
-  @ValidateIf((o) => o.type === OrderTypeDto.LIMIT)
-  @IsNumberString() // property is a string containing only numeric characters
+  @ValidateIf((order: CreateOrderDto) => order.type === OrderTypeDto.LIMIT)
+  @IsNumberString()
+  @Matches(/^(?!0+(\.0+)?$)\d+(\.\d+)?$/, {
+    message: 'Price must be greater than 0',
+  })
   price?: string;
 }
