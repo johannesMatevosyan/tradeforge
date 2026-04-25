@@ -1,38 +1,96 @@
-form {
+.order-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
 
-  .field {
-    display: flex;
-    flex-direction: column;
+.order-form__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    label {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    input, select {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #1f2937;
-      background-color: #111827;
-      color: #e5e7eb;
-    }
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #e5e7eb;
   }
+
+  span {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  span {
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  input,
+  select {
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #e5e7eb;
+    padding: 10px 12px;
+    outline: none;
+  }
+}
+
+.side-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 
   button {
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #e5e7eb;
     padding: 10px;
-    border-radius: 6px;
-    background-color: #3b82f6;
-    color: white;
-    font-weight: 600;
-    border: none;
     cursor: pointer;
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+    font-weight: 700;
   }
+
+  .active.buy {
+    border-color: #22c55e;
+    color: #22c55e;
+  }
+
+  .active.sell {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+}
+
+.submit-btn {
+  border: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  padding: 11px 12px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.success {
+  color: #22c55e;
+  font-size: 13px;
+  margin: 0;
+}
+
+.error {
+  color: #ef4444;
+  font-size: 13px;
+  margin: 0;
 }

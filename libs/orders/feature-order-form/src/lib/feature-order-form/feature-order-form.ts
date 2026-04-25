@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrdersApi } from '@tradeforge/orders/order-data-access';
-import { OrderSide, OrderType } from '@tradeforge/shared-types';
+import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/shared-types';
 
 @Component({
   selector: 'lib-feature-order-form',
@@ -18,33 +18,62 @@ export class FeatureOrderForm {
   readonly sides = Object.values(OrderSide);
   readonly types = Object.values(OrderType);
 
-  orderForm = this.fb.group({
-    symbol: ['', [Validators.required, Validators.minLength(3)]],
-    side: [OrderSide.BUY, Validators.required],
-    type: [OrderType.MARKET, Validators.required],
-    quantity: ['', [Validators.required, Validators.pattern(/^\d*\.?\d+$/)]],
+  successMessage = '';
+  errorMessage = '';
+  isSubmitting = false;
+
+  orderForm = this.fb.nonNullable.group({
+    symbol: ['BTCUSD', [Validators.required, Validators.minLength(3)]],
+    side: ['BUY' as OrderSide, Validators.required],
+    type: ['MARKET' as OrderType, Validators.required],
+    quantity: ['0.01', [
+      Validators.required,
+      Validators.pattern(/^(?!0+(\.0+)?$)\d+(\.\d+)?$/)
+    ]],
     price: [''],
   });
 
-  get isLimit(): boolean {
-    return this.orderForm.get('type')?.value === OrderType.LIMIT;
+  get isLimitOrder(): boolean {
+    return this.orderForm.controls.type.value === 'LIMIT';
   }
 
-  submit():void {
-    if (this.orderForm.invalid) return;
+  submit(): void {
+    this.successMessage = '';
+    this.errorMessage = '';
 
-    const payload = this.orderForm.value;
+    if (this.orderForm.invalid) {
+      this.orderForm.markAllAsTouched();
+      return;
+    }
+
+    const raw = this.orderForm.getRawValue();
+
+    const payload: CreateOrderRequest = {
+      symbol: raw?.symbol?.toUpperCase() || '',
+      side: raw.side,
+      type: raw.type,
+      quantity: raw.quantity,
+      ...(raw.type === 'LIMIT' ? { price: raw.price } : {}),
+    };
+
+    this.isSubmitting = true;
 
     this.ordersApi.createOrder(payload).subscribe({
-      next: (res) => {
-        console.log('Order created', res);
-        this.orderForm.reset({
-          side: OrderSide.BUY,
-          type: OrderType.MARKET,
+      next: (order: Order) => {
+        this.successMessage = `${order.side} ${order.symbol} order created successfully.`;
+        this.errorMessage = '';
+        this.isSubmitting = false;
+
+        this.orderForm.patchValue({
+          quantity: '0.01',
+          price: '',
         });
       },
-      error: (err) => {
-        console.error('Order failed', err);
+      error: (error) => {
+        this.successMessage = '';
+        this.errorMessage =
+          error?.error?.message ?? 'Failed to create order.';
+        this.isSubmitting = false;
       },
     });
   }

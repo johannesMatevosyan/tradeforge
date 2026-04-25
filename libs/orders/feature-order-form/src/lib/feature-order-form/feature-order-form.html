@@ -1,32 +1,60 @@
-<form [formGroup]="orderForm" (ngSubmit)="submit()">
-  <div class="field">
-    <label>Symbol</label>
-    <input formControlName="symbol" placeholder="e.g. BTCUSD" />
+<form class="order-form" [formGroup]="orderForm" (ngSubmit)="submit()">
+  <div class="order-form__header">
+    <h3>Place Order</h3>
+    <span>Demo trading</span>
   </div>
 
-  <div class="field">
-    <label>Side</label>
-    <select formControlName="side">
-      <option *ngFor="let s of sides" [value]="s">{{ s }}</option>
-    </select>
-  </div>
+  <label class="field">
+    <span>Symbol</span>
+    <input formControlName="symbol" placeholder="BTCUSD" />
+  </label>
 
   <div class="field">
-    <label>Type</label>
+    <span>Side</span>
+    <div class="side-toggle">
+      @for (side of sides; track side) {
+        <button
+          type="button"
+          [class.active]="orderForm.controls.side.value === side"
+          [class.buy]="side === 'BUY'"
+          [class.sell]="side === 'SELL'"
+          (click)="orderForm.controls.side.setValue(side)"
+        >
+          {{ side }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <label class="field">
+    <span>Order Type</span>
     <select formControlName="type">
-      <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+      @for (type of types; track type) {
+        <option [value]="type">{{ type }}</option>
+      }
     </select>
-  </div>
+  </label>
 
-  <div class="field">
-    <label>Quantity</label>
-    <input formControlName="quantity" type="number" step="0.0001" />
-  </div>
+  <label class="field">
+    <span>Quantity</span>
+    <input formControlName="quantity" inputmode="decimal" placeholder="0.01" />
+  </label>
 
-  <div class="field" *ngIf="isLimit">
-    <label>Price</label>
-    <input formControlName="price" type="number" step="0.01" />
-  </div>
+  @if (isLimitOrder) {
+  <label class="field">
+    <span>Limit Price</span>
+    <input formControlName="price" inputmode="decimal" placeholder="65000.00" />
+  </label>
+  }
 
-  <button type="submit" [disabled]="orderForm.invalid">Place Order</button>
+  <button class="submit-btn" type="submit" [disabled]="isSubmitting">
+    {{ isSubmitting ? 'Placing...' : 'Place Order' }}
+  </button>
+
+  @if (successMessage) {
+    <p class="success">{{ successMessage }}</p>
+  }
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
 </form>

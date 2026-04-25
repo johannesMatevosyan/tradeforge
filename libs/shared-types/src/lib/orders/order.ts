@@ -22,6 +22,6 @@ export interface CreateOrderRequest {
   symbol: string;
   side: OrderSide;
   type: OrderType;
-  quantity: number;
-  price?: number;
+  quantity: string;
+  price?: string;
 }
