@@ -38,13 +38,25 @@
   <label class="field">
     <span>Quantity</span>
     <input formControlName="quantity" inputmode="decimal" placeholder="0.01" />
+
+    @if (orderForm.controls.quantity.touched && orderForm.controls.quantity.invalid) {
+      <small class="field-error">
+        Quantity must be greater than 0.
+      </small>
+    }
   </label>
 
   @if (isLimitOrder) {
-  <label class="field">
-    <span>Limit Price</span>
-    <input formControlName="price" inputmode="decimal" placeholder="65000.00" />
-  </label>
+    <label class="field">
+      <span>Limit Price</span>
+      <input formControlName="price" inputmode="decimal" placeholder="65000.00" />
+
+      @if (orderForm.controls.price.touched && orderForm.controls.price.invalid) {
+        <small class="field-error">
+          Price is required for LIMIT orders and must be greater than 0.
+        </small>
+      }
+    </label>
   }
 
   <button class="submit-btn" type="submit" [disabled]="isSubmitting">

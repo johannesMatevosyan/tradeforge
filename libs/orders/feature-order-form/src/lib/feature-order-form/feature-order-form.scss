@@ -94,3 +94,32 @@
   font-size: 13px;
   margin: 0;
 }
+
+
+.feedback {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.feedback--success {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.feedback--error,
+.field-error {
+  color: #ef4444;
+}
+
+.feedback--error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.field-error {
+  font-size: 12px;
+}

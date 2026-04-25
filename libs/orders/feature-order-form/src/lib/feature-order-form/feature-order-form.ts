@@ -71,10 +71,39 @@ export class FeatureOrderForm {
       },
       error: (error) => {
         this.successMessage = '';
-        this.errorMessage =
-          error?.error?.message ?? 'Failed to create order.';
+        this.errorMessage = this.getErrorMessage(error);
         this.isSubmitting = false;
       },
     });
+  }
+
+
+  private getErrorMessage(error: unknown): string {
+    const fallback = 'Failed to place order. Please try again.';
+
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'error' in error
+    ) {
+      const httpError = error as {
+        error?: {
+          message?: string | string[];
+          statusCode?: number;
+        };
+      };
+
+      const message = httpError.error?.message;
+
+      if (Array.isArray(message)) {
+        return message[0] ?? fallback;
+      }
+
+      if (typeof message === 'string') {
+        return message;
+      }
+    }
+
+    return fallback;
   }
 }
