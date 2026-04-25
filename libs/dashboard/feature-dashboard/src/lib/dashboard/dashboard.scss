@@ -41,3 +41,9 @@
   background: #111827;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+.orders-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}

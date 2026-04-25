@@ -1,0 +1,41 @@
+<section class="orders-history">
+  <div class="orders-history__header">
+    <h3>Recent Orders</h3>
+    <span>Latest activity</span>
+  </div>
+
+  @if (orders$ | async; as orders) {
+    @if (orders.length > 0) {
+      <div class="orders-history__list">
+        @for (order of orders; track order.id) {
+          <div class="order-row">
+            <div class="order-main">
+              <strong>{{ order.symbol }}</strong>
+              <span>{{ order.side }} · {{ order.type }}</span>
+            </div>
+
+            <div class="order-meta">
+              <strong>{{ order.quantity }}</strong>
+
+              @if (order.price !== null) {
+                <span>{{ order.price }}</span>
+              } @else {
+                <span>Market</span>
+              }
+            </div>
+
+            <div class="order-status">
+              {{ order.status }}
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="empty">
+        No orders yet. Place your first order.
+      </p>
+    }
+  } @else {
+    <p class="empty">Loading orders...</p>
+  }
+</section>
