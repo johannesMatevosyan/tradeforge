@@ -8,7 +8,7 @@ export class OrderResponseDto {
   symbolId!: string;
 
   @ApiProperty()
-  symbolCode!: string;
+  symbol!: string;
 
   @ApiProperty()
   displayName!: string;

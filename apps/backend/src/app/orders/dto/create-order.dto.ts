@@ -24,9 +24,9 @@ export class CreateOrderDto {
   @IsString()
   @Length(3, 20)
   @Matches(/^[A-Za-z]+$/, {
-    message: 'Symbol code must contain only letters',
+    message: 'Symbol must contain only letters',
   })
-  symbolCode!: string;
+  symbol!: string;
 
   @ApiProperty({ enum: OrderSideDto, example: OrderSideDto.BUY })
   @IsEnum(OrderSideDto)

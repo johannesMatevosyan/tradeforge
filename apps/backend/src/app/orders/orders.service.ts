@@ -49,8 +49,9 @@ export class OrdersService {
     }
 
     async create(payload: CreateOrderDto): Promise<OrderResponseDto> {
+
       const user = await this.getDemoUser();
-      const normalizedCode = payload.symbolCode.toUpperCase();
+      const normalizedCode = payload.symbol.toUpperCase();
 
       this.validateQuantity(payload.quantity);
       this.validatePrice(payload.price, payload.type);
@@ -80,8 +81,11 @@ export class OrdersService {
           side: payload.side as OrderSide,
           type: payload.type as OrderType,
           quantity: payload.quantity,
-          price: payload.price ?? null,
-          status: OrderStatus.OPEN,
+          price: payload.type === OrderTypeDto.LIMIT ? payload.price : null,
+          status:
+            payload.type === OrderTypeDto.MARKET
+              ? OrderStatus.FILLED
+              : OrderStatus.OPEN,
         },
         include: {
           symbol: true,
@@ -198,7 +202,7 @@ export class OrdersService {
       return {
         id: order.id,
         symbolId: order.symbolId,
-        symbolCode: order.symbol.code,
+        symbol: order.symbol.code,
         displayName,
         side: order.side,
         type: order.type,
