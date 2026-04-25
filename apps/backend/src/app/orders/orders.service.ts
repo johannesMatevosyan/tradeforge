@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { OrderSide, OrderStatus, OrderType } from '@prisma/generated';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateOrderDto, OrderTypeDto } from './dto/create-order.dto';
+import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
+
 
 @Injectable()
 export class OrdersService {
@@ -81,9 +82,9 @@ export class OrdersService {
           side: payload.side as OrderSide,
           type: payload.type as OrderType,
           quantity: payload.quantity,
-          price: payload.type === OrderTypeDto.LIMIT ? payload.price : null,
+          price: payload.type === 'LIMIT' ? payload.price : null,
           status:
-            payload.type === OrderTypeDto.MARKET
+            payload.type === 'MARKET'
               ? OrderStatus.FILLED
               : OrderStatus.OPEN,
         },
@@ -143,18 +144,14 @@ export class OrdersService {
       }
     }
 
-    private validatePrice(price: string | undefined, type: OrderTypeDto): void {
-      if (type === OrderTypeDto.MARKET && price) {
-        throw new BadRequestException(
-          'Price must not be provided for MARKET orders.',
-        );
+    private validatePrice(price: string | undefined, type: CreateOrderDto['type']): void {
+      if (type === 'MARKET' && price) {
+        throw new BadRequestException('Price must not be provided for MARKET orders.');
       }
 
-      if (type === OrderTypeDto.LIMIT) {
+      if (type === 'LIMIT') {
         if (!price) {
-          throw new BadRequestException(
-            'Price is required for LIMIT orders.',
-          );
+          throw new BadRequestException('Price is required for LIMIT orders.');
         }
 
         const parsedPrice = Number(price);

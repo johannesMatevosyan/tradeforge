@@ -1,6 +1,11 @@
-export type OrderSide = 'BUY' | 'SELL';
-export type OrderType = 'MARKET' | 'LIMIT';
-export type OrderStatus = 'PENDING' | 'FILLED' | 'REJECTED';
+export const OrderSide = { BUY: 'BUY', SELL: 'SELL' } as const;
+export type OrderSide = (typeof OrderSide)[keyof typeof OrderSide];
+
+export const OrderType = { MARKET: 'MARKET', LIMIT: 'LIMIT' } as const;
+export type OrderType = (typeof OrderType)[keyof typeof OrderType];
+
+export const OrderStatus = { PENDING: 'PENDING', FILLED: 'FILLED', REJECTED: 'REJECTED' } as const;
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export interface Order {
   id: string;

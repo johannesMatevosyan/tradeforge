@@ -2,22 +2,12 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEnum,
   IsNumberString,
-  IsOptional,
   IsString,
   Length,
   Matches,
   ValidateIf,
 } from 'class-validator';
-
-export enum OrderSideDto {
-  BUY = 'BUY',
-  SELL = 'SELL',
-}
-
-export enum OrderTypeDto {
-  MARKET = 'MARKET',
-  LIMIT = 'LIMIT',
-}
+import { OrderSide, OrderType } from '@tradeforge/shared-types';
 
 export class CreateOrderDto {
   @ApiProperty({ example: 'BTCUSD' })
@@ -28,13 +18,13 @@ export class CreateOrderDto {
   })
   symbol!: string;
 
-  @ApiProperty({ enum: OrderSideDto, example: OrderSideDto.BUY })
-  @IsEnum(OrderSideDto)
-  side!: OrderSideDto;
+  @ApiProperty({ enum: OrderSide, example: OrderSide.BUY })
+  @IsEnum(OrderSide)
+  side!: OrderSide;
 
-  @ApiProperty({ enum: OrderTypeDto, example: OrderTypeDto.MARKET })
-  @IsEnum(OrderTypeDto)
-  type!: OrderTypeDto;
+  @ApiProperty({ enum: OrderType, example: OrderType.MARKET })
+  @IsEnum(OrderType)
+  type!: OrderType;
 
   @ApiProperty({
     example: '0.50',
@@ -50,7 +40,7 @@ export class CreateOrderDto {
     example: '65000.00',
     description: 'Required for LIMIT orders, must be greater than 0',
   })
-  @ValidateIf((order: CreateOrderDto) => order.type === OrderTypeDto.LIMIT)
+  @ValidateIf((order: CreateOrderDto) => order.type === OrderType.LIMIT)
   @IsNumberString()
   @Matches(/^(?!0+(\.0+)?$)\d+(\.\d+)?$/, {
     message: 'Price must be greater than 0',

@@ -1,0 +1,38 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    input, select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #1f2937;
+      background-color: #111827;
+      color: #e5e7eb;
+    }
+  }
+
+  button {
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
