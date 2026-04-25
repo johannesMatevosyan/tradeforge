@@ -9,6 +9,12 @@
     <input formControlName="symbol" placeholder="BTCUSD" />
   </label>
 
+  @if (currentPrice !== null) {
+    <div class="market-price">
+      Live price: {{ currentPrice }}
+    </div>
+  }
+
   <div class="field">
     <span>Side</span>
     <div class="side-toggle">
@@ -49,7 +55,11 @@
   @if (isLimitOrder) {
     <label class="field">
       <span>Limit Price</span>
-      <input formControlName="price" inputmode="decimal" placeholder="65000.00" />
+      <input
+        formControlName="price"
+        [disabled]="isMarketOrder"
+        inputmode="decimal"
+        placeholder="65000.00" />
 
       @if (orderForm.controls.price.touched && orderForm.controls.price.invalid) {
         <small class="field-error">

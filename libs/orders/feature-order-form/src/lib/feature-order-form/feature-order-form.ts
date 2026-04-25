@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
 import { OrdersApi } from '@tradeforge/orders/order-data-access';
 import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/shared-types';
 
@@ -14,9 +15,10 @@ import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/sha
 export class FeatureOrderForm {
   private fb = inject(FormBuilder);
   private ordersApi = inject(OrdersApi);
-
+  private ws = inject(MarketDataWs);
   readonly sides = Object.values(OrderSide);
   readonly types = Object.values(OrderType);
+  currentPrice: number | null = null;
 
   successMessage = '';
   errorMessage = '';
@@ -33,8 +35,37 @@ export class FeatureOrderForm {
     price: [''],
   });
 
+  ngOnInit() {
+    this.ws.prices$().subscribe((prices) => {
+      const symbol = this.orderForm.controls.symbol.value;
+
+      const match = prices.find((p) => p.symbol === symbol);
+
+      if (match) {
+        this.currentPrice = match.price;
+
+        if (this.orderForm.controls.type.value === 'LIMIT') {
+          this.orderForm.controls.price.setValue(String(match.price));
+        }
+      }
+    });
+
+    this.orderForm.controls.symbol.valueChanges.subscribe(() => {
+      this.currentPrice = null; // reset until next WS tick
+    });
+    this.orderForm.controls.type.valueChanges.subscribe((type) => {
+      if (type === 'MARKET') {
+        this.orderForm.controls.price.setValue('');
+      }
+    });
+  }
+
   get isLimitOrder(): boolean {
     return this.orderForm.controls.type.value === 'LIMIT';
+  }
+
+  get isMarketOrder(): boolean {
+    return this.orderForm.controls.type.value === 'MARKET';
   }
 
   submit(): void {
