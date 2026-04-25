@@ -46,6 +46,9 @@
       "@tradeforge/orders/feature-order-form": [
         "libs/orders/feature-order-form/src/index.ts"
       ],
+      "@tradeforge/orders/feature-orders-history": [
+        "libs/orders/feature-orders-history/src/index.ts"
+      ],
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
       "shared/data-access": ["libs/shared/data-access/src/index.ts"],
@@ -59,7 +62,10 @@
         "libs/market-data/feature-ticker/src/index.ts"
       ],
       "order-data-access": ["libs/orders/order-data-access/src/index.ts"],
-      "feature-order-form": ["libs/orders/feature-order-form/src/index.ts"]
+      "feature-order-form": ["libs/orders/feature-order-form/src/index.ts"],
+      "feature-orders-history": [
+        "libs/orders/feature-orders-history/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
