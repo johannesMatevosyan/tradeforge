@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
-import { OrdersApi } from '@tradeforge/orders/order-data-access';
+import { OrdersApi, OrdersEvents } from '@tradeforge/orders/order-data-access';
 import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/shared-types';
 
 @Component({
@@ -16,6 +16,7 @@ export class FeatureOrderForm {
   private fb = inject(FormBuilder);
   private ordersApi = inject(OrdersApi);
   private ws = inject(MarketDataWs);
+  private ordersEvents = inject(OrdersEvents);
   readonly sides = Object.values(OrderSide);
   readonly types = Object.values(OrderType);
   currentPrice: number | null = null;
@@ -94,6 +95,8 @@ export class FeatureOrderForm {
         this.successMessage = `${order.side} ${order.symbol} order created successfully.`;
         this.errorMessage = '';
         this.isSubmitting = false;
+
+        this.ordersEvents.notifyOrderCreated();
 
         this.orderForm.patchValue({
           quantity: '0.01',

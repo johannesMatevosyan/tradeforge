@@ -4,8 +4,13 @@ export type OrderSide = (typeof OrderSide)[keyof typeof OrderSide];
 export const OrderType = { MARKET: 'MARKET', LIMIT: 'LIMIT' } as const;
 export type OrderType = (typeof OrderType)[keyof typeof OrderType];
 
-export const OrderStatus = { PENDING: 'PENDING', FILLED: 'FILLED', REJECTED: 'REJECTED' } as const;
-export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
+export const OrderStatus = {
+  OPEN: 'OPEN',
+  FILLED: 'FILLED',
+  CANCELLED: 'CANCELLED',
+} as const;
+export type OrderStatus =
+  (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export interface Order {
   id: string;

@@ -55,9 +55,29 @@
   font-size: 12px;
   font-weight: 600;
   color: #93c5fd;
+
+  &.open {
+    color: #f59e0b;
+  }
+
+  &.filled {
+    color: #22c55e;
+  }
+
+  &.cancelled {
+    color: #ef4444;
+  }
 }
 
 .empty {
   font-size: 13px;
   color: #94a3b8;
+}
+
+.buy {
+  color: #22c55e !important;
+}
+
+.sell {
+  color: #ef4444 !important;
 }

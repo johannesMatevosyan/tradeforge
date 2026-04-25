@@ -11,7 +11,9 @@
           <div class="order-row">
             <div class="order-main">
               <strong>{{ order.symbol }}</strong>
-              <span>{{ order.side }} · {{ order.type }}</span>
+              <span [class.buy]="order.side === 'BUY'" [class.sell]="order.side === 'SELL'">
+                {{ order.side }} · {{ order.type }}
+              </span>
             </div>
 
             <div class="order-meta">
@@ -24,7 +26,9 @@
               }
             </div>
 
-            <div class="order-status">
+            <div class="order-status"
+              [class.filled]="order.status === 'FILLED'"
+              [class.open]="order.status === 'OPEN'">
               {{ order.status }}
             </div>
           </div>
