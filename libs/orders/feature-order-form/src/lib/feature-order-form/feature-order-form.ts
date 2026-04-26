@@ -24,6 +24,7 @@ export class FeatureOrderForm {
   successMessage = '';
   errorMessage = '';
   isSubmitting = false;
+  private priceManuallyChanged = false;
 
   orderForm = this.fb.nonNullable.group({
     symbol: ['BTCUSD', [Validators.required, Validators.minLength(3)]],
@@ -37,26 +38,42 @@ export class FeatureOrderForm {
   });
 
   ngOnInit() {
+    this.orderForm.controls.price.valueChanges.subscribe(() => {
+      this.priceManuallyChanged = true;
+    });
     this.ws.prices$().subscribe((prices) => {
       const symbol = this.orderForm.controls.symbol.value;
-
       const match = prices.find((p) => p.symbol === symbol);
 
-      if (match) {
-        this.currentPrice = match.price;
+      if (!match) {
+        return;
+      }
 
-        if (this.orderForm.controls.type.value === 'LIMIT') {
-          this.orderForm.controls.price.setValue(String(match.price));
-        }
+      this.currentPrice = match.price;
+
+      if (
+        this.orderForm.controls.type.value === 'LIMIT' &&
+        !this.priceManuallyChanged
+      ) {
+        this.orderForm.controls.price.setValue(String(match.price), {
+          emitEvent: false,
+        });
       }
     });
 
     this.orderForm.controls.symbol.valueChanges.subscribe(() => {
-      this.currentPrice = null; // reset until next WS tick
+      this.currentPrice = null;
+      this.priceManuallyChanged = false;
     });
+
     this.orderForm.controls.type.valueChanges.subscribe((type) => {
       if (type === 'MARKET') {
-        this.orderForm.controls.price.setValue('');
+        this.orderForm.controls.price.setValue('', { emitEvent: false });
+        this.priceManuallyChanged = false;
+      }
+
+      if (type === 'LIMIT') {
+        this.priceManuallyChanged = false;
       }
     });
   }

@@ -1,10 +1,11 @@
 import {
-    OnGatewayInit,
-    WebSocketGateway,
-    WebSocketServer,
+  OnGatewayInit,
+  WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
 import { MarketPrice } from '@tradeforge/shared-types';
 import { Server } from 'socket.io';
+import { OrdersExecutionService } from '../orders/orders-execution.service';
 
 @WebSocketGateway({
   cors: {
@@ -21,12 +22,14 @@ export class MarketDataGateway implements OnGatewayInit {
     XAUUSD: 2378,
   };
 
+  constructor(private readonly ordersExecutionService: OrdersExecutionService) {}
+
   afterInit(): void {
     this.startPriceStream();
   }
 
   private startPriceStream(): void {
-    setInterval(() => {
+    setInterval(async () => {
       const updates: MarketPrice[] = Object.keys(this.prices).map((symbol) => {
         const current = this.prices[symbol];
 
@@ -43,6 +46,13 @@ export class MarketDataGateway implements OnGatewayInit {
           timestamp: new Date().toISOString(),
         };
       });
+
+      for (const update of updates) {
+        await this.ordersExecutionService.executeLimitOrdersForPriceUpdate(
+          update.symbol,
+          update.price,
+        );
+      }
 
       this.server.emit('prices', updates);
     }, 1500);
