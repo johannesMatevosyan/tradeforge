@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
 import { MarketDataModule } from './market-data/market-data.module';
 import { OrdersModule } from './orders/orders.module';
+import { PositionsModule } from './positions/positions.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SymbolsModule } from './symbols/symbols.module';
 import { UsersModule } from './users/user.module';
@@ -19,7 +20,8 @@ import { WatchlistModule } from './watchlist/watchlist.module';
     OrdersModule,
     AuthModule,
     UsersModule,
-    MarketDataModule
+    MarketDataModule,
+    PositionsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,65 @@
+.positions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.positions h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #e5e7eb;
+}
+
+.position-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #0f172a;
+  border: 1px solid #1f2937;
+}
+
+.position-row:hover {
+  border-color: #334155;
+}
+
+.position-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.position-main strong {
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.position-main span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.position-values {
+  text-align: right;
+}
+
+.position-values strong {
+  color: #e5e7eb;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.position-values span {
+  font-size: 12px;
+  color: #94a3b8;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.empty {
+  font-size: 13px;
+  color: #94a3b8;
+}

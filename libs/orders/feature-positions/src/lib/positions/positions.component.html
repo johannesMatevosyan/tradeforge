@@ -1,0 +1,28 @@
+<section class="positions">
+  <h3>Positions</h3>
+
+  @if (positions$ | async; as positions) {
+    @if (positions.length > 0) {
+      @for (p of positions; track p.symbol) {
+        <div class="position-row">
+          <div class="position-main">
+            <strong>{{ p.symbol }}</strong>
+            <span>Position</span>
+          </div>
+
+          <div class="position-values">
+            <strong>{{ p.quantity }}</strong>
+            <span>Qty</span>
+          </div>
+
+          <div class="position-values">
+            <strong>{{ p.avgPrice | number:'1.2-2' }}</strong>
+            <span>Avg</span>
+          </div>
+        </div>
+      }
+    } @else {
+      <p class="empty">No open positions</p>
+    }
+  }
+</section>
