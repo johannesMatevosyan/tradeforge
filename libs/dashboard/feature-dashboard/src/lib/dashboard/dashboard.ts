@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MarketDataFeatureTicker } from '@tradeforge/market-data/market-feature-ticker';
 import { FeatureOrderForm } from '@tradeforge/orders/feature-order-form';
 import { OrdersHistory } from '@tradeforge/orders/feature-orders-history';
+import { PortfolioSummary } from '@tradeforge/orders/feature-portfolio-summary';
 import { PositionsComponent } from '@tradeforge/orders/feature-positions';
 import { WatchlistComponent } from '@tradeforge/watchlist/data-access-watchlist';
 
@@ -14,6 +15,7 @@ import { WatchlistComponent } from '@tradeforge/watchlist/data-access-watchlist'
     FeatureOrderForm,
     OrdersHistory,
     PositionsComponent,
+    PortfolioSummary,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
