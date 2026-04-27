@@ -1,3 +1,4 @@
+
 <section class="watchlist">
   <h3>Watchlist</h3>
 
@@ -11,8 +12,30 @@
     <ul class="watchlist-data">
       @for (item of filteredItems(); track item.id) {
         <li class="watchlist-data-item">
-          <strong>{{ item.symbolCode }}</strong>
-          <span>{{ item.displayName }}</span>
+
+          @let live = getLivePrice(item.symbolCode);
+
+          <div
+            class="watchlist-row"
+            [class.watchlist-row--up]="live?.direction === 'up'"
+            [class.watchlist-row--down]="live?.direction === 'down'"
+          >
+            <div class="watchlist-left">
+              <strong>{{ item.symbolCode }}</strong>
+              <span>{{ item.displayName }}</span>
+            </div>
+
+            <div class="watchlist-right">
+              @if (live) {
+                <strong>{{ live.price | number:'1.2-2' }}</strong>
+                <span class="direction">
+                  {{ live.direction === 'up' ? '▲' : live.direction === 'down' ? '▼' : '•' }}
+                </span>
+              } @else {
+                <strong>—</strong>
+              }
+            </div>
+          </div>
         </li>
       }
     </ul>

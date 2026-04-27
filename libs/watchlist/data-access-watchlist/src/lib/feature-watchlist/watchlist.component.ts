@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
+import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
 import { SearchService } from '@tradeforge/shared/data-access';
 import { WatchlistApiService } from '../data-access-watchlist/watchlist-api.service';
-import { WatchlistItem } from '../data-access-watchlist/watchlist-item.model';
+import { LivePriceState, PriceDirection, WatchlistItem } from '../data-access-watchlist/watchlist-item.model';
 
 @Component({
   selector: 'app-watchlist',
@@ -14,6 +15,7 @@ import { WatchlistItem } from '../data-access-watchlist/watchlist-item.model';
 export class WatchlistComponent implements OnInit {
     private readonly searchService = inject(SearchService);
     private readonly watchlistApiService = inject(WatchlistApiService);
+    private readonly marketDataWs = inject(MarketDataWs);
     private readonly debugEffect = effect(() => {
         this.debugFilteredItems();
     });
@@ -21,6 +23,7 @@ export class WatchlistComponent implements OnInit {
     readonly items = signal<WatchlistItem[]>([]);
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
+    readonly livePrices = signal<Record<string, LivePriceState>>({});
 
     readonly searchTerm = this.searchService.searchTerm;
 
@@ -49,8 +52,38 @@ export class WatchlistComponent implements OnInit {
         return this.filteredItems();
     });
 
+    getLivePrice(symbolCode: string): LivePriceState | null {
+        return this.livePrices()[symbolCode] ?? null;
+    }
+
     ngOnInit(): void {
         this.loadWatchlist();
+
+        this.marketDataWs.prices$().subscribe((prices) => {
+            this.livePrices.update((previous) => {
+            const next = { ...previous };
+
+            for (const item of prices) {
+                const previousPrice = previous[item.symbol]?.price;
+
+                const direction: PriceDirection =
+                previousPrice === undefined
+                    ? 'flat'
+                    : item.price > previousPrice
+                    ? 'up'
+                    : item.price < previousPrice
+                        ? 'down'
+                        : 'flat';
+
+                next[item.symbol] = {
+                    price: item.price,
+                    direction,
+                };
+            }
+
+                return next;
+            });
+        });
     }
 
     loadWatchlist(): void {
@@ -59,6 +92,7 @@ export class WatchlistComponent implements OnInit {
 
         this.watchlistApiService.getWatchlist().subscribe({
             next: (items) => {
+                console.log('Loaded watchlist items:', items);
                 this.items.set(items);
                 this.isLoading.set(false);
             },
