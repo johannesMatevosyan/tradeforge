@@ -1,6 +1,8 @@
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
 import { PositionsApi } from '@tradeforge/orders/order-data-access';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   selector: 'lib-positions',
@@ -10,7 +12,32 @@ import { PositionsApi } from '@tradeforge/orders/order-data-access';
   styleUrls: ['./positions.component.scss'],
 })
 export class PositionsComponent {
-  private api = inject(PositionsApi);
+  private positionsApi = inject(PositionsApi);
+  private readonly marketDataWs = inject(MarketDataWs);
 
-  readonly positions$ = this.api.getPositions();
+  readonly positions$ = combineLatest([
+    this.positionsApi.getPositions(),
+    this.marketDataWs.prices$(),
+  ]).pipe(
+    map(([positions, prices]) =>
+      positions.map((position) => {
+        const livePrice = prices.find((p) => p.symbol === position.symbol)?.price ?? null;
+
+        const marketValue =
+          livePrice !== null ? position.quantity * livePrice : null;
+
+        const pnl =
+          livePrice !== null
+            ? (livePrice - position.avgPrice) * position.quantity
+            : null;
+
+        return {
+          ...position,
+          livePrice,
+          marketValue,
+          pnl,
+        };
+      })
+    )
+  );
 }

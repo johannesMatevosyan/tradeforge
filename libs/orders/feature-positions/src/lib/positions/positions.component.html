@@ -16,8 +16,34 @@
           </div>
 
           <div class="position-values">
-            <strong>{{ p.avgPrice | number:'1.2-2' }}</strong>
+            <strong>{{ p.avgPrice | number: '1.2-2' }}</strong>
             <span>Avg</span>
+          </div>
+
+          <div class="position-values">
+            <strong>
+              @if (p.livePrice !== null) {
+                {{ p.livePrice | number: '1.2-2' }}
+              } @else {
+                —
+              }
+            </strong>
+            <span>Live</span>
+          </div>
+
+          <div
+            class="position-values pnl"
+            [class.pnl-positive]="p.pnl !== null && p.pnl >= 0"
+            [class.pnl-negative]="p.pnl !== null && p.pnl < 0"
+          >
+            <strong>
+              @if (p.pnl !== null) {
+                {{ p.pnl | number: '1.2-2' }}
+              } @else {
+                —
+              }
+            </strong>
+            <span>P/L</span>
           </div>
         </div>
       }
