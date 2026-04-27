@@ -84,8 +84,6 @@ async function main() {
     skipDuplicates: true,
   });
 
-  console.log('Inserted rows:', result.count);
-
   const rows = await prisma.symbol.findMany();
   console.log('Seeded symbols:', rows.length);
 }
