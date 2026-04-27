@@ -1,0 +1,40 @@
+.portfolio-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #0f172a;
+  border: 1px solid #1f2937;
+
+  span {
+    display: block;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  strong {
+    font-size: 16px;
+    color: #e5e7eb;
+  }
+}
+
+.summary-item.positive strong {
+  color: #22c55e;
+}
+
+.summary-item.negative strong {
+  color: #ef4444;
+}

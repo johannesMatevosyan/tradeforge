@@ -1,0 +1,31 @@
+<section class="portfolio-summary">
+  <h3>Portfolio</h3>
+
+  @if (summary$ | async; as s) {
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span>Total Value</span>
+        <strong>{{ s.totalMarketValue | number:'1.0-2' }}</strong>
+      </div>
+
+      <div
+        class="summary-item"
+        [class.positive]="s.totalPnl >= 0"
+        [class.negative]="s.totalPnl < 0"
+      >
+        <span>P/L</span>
+        <strong>{{ s.totalPnl | number:'1.0-2' }}</strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Positions</span>
+        <strong>{{ s.openPositions }}</strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Open Orders</span>
+        <strong>{{ s.openOrders }}</strong>
+      </div>
+    </div>
+  }
+</section>

@@ -19,6 +19,9 @@
       "@tradeforge/watchlist/data-access-watchlist": [
         "libs/watchlist/data-access-watchlist/src/index.ts"
       ],
+      "@tradeforge/orders/feature-portfolio-summary": [
+        "libs/orders/feature-portfolio-summary/src/index.ts"
+      ],
       "@tradeforge/shared-utils": ["libs/shared-utils/src/index.ts"],
       "@tradeforge/shared-ui": ["libs/shared-ui/src/index.ts"],
       "@tradeforge/shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
@@ -49,7 +52,9 @@
       "@tradeforge/orders/feature-orders-history": [
         "libs/orders/feature-orders-history/src/index.ts"
       ],
-      "@tradeforge/orders/feature-positions": ["libs/orders/feature-positions/src/index.ts"],
+      "@tradeforge/orders/feature-positions": [
+        "libs/orders/feature-positions/src/index.ts"
+      ],
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
       "shared/data-access": ["libs/shared/data-access/src/index.ts"],
@@ -67,7 +72,10 @@
       "feature-orders-history": [
         "libs/orders/feature-orders-history/src/index.ts"
       ],
-      "feature-positions": ["libs/orders/feature-positions/src/index.ts"]
+      "feature-positions": ["libs/orders/feature-positions/src/index.ts"],
+      "feature-portfolio-summary": [
+        "libs/orders/feature-portfolio-summary/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

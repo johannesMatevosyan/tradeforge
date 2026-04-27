@@ -1,5 +1,6 @@
 export * from './lib/order-data-access/order-data-access';
+export * from './lib/orders.api';
+export * from './lib/portfolio.api';
+export * from './lib/positions.api';
 export * from './lib/services/orders-events';
-export * from './lib/services/orders.api';
-export * from './lib/services/positions.api';
 
