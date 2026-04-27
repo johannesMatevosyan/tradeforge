@@ -19,6 +19,7 @@
             class="watchlist-row"
             [class.watchlist-row--up]="live?.direction === 'up'"
             [class.watchlist-row--down]="live?.direction === 'down'"
+            [class.selected]="selectedSymbol() === item.symbolCode"
             tabindex="0"
             (click)="selectForOrder(item.symbolCode)"
           >

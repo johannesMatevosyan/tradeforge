@@ -26,6 +26,7 @@ export class WatchlistComponent implements OnInit {
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
     readonly livePrices = signal<Record<string, LivePriceState>>({});
+    readonly selectedSymbol = this.orderSelection.selectedSymbol;
 
     readonly searchTerm = this.searchService.searchTerm;
 

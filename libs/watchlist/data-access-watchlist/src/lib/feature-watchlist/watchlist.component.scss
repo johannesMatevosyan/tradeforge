@@ -43,6 +43,11 @@
   transition: all 0.15s ease;
   cursor: pointer;
   outline: none;
+
+  &.selected {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.08);
+  }
 }
 
 .watchlist-row:hover {
