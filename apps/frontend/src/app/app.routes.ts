@@ -37,6 +37,13 @@ export const appRoutes: Route[] = [
             import('@tradeforge/feature-profile').then((m) => m.featureProfileRoutes),
         },
         {
+          path: 'trading',
+          loadComponent: () =>
+            import('@tradeforge/trading/feature-trading').then(
+              (m) => m.TradingPageComponent
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },

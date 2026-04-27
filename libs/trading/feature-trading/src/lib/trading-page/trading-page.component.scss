@@ -1,0 +1,35 @@
+.trading-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+}
+
+.trading-main,
+.trading-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-card,
+.orders-card,
+.order-card,
+.watchlist-card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.chart-card {
+  min-height: 460px;
+}
+
+.orders-card {
+  min-height: 260px;
+}
+
+.order-card,
+.watchlist-card {
+  min-height: 260px;
+}
