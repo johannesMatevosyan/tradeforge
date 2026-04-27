@@ -73,10 +73,10 @@
     {{ isSubmitting ? 'Placing...' : 'Place Order' }}
   </button>
 
-  @if (successMessage) {
-    <p class="success">{{ successMessage }}</p>
+  @if (successMessage()) {
+    <p class="order-success">{{ successMessage() }}</p>
   }
-  @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
+  @if (errorMessage()) {
+    <p class="order-error">{{ errorMessage() }}</p>
   }
 </form>

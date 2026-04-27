@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
 import { OrdersApi, OrderSelectionService, OrdersEvents } from '@tradeforge/orders/order-data-access';
@@ -18,12 +18,12 @@ export class FeatureOrderForm {
   private ws = inject(MarketDataWs);
   private ordersEvents = inject(OrdersEvents);
   private readonly orderSelection = inject(OrderSelectionService);
+  readonly successMessage = signal<string | null>(null);
+  readonly errorMessage = signal<string | null>(null);
   readonly sides = Object.values(OrderSide);
   readonly types = Object.values(OrderType);
   currentPrice: number | null = null;
 
-  successMessage = '';
-  errorMessage = '';
   isSubmitting = false;
   private priceManuallyChanged = false;
 
@@ -96,8 +96,8 @@ export class FeatureOrderForm {
   }
 
   submit(): void {
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.successMessage.set(null);
+    this.errorMessage.set(null);
 
     if (this.orderForm.invalid) {
       this.orderForm.markAllAsTouched();
@@ -118,8 +118,8 @@ export class FeatureOrderForm {
 
     this.ordersApi.createOrder(payload).subscribe({
       next: (order: Order) => {
-        this.successMessage = `${order.side} ${order.symbol} order created successfully.`;
-        this.errorMessage = '';
+        this.successMessage.set(`${order.side} ${order.symbol} order created successfully.`);
+        this.errorMessage.set(null);
         this.isSubmitting = false;
 
         this.ordersEvents.notifyOrderCreated();
@@ -130,8 +130,8 @@ export class FeatureOrderForm {
         });
       },
       error: (error) => {
-        this.successMessage = '';
-        this.errorMessage = this.getErrorMessage(error);
+        this.successMessage.set(null);
+        this.errorMessage.set(this.getErrorMessage(error));
         this.isSubmitting = false;
       },
     });
