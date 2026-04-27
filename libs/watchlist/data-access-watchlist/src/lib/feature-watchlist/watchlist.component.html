@@ -15,10 +15,12 @@
 
           @let live = getLivePrice(item.symbolCode);
 
-          <div
+          <button
             class="watchlist-row"
             [class.watchlist-row--up]="live?.direction === 'up'"
             [class.watchlist-row--down]="live?.direction === 'down'"
+            tabindex="0"
+            (click)="selectForOrder(item.symbolCode)"
           >
             <div class="watchlist-left">
               <strong>{{ item.symbolCode }}</strong>
@@ -35,7 +37,7 @@
                 <strong>—</strong>
               }
             </div>
-          </div>
+          </button>
         </li>
       }
     </ul>

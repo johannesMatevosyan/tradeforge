@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
+import { OrderSelectionService } from '@tradeforge/orders/order-data-access';
 import { SearchService } from '@tradeforge/shared/data-access';
 import { WatchlistApiService } from '../data-access-watchlist/watchlist-api.service';
 import { LivePriceState, PriceDirection, WatchlistItem } from '../data-access-watchlist/watchlist-item.model';
@@ -16,6 +17,7 @@ export class WatchlistComponent implements OnInit {
     private readonly searchService = inject(SearchService);
     private readonly watchlistApiService = inject(WatchlistApiService);
     private readonly marketDataWs = inject(MarketDataWs);
+    private readonly orderSelection = inject(OrderSelectionService);
     private readonly debugEffect = effect(() => {
         this.debugFilteredItems();
     });
@@ -101,5 +103,9 @@ export class WatchlistComponent implements OnInit {
                 this.isLoading.set(false);
             },
         });
+    }
+
+    selectForOrder(symbolCode: string): void {
+        this.orderSelection.selectSymbol(symbolCode);
     }
 }
