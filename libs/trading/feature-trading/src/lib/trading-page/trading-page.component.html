@@ -1,7 +1,10 @@
 <section class="trading-page">
   <div class="trading-main">
     <div class="chart-card">
-      Chart area
+      <lib-chart
+        [symbol]="selectedSymbol"
+        [price]="currentPrice">
+      </lib-chart>
     </div>
 
     <div class="orders-card">

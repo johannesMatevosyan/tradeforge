@@ -1,0 +1,12 @@
+<div class="chart-header">
+  <div class="symbol">{{ symbol }}</div>
+  <div class="price" [class.up]="isUp" [class.down]="!isUp">
+    {{ price }}
+  </div>
+</div>
+
+<div class="chart-body">
+  <div class="chart-placeholder">
+    Chart will be here
+  </div>
+</div>
