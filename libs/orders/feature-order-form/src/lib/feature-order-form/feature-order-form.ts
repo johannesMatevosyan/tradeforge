@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
-import { OrdersApi, OrdersEvents } from '@tradeforge/orders/order-data-access';
+import { OrdersApi, OrderSelectionService, OrdersEvents } from '@tradeforge/orders/order-data-access';
 import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/shared-types';
 
 @Component({
@@ -17,6 +17,7 @@ export class FeatureOrderForm {
   private ordersApi = inject(OrdersApi);
   private ws = inject(MarketDataWs);
   private ordersEvents = inject(OrdersEvents);
+  private readonly orderSelection = inject(OrderSelectionService);
   readonly sides = Object.values(OrderSide);
   readonly types = Object.values(OrderType);
   currentPrice: number | null = null;
@@ -25,6 +26,14 @@ export class FeatureOrderForm {
   errorMessage = '';
   isSubmitting = false;
   private priceManuallyChanged = false;
+
+  constructor() {
+    effect(() => {
+      const symbol = this.orderSelection.selectedSymbol();
+
+      this.orderForm.controls.symbol.setValue(symbol);
+    });
+  }
 
   orderForm = this.fb.nonNullable.group({
     symbol: ['BTCUSD', [Validators.required, Validators.minLength(3)]],
