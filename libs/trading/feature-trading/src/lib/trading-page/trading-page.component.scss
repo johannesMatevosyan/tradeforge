@@ -33,3 +33,9 @@
 .watchlist-card {
   min-height: 260px;
 }
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
