@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+import { TradingOrder } from '@tradeforge/shared-types';
 import {
   ChartComponent,
   PlaceOrderComponent,
   RecentOrdersComponent,
-  TradingOrder
 } from '@tradeforge/trading/ui';
 
 @Component({
