@@ -20,11 +20,13 @@ export class PlaceOrderComponent {
   quantity = 0.1;
 
   placeOrder(): void {
-    if (!this.quantity) return;
+    if (!this.symbol.trim() || this.quantity <= 0 || this.price <= 0) {
+      return;
+    }
 
     const order: TradingOrder = {
       id: crypto.randomUUID(),
-      symbol: this.symbol,
+      symbol: this.symbol.trim().toUpperCase(),
       side: this.side,
       type: this.type,
       price: parseFloat((this.price * (1 + (Math.random() - 0.5) / 10)).toFixed(3)), // Simulate some price variation
@@ -34,5 +36,7 @@ export class PlaceOrderComponent {
     };
 
     this.orderPlaced.emit(order);
+
+    this.quantity = 0.1;
   }
 }
