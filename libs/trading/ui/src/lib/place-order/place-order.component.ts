@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TradingOrder } from '@tradeforge/shared-types';
 
@@ -11,9 +11,9 @@ import { TradingOrder } from '@tradeforge/shared-types';
   styleUrls: ['./place-order.component.scss'],
 })
 export class PlaceOrderComponent {
+  @Input() symbol = 'BTC/USD';
   @Output() orderPlaced = new EventEmitter<TradingOrder>();
 
-  symbol = 'BTC/USD';
   side: 'BUY' | 'SELL' = 'BUY';
   type: 'MARKET' | 'LIMIT' = 'MARKET';
   price = 40000;

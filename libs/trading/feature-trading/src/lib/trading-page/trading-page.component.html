@@ -2,19 +2,22 @@
   <div class="trading-main">
     <div class="chart-card">
       <lib-chart
-        [symbol]="selectedSymbol"
+        [symbol]="(selectedSymbol$ | async) ?? selectedSymbol"
         [price]="currentPrice">
       </lib-chart>
     </div>
 
     <div class="orders-card">
-      <lib-recent-orders [orders]="orders"></lib-recent-orders>
+      <lib-recent-orders [orders]="(orders$ | async) ?? []"></lib-recent-orders>
     </div>
   </div>
 
   <aside class="trading-side">
     <div class="order-card">
-      <lib-place-order (orderPlaced)="onOrderPlaced($event)"></lib-place-order>
+      <lib-place-order
+        [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+        (orderPlaced)="onOrderPlaced($event)">
+      </lib-place-order>
     </div>
 
     <div class="watchlist-card">
