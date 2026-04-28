@@ -4,13 +4,20 @@ import { TradingOrder } from '@tradeforge/shared-types';
 import { TradingOrdersService, TradingSymbolsService } from '@tradeforge/trading/trading-data-access';
 import {
   ChartComponent,
+  MarketWatchComponent,
   PlaceOrderComponent,
-  RecentOrdersComponent,
+  RecentOrdersComponent
 } from '@tradeforge/trading/ui';
 
 @Component({
   selector: 'lib-trading-page',
-  imports: [ChartComponent, RecentOrdersComponent, PlaceOrderComponent, AsyncPipe],
+  imports: [
+    ChartComponent,
+    RecentOrdersComponent,
+    PlaceOrderComponent,
+    AsyncPipe,
+    MarketWatchComponent,
+  ],
   standalone: true,
   templateUrl: './trading-page.component.html',
   styleUrls: ['./trading-page.component.scss'],
@@ -20,6 +27,7 @@ export class TradingPageComponent {
   private readonly symbolsService = inject(TradingSymbolsService);
 
   orders$ = this.ordersService.orders$;
+  symbols = this.symbolsService.symbols;
   selectedSymbol$ = this.symbolsService.selectedSymbol$;
 
   selectedSymbol: string = 'BTC/USD';

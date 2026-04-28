@@ -1,0 +1,19 @@
+<div class="market-watch">
+  <h3>Market Watch</h3>
+
+    <div class="symbol-list">
+    @for(item of symbols; track item.symbol) {
+        <button
+            type="button"
+            class="symbol-row"
+            [class.active]="item.symbol === selectedSymbol"
+            (click)="symbolSelected.emit(item.symbol)"
+        >
+            <span>
+                <strong>{{ item.symbol }}</strong>
+                <small>{{ item.name }}</small>
+            </span>
+        </button>
+    }
+    </div>
+</div>

@@ -22,7 +22,11 @@
     </div>
 
     <div class="watchlist-card">
-      Watchlist
+      <lib-market-watch
+        [symbols]="symbols"
+        [selectedSymbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+        (symbolSelected)="onSymbolSelected($event)">
+      </lib-market-watch>
     </div>
   </aside>
 </section>
