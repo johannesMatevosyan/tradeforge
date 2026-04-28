@@ -1,0 +1,38 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TradingOrder } from '../models/trading-order.model';
+
+@Component({
+  selector: 'lib-place-order',
+  imports: [FormsModule, CommonModule],
+  standalone: true,
+  templateUrl: './place-order.component.html',
+  styleUrls: ['./place-order.component.scss'],
+})
+export class PlaceOrderComponent {
+  @Output() orderPlaced = new EventEmitter<TradingOrder>();
+
+  symbol = 'BTC/USD';
+  side: 'BUY' | 'SELL' = 'BUY';
+  type: 'MARKET' | 'LIMIT' = 'MARKET';
+  price = 40000;
+  quantity = 0.1;
+
+  placeOrder(): void {
+    if (!this.quantity) return;
+
+    const order: TradingOrder = {
+      id: crypto.randomUUID(),
+      symbol: this.symbol,
+      side: this.side,
+      type: this.type,
+      price: parseFloat((this.price * (1 + (Math.random() - 0.5) / 10)).toFixed(3)), // Simulate some price variation
+      quantity: this.quantity,
+      status: this.type === 'MARKET' ? 'FILLED' : 'OPEN',
+      createdAt: new Date(),
+    };
+
+    this.orderPlaced.emit(order);
+  }
+}

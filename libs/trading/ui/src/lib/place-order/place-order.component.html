@@ -1,0 +1,52 @@
+<div class="place-order">
+    <div class="side-toggle">
+        <button
+            type="button"
+            [class.active]="side === 'BUY'"
+            (click)="side = 'BUY'">
+            BUY
+        </button>
+
+        <button
+            type="button"
+            [class.active]="side === 'SELL'"
+            (click)="side = 'SELL'">
+            SELL
+        </button>
+    </div>
+
+    <!-- Symbol -->
+    <input
+        type="text"
+        [(ngModel)]="symbol"
+        placeholder="Symbol"
+        />
+
+    <!-- Quantity -->
+    <input
+        type="number"
+        [(ngModel)]="quantity"
+        placeholder="Quantity"
+        />
+
+    <!-- Price (only for LIMIT later) -->
+    <input
+        type="number"
+        [(ngModel)]="price"
+        placeholder="Price"
+        />
+
+    <select [(ngModel)]="type">
+    <option value="MARKET">Market</option>
+    <option value="LIMIT">Limit</option>
+    </select>
+
+    <button
+        type="button"
+        class="place-order-btn"
+        [ngClass]="side.toLowerCase()"
+        [disabled]="!quantity || quantity <= 0"
+        (click)="placeOrder()">
+        Place {{side}} Order
+    </button>
+</div>
