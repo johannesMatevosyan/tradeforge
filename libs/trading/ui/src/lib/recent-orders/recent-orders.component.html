@@ -6,15 +6,18 @@
     <div class="orders-list">
         @for (order of orders; track order.id) {
             <div class="order-row">
-                <div class="symbol">{{ order.symbol }}</div>
+                <strong class="symbol">{{ order.symbol }}</strong>
 
-                <div class="type" [class.buy]="order.type === 'BUY'" [class.sell]="order.type === 'SELL'">
-                {{ order.type }}
-                </div>
+                <small class="type" [class.buy]="order.type === 'BUY'" [class.sell]="order.type === 'SELL'">
+                    {{ order.side }} · {{ order.type }}
+                </small>
 
-                <div class="price">{{ order.price }}</div>
+                <small>{{ order.price }}</small>
 
-                <div class="status" [ngClass]="order.status.toLowerCase()">
+                <div class="status"
+                    [class.filled]="order.status === 'FILLED'"
+                    [class.open]="order.status === 'OPEN'"
+                    [ngClass]="order.status.toLowerCase()">
                 {{ order.status }}
                 </div>
             </div>
