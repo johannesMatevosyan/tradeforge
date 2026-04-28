@@ -2,13 +2,14 @@
   <div class="trading-main">
     <div class="chart-card">
       <lib-chart
-        [symbol]="(selectedSymbol$ | async) ?? selectedSymbol"
-        [price]="currentPrice">
+        [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'">
       </lib-chart>
     </div>
 
     <div class="orders-card">
-      <lib-recent-orders [orders]="(orders$ | async) ?? []"></lib-recent-orders>
+      <lib-recent-orders
+        [orders]="(orders$ | async) ?? []">
+      </lib-recent-orders>
     </div>
   </div>
 

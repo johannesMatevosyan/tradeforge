@@ -23,7 +23,6 @@ export class TradingPageComponent {
   selectedSymbol$ = this.symbolsService.selectedSymbol$;
 
   selectedSymbol: string = 'BTC/USD';
-  currentPrice: number = 43250;
   orders: TradingOrder[] = [];
 
   onOrderPlaced(order: TradingOrder): void {

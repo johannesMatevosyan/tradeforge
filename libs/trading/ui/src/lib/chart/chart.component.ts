@@ -9,9 +9,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ChartComponent implements OnInit {
   @Input() symbol: string = 'BTC/USD';
-  @Input() price: number = 0;
-
-  prevPrice = 43000;
+  price = 43000;
+  prevPrice = 42800;
 
   get isUp(): boolean {
     return this.price >= this.prevPrice;
