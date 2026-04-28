@@ -1,0 +1,21 @@
+<div class="orders-header">
+  <h3>Recent Orders</h3>
+</div>
+
+<div class="orders-list">
+    @for (order of orders(); track order.id) {
+        <div class="order-row">
+            <div class="symbol">{{ order.symbol }}</div>
+
+            <div class="type" [class.buy]="order.type === 'BUY'" [class.sell]="order.type === 'SELL'">
+            {{ order.type }}
+            </div>
+
+            <div class="price">{{ order.price }}</div>
+
+            <div class="status" [ngClass]="order.status.toLowerCase()">
+            {{ order.status }}
+            </div>
+        </div>
+    }
+</div>
