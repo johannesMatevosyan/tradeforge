@@ -13,9 +13,29 @@
         <div class="summary-card">Cancelled</div>
     </div>
 
-    <div class="orders-card ++++">
+    <div class="orders-card">
         @if (orders$ | async; as orders) {
-            <p>Total: {{ orders.length }}</p>
+            <div class="orders-summary">
+                <div class="summary-card">
+                    <span>Total Orders</span>
+                    <strong>{{ getTotalOrders(orders) }}</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Open Orders</span>
+                    <strong>{{ getOpenOrders(orders) }}</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Filled Orders</span>
+                    <strong>{{ getFilledOrders(orders) }}</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Cancelled</span>
+                    <strong>{{ getCancelledOrders(orders) }}</strong>
+                </div>
+            </div>
 
             @if(orders.length > 0) {
 
