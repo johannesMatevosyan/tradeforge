@@ -44,6 +44,13 @@ export const appRoutes: Route[] = [
             ),
         },
         {
+          path: 'orders',
+          loadComponent: () =>
+            import('@tradeforge/orders/feature-orders').then(
+              (m) => m.OrdersPageComponent
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },
