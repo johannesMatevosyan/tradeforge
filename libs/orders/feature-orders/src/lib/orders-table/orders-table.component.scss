@@ -47,3 +47,18 @@
     color: #f59e0b;
   }
 }
+
+.cancel-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 12px;
+
+  &:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+}

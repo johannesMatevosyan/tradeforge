@@ -68,7 +68,10 @@
             </div>
 
             @if (filteredOrders.length) {
-                <lib-orders-table [orders]="filteredOrders"></lib-orders-table>
+                <lib-orders-table
+                    [orders]="filteredOrders"
+                    (cancel)="onCancel($event)">
+                </lib-orders-table>
             } @else {
                 <div class="empty-state">No matching orders found.</div>
             }

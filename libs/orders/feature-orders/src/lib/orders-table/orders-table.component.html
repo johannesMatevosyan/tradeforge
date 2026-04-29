@@ -27,6 +27,17 @@
         </span>
 
         <span>{{ order.createdAt | date: 'shortTime' }}</span>
+
+        <span>
+            @if (order.status === 'OPEN') {
+                <button
+                type="button"
+                class="cancel-btn"
+                (click)="cancel.emit(order.id)">
+                    Cancel
+                </button>
+            }
+        </span>
       </div>
     }
   }

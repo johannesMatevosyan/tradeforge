@@ -56,4 +56,8 @@ export class OrdersPageComponent {
       return matchesSymbol && matchesStatus && matchesSide && matchesType;
     });
   }
+
+  onCancel(orderId: string): void {
+    this.ordersService.cancelOrder(orderId);
+  }
 }

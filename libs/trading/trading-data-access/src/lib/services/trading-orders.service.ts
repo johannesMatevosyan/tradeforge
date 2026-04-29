@@ -12,4 +12,14 @@ export class TradingOrdersService {
     const currentOrders = this.ordersSubject.value;
     this.ordersSubject.next([order, ...currentOrders].slice(0, 10));
   }
+
+  cancelOrder(orderId: string): void {
+    const updated: TradingOrder[] = this.ordersSubject.value.map((order) =>
+      order.id === orderId
+        ? { ...order, status: 'CANCELLED' }
+        : order
+    );
+
+    this.ordersSubject.next(updated);
+  }
 }
