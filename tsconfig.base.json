@@ -63,7 +63,7 @@
         "libs/trading/trading-data-access/src/index.ts"
       ],
       "@tradeforge/orders/feature-orders": [
-        "libs/orders/feature-orders/src/lib/orders-page/src/index.ts"
+        "libs/orders/feature-orders/src/index.ts"
       ],
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
@@ -90,9 +90,7 @@
       "trading-ui": ["libs/trading/ui/src/index.ts"],
       "ui": ["libs/trading/ui/src/index.ts"],
       "trading-data-access": ["libs/trading/trading-data-access/src/index.ts"],
-      "orders-page": [
-        "libs/orders/feature-orders/src/lib/orders-page/src/index.ts"
-      ]
+      "feature-orders": ["libs/orders/feature-orders/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

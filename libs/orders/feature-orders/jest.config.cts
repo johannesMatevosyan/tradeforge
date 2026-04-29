@@ -1,9 +1,9 @@
 module.exports = {
-  displayName: 'orders-page',
-  preset: '../../../../../../jest.preset.js',
+  displayName: 'feature-orders',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory:
-    '../../../../../../coverage/libs/orders/feature-orders/src/lib/orders-page',
+    '../../../coverage/libs/orders/feature-orders',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

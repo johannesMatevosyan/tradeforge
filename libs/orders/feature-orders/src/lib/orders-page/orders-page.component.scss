@@ -1,0 +1,44 @@
+.orders-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.orders-header {
+  h1 {
+    margin: 0;
+    color: #e5e7eb;
+    font-size: 24px;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: #64748b;
+  }
+}
+
+.orders-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.summary-card,
+.orders-card {
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  background: #111827;
+  padding: 16px;
+  color: #e5e7eb;
+}
+
+.orders-card {
+  min-height: 420px;
+
+  .order-row {
+    font-size: 14px;
+    line-height: 150%;
+    padding-left: 8px;
+  }
+}
+

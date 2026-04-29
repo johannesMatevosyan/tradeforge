@@ -1,0 +1,28 @@
+<section class="orders-page">
+    <header class="orders-header">
+        <div>
+        <h1>Orders</h1>
+        <p>Track and manage trading activity</p>
+        </div>
+    </header>
+
+    <div class="orders-summary">
+        <div class="summary-card">Total Orders</div>
+        <div class="summary-card">Open Orders</div>
+        <div class="summary-card">Filled Orders</div>
+        <div class="summary-card">Cancelled</div>
+    </div>
+
+    <div class="orders-card">
+        @if (orders$ | async; as orders) {
+            <p>Total: {{ orders.length }}</p>
+
+            @for (order of orders; track order.id) {
+                <div class="order-row">
+                    {{ order.symbol }} · {{ order.side }} · {{ order.type }} ·
+                    {{ order.quantity }} · {{ order.price }} · {{ order.status }}
+                </div>
+            }
+        }
+    </div>
+</section>
