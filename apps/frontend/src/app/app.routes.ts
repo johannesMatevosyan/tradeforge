@@ -51,6 +51,13 @@ export const appRoutes: Route[] = [
             ),
         },
         {
+          path: 'portfolio',
+          loadComponent: () =>
+            import('@tradeforge/portfolio/feature-portfolio').then(
+              (m) => m.PortfolioPageComponent
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },
