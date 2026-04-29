@@ -13,7 +13,21 @@
     <div class="summary-card">PnL</div>
   </div>
 
-  <div class="positions-card">
-    Positions table will be here
-  </div>
+    @if (orders$ | async; as orders) {
+        @let positions = getPositions(orders);
+
+        <div class="positions-card">
+            @if (positions.length) {
+                @for (position of positions; track position.symbol) {
+                    <div>
+                    {{ position.symbol }} ·
+                    Qty: {{ position.quantity }} ·
+                    Avg: {{ position.averagePrice | number: '1.2-2' }}
+                    </div>
+                }
+            } @else {
+                <div class="empty-state">No positions yet.</div>
+            }
+        </div>
+    }
 </section>

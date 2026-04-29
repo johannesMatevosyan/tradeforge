@@ -1,13 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { TradingOrder, TradingPosition } from '@tradeforge/shared-types';
 import { TradingOrdersService } from '@tradeforge/trading/trading-data-access';
 
 @Component({
   selector: 'lib-portfolio-page',
-  imports: [],
+  imports: [CommonModule],
   standalone: true,
   templateUrl: './portfolio-page.component.html',
-  styleUrl: './portfolio-page.component.scss',
+  styleUrls: ['./portfolio-page.component.scss'],
 })
 export class PortfolioPageComponent {
   private readonly ordersService = inject(TradingOrdersService);
