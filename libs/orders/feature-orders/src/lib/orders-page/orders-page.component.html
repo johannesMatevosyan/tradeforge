@@ -1,8 +1,8 @@
 <section class="orders-page">
     <header class="orders-header">
         <div>
-        <h1>Orders</h1>
-        <p>Track and manage trading activity</p>
+            <h1>Orders</h1>
+            <p>Track and manage trading activity</p>
         </div>
     </header>
 
@@ -13,8 +13,38 @@
         <div class="summary-card">Cancelled</div>
     </div>
 
+    <div class="orders-filters">
+        <input
+            type="text"
+            placeholder="Search symbol..."
+            [(ngModel)]="filterSymbol"
+        />
+
+        <select [(ngModel)]="filterStatus">
+            <option value="ALL">All Statuses</option>
+            <option value="OPEN">Open</option>
+            <option value="FILLED">Filled</option>
+            <option value="CANCELLED">Cancelled</option>
+        </select>
+
+        <select [(ngModel)]="filterSide">
+            <option value="ALL">All Sides</option>
+            <option value="BUY">Buy</option>
+            <option value="SELL">Sell</option>
+        </select>
+
+        <select [(ngModel)]="filterType">
+            <option value="ALL">All Types</option>
+            <option value="MARKET">Market</option>
+            <option value="LIMIT">Limit</option>
+        </select>
+    </div>
+
     <div class="orders-card">
         @if (orders$ | async; as orders) {
+
+            @let filteredOrders = filterOrders(orders);
+
             <div class="orders-summary">
                 <div class="summary-card">
                     <span>Total Orders</span>
@@ -37,14 +67,10 @@
                 </div>
             </div>
 
-            @if(orders.length > 0) {
-
-                <lib-orders-table [orders]="orders"></lib-orders-table>
-
+            @if (filteredOrders.length) {
+                <lib-orders-table [orders]="filteredOrders"></lib-orders-table>
             } @else {
-                <div class="empty-state">
-                    No orders yet.
-                </div>
+                <div class="empty-state">No matching orders found.</div>
             }
 
         }

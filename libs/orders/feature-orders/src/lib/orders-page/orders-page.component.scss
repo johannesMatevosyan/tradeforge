@@ -21,6 +21,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  margin-bottom: 16px;
 }
 
 .summary-card,
@@ -65,3 +66,23 @@
   }
 }
 
+.orders-filters {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr);
+  gap: 12px;
+}
+
+.orders-filters input,
+.orders-filters select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #e5e7eb;
+  outline: none;
+
+  &:focus {
+    border-color: #3b82f6;
+  }
+}
