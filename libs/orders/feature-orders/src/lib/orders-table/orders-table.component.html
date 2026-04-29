@@ -1,0 +1,33 @@
+<div class="orders-table">
+  <div class="table-header">
+    <span>Symbol</span>
+    <span>Side</span>
+    <span>Type</span>
+    <span>Quantity</span>
+    <span>Price</span>
+    <span>Status</span>
+    <span>Created</span>
+  </div>
+
+  @if (orders.length) {
+    @for (order of orders; track order.id) {
+      <div class="table-row">
+        <strong>{{ order.symbol }}</strong>
+
+        <span class="side" [class.buy]="order.side === 'BUY'" [class.sell]="order.side === 'SELL'">
+          {{ order.side }}
+        </span>
+
+        <span>{{ order.type }}</span>
+        <span>{{ order.quantity }}</span>
+        <span>{{ order.price }}</span>
+
+        <span class="status" [class.filled]="order.status === 'FILLED'" [class.open]="order.status === 'OPEN'">
+          {{ order.status }}
+        </span>
+
+        <span>{{ order.createdAt | date: 'shortTime' }}</span>
+      </div>
+    }
+  }
+</div>

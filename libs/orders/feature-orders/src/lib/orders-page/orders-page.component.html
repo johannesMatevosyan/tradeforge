@@ -13,16 +13,20 @@
         <div class="summary-card">Cancelled</div>
     </div>
 
-    <div class="orders-card">
+    <div class="orders-card ++++">
         @if (orders$ | async; as orders) {
             <p>Total: {{ orders.length }}</p>
 
-            @for (order of orders; track order.id) {
-                <div class="order-row">
-                    {{ order.symbol }} · {{ order.side }} · {{ order.type }} ·
-                    {{ order.quantity }} · {{ order.price }} · {{ order.status }}
+            @if(orders.length > 0) {
+
+                <lib-orders-table [orders]="orders"></lib-orders-table>
+
+            } @else {
+                <div class="empty-state">
+                    No orders yet.
                 </div>
             }
+
         }
     </div>
 </section>

@@ -35,10 +35,15 @@
 .orders-card {
   min-height: 420px;
 
-  .order-row {
-    font-size: 14px;
-    line-height: 150%;
-    padding-left: 8px;
+  p {
+    margin: 0 0 12px 0;
   }
 }
 
+.empty-state {
+  padding: 32px;
+  border: 1px dashed #334155;
+  border-radius: 12px;
+  color: #64748b;
+  text-align: center;
+}
