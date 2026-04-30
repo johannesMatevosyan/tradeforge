@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PositionsTableComponent } from './positions-table.component';
+
+describe('PositionsTableComponent', () => {
+  let component: PositionsTableComponent;
+  let fixture: ComponentFixture<PositionsTableComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [PositionsTableComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(PositionsTableComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

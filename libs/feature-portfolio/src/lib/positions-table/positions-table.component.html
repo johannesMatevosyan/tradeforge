@@ -1,0 +1,20 @@
+<div class="positions-table">
+  <div class="table-header">
+    <span>Symbol</span>
+    <span>Quantity</span>
+    <span>Avg Price</span>
+    <span>Invested</span>
+  </div>
+
+  @for (pos of positions; track pos.symbol) {
+    <div class="table-row">
+      <strong>{{ pos.symbol }}</strong>
+
+      <span>{{ pos.quantity }}</span>
+
+      <span>{{ pos.averagePrice | number: '1.2-2' }}</span>
+
+      <span>{{ pos.invested | number: '1.2-2' }}</span>
+    </div>
+  }
+</div>

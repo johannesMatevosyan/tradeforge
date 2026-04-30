@@ -18,16 +18,10 @@
 
         <div class="positions-card">
             @if (positions.length) {
-                @for (position of positions; track position.symbol) {
-                    <div>
-                    {{ position.symbol }} ·
-                    Qty: {{ position.quantity }} ·
-                    Avg: {{ position.averagePrice | number: '1.2-2' }}
-                    </div>
-                }
+                <lib-positions-table [positions]="positions"></lib-positions-table>
             } @else {
                 <div class="empty-state">No positions yet.</div>
             }
-        </div>
-    }
+                </div>
+            }
 </section>
