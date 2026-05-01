@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MarketPrice } from '@tradeforge/shared-types';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 
 @Injectable({
@@ -24,4 +24,16 @@ export class MarketDataWsService {
       };
     });
   }
+
+  pricesMap$ = this.prices$().pipe(
+    map((prices) => {
+      const map: Record<string, number> = {};
+
+      for (const item of prices) {
+        map[item.symbol] = item.price;
+      }
+
+      return map;
+    })
+  );
 }
