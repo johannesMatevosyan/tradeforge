@@ -16,6 +16,8 @@
   <div class="chart-placeholder">
     @if (history.length > 1) {
       <svg viewBox="0 0 1000 320" preserveAspectRatio="none">
+
+        <!-- line -->
         <polyline
           [attr.points]="points"
           fill="none"
@@ -24,6 +26,16 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         />
+
+        <!-- current price line -->
+        <line
+          x1="0"
+          x2="1000"
+          [attr.y1]="lastPriceY"
+          [attr.y2]="lastPriceY"
+          class="price-line"
+        />
+
       </svg>
     } @else {
       <div class="chart-empty">Waiting for live data...</div>
