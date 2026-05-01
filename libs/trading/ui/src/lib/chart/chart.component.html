@@ -8,8 +8,25 @@
   </div>
 </div>
 
-<div class="chart-body">
+<div
+  class="chart-body"
+  [class.up]="direction === 'up'"
+  [class.down]="direction === 'down'"
+>
   <div class="chart-placeholder">
-    Chart will be here
+    @if (history.length > 1) {
+      <svg viewBox="0 0 1000 320" preserveAspectRatio="none">
+        <polyline
+          [attr.points]="points"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    } @else {
+      <div class="chart-empty">Waiting for live data...</div>
+    }
   </div>
 </div>

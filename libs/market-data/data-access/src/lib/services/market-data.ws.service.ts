@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MarketPrice, MarketPriceView } from '@tradeforge/shared-types';
-import { map, Observable, pairwise } from 'rxjs';
+import { map, Observable, pairwise, scan } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 
 @Injectable({
@@ -62,6 +62,23 @@ export class MarketDataWsService {
 
       return map;
     })
+  );
+
+  priceHistory$ = this.pricesView$.pipe(
+    scan((history, prices) => {
+      const updated = { ...history };
+
+      for (const item of prices) {
+        const current = updated[item.symbol] ?? [];
+
+        updated[item.symbol] = [
+          ...current,
+          item.price,
+        ].slice(-50);
+      }
+
+      return updated;
+    }, {} as Record<string, number[]>)
   );
 
   private toPriceMap(prices: MarketPrice[]): Record<string, number> {

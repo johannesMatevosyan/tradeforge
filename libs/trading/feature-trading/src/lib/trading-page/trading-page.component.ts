@@ -69,4 +69,11 @@ export class TradingPageComponent {
 
     })
   )
+
+  readonly selectedPriceHistory$ = combineLatest([
+    this.selectedSymbol$,
+    this.marketDataService.priceHistory$,
+  ]).pipe(
+    map(([symbol, history]) => history[symbol.replace('/', '')] ?? [])
+  );
 }

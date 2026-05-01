@@ -5,6 +5,7 @@
         [symbol]="(selectedPriceView$ | async)?.symbol ?? 'BTC/USD'"
         [price]="(selectedPriceView$ | async)?.price ?? 0"
         [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
+        [history]="(selectedPriceHistory$ | async) ?? []"
         >
       </lib-chart>
     </div>

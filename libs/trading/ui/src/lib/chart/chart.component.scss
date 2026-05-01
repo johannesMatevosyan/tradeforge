@@ -34,5 +34,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+.chart-body {
+  height: 420px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #0f172a, #020617);
+  overflow: hidden;
+  color: #3b82f6;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.up {
+    color: #22c55e;
+  }
+
+  &.down {
+    color: #ef4444;
+  }
+}
+
+.chart-empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #64748b;
 }
