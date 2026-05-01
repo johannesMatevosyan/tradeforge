@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
-import { TradingOrder, TradingPosition } from '@tradeforge/shared-types';
+import { TradingOrder, TradingPosition, TradingPositionView } from '@tradeforge/shared-types';
 import { TradingOrdersService } from '@tradeforge/trading/trading-data-access';
 import { combineLatest, map } from 'rxjs';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
@@ -35,5 +35,20 @@ export class PortfolioPageComponent {
       );
     })
   )
+
+  getPortfolioSummary(positions: TradingPositionView[]) {
+    const totalInvested = positions.reduce((sum, p) => sum + p.invested, 0);
+    const totalValue = positions.reduce((sum, p) => sum + p.marketValue, 0);
+    const totalPnl = positions.reduce((sum, p) => sum + p.pnl, 0);
+
+    return {
+      totalPositions: positions.length,
+      totalInvested,
+      totalValue,
+      totalPnl,
+      totalPnlPercent:
+        totalInvested > 0 ? (totalPnl / totalInvested) * 100 : 0,
+    };
+  }
 
 }

@@ -8,46 +8,41 @@
 
     @if (positionsView$ | async; as positions) {
       <!-- Summary (still static for now, will upgrade next) -->
+
+      @let summary = getPortfolioSummary(positions);
+
       <div class="portfolio-summary">
         <div class="summary-card">
-          <span>Total Positions&nbsp;</span>
-          <strong>{{ positions.length }}</strong>
+          <span>Total Value</span>
+          <strong>{{ summary.totalValue | number: '1.2-2' }}</strong>
         </div>
 
         <div class="summary-card">
           <span>Total Invested</span>
-          <strong>
-            {{
-              positions
-                .reduce((acc, p) => acc + p.invested, 0)
-                | number: '1.2-2'
-            }}
-          </strong>
+          <strong>{{ summary.totalInvested | number: '1.2-2' }}</strong>
         </div>
 
         <div class="summary-card">
-          <span>Market Value</span>
-          <strong>
-            {{
-              positions
-                .reduce((acc, p) => acc + p.marketValue, 0)
-                | number: '1.2-2'
-            }}
-          </strong>
+          <span>Open Positions</span>
+          <strong>{{ summary.totalPositions }}</strong>
         </div>
 
-        <div class="summary-card">
+        <div class="summary-card pnl-card">
           <span>Total PnL</span>
+
           <strong
-            [class.profit]="positions.reduce((acc, p) => acc + p.pnl, 0) > 0"
-            [class.loss]="positions.reduce((acc, p) => acc + p.pnl, 0) < 0"
+            [class.profit]="summary.totalPnl > 0"
+            [class.loss]="summary.totalPnl < 0"
           >
-            {{
-              positions
-                .reduce((acc, p) => acc + p.pnl, 0)
-                | number: '1.2-2'
-            }}
+            {{ summary.totalPnl | number: '1.2-2' }}
           </strong>
+
+          <small
+            [class.profit]="summary.totalPnlPercent > 0"
+            [class.loss]="summary.totalPnlPercent < 0"
+          >
+            {{ summary.totalPnlPercent | number: '1.2-2' }}%
+          </small>
         </div>
       </div>
 

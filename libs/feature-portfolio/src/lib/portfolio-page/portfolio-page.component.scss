@@ -35,3 +35,39 @@
 .positions-card {
   min-height: 420px;
 }
+
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  span {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  strong {
+    color: #e5e7eb;
+    font-size: 26px;
+    font-weight: 800;
+  }
+
+  small {
+    font-size: 13px;
+    font-weight: 700;
+  }
+}
+
+.pnl-card {
+  border-color: #334155;
+}
+
+.profit {
+  color: #22c55e !important;
+}
+
+.loss {
+  color: #ef4444 !important;
+}
