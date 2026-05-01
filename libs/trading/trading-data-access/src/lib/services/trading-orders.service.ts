@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { TradingOrder, TradingPosition } from '@tradeforge/shared-types';
+import { TradingOrder, TradingPosition, TradingPositionView } from '@tradeforge/shared-types';
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
@@ -54,5 +54,27 @@ export class TradingOrdersService {
         });
       });
     return Array.from(map.values()).filter((position) => position.quantity > 0);
+  }
+
+  enrichPositionsWithPrices(
+    positions: TradingPosition[],
+    prices: Record<string, number>
+  ): TradingPositionView[] {
+    return positions.map((position) => {
+      const currentPrice =
+        prices[position.symbol] ?? position.averagePrice;
+
+      const marketValue = position.quantity * currentPrice;
+      const pnl = marketValue - position.invested;
+
+      return {
+        ...position,
+        currentPrice,
+        marketValue,
+        pnl,
+        pnlPercent:
+          position.invested > 0 ? (pnl / position.invested) * 100 : 0,
+      };
+    });
   }
 }
