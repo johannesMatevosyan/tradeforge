@@ -59,7 +59,7 @@ export class TradingPageComponent {
   ]).pipe(
     map(([symbol, prices]) => {
       const normalizedSymbol = symbol.replace('/', '');
-      console.log('Looking for price view of symbol: ', normalizedSymbol, ' in ', prices);
+
       return prices.find((item) => item.symbol === normalizedSymbol) ?? {
         symbol,
         price: 0,
