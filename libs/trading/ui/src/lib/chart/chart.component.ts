@@ -51,4 +51,12 @@ export class ChartComponent {
 
     return height - ((this.price - this.min) / range) * height;
   }
+
+  get areaPoints(): string {
+    if (!this.points) {
+      return '';
+    }
+
+    return `0,320 ${this.points} 1000,320`;
+  }
 }

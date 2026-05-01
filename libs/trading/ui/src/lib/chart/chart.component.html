@@ -17,6 +17,18 @@
     @if (history.length > 1) {
       <svg viewBox="0 0 1000 320" preserveAspectRatio="none">
 
+        <defs>
+          <linearGradient id="chartAreaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0.28" />
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+
+        <polygon
+          [attr.points]="areaPoints"
+          fill="url(#chartAreaGradient)"
+        ></polygon>
+
         <!-- line -->
         <polyline
           [attr.points]="points"
