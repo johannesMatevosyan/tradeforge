@@ -2,8 +2,9 @@
   <div class="trading-main">
     <div class="chart-card">
       <lib-chart
-        [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
-        [price]="(selectedPrice$ | async) ?? 0"
+        [symbol]="(selectedPriceView$ | async)?.symbol ?? 'BTC/USD'"
+        [price]="(selectedPriceView$ | async)?.price ?? 0"
+        [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
         >
       </lib-chart>
     </div>
@@ -27,7 +28,9 @@
     <div class="watchlist-card">
       <lib-market-watch
         [symbols]="symbols"
+        [prices]="(pricesView$ | async) ?? []"
         [selectedSymbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+        [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
         (symbolSelected)="onSymbolSelected($event)">
       </lib-market-watch>
     </div>

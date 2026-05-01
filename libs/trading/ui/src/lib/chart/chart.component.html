@@ -1,7 +1,10 @@
 <div class="chart-header">
   <div class="symbol">{{ symbol }}</div>
-  <div class="price" [class.up]="isUp" [class.down]="!isUp">
-    {{ price }}
+  <div class="chart-price"
+    [class.up]="direction === 'up'"
+    [class.down]="direction === 'down'"
+    >
+    {{ price | number: '1.2-2' }}
   </div>
 </div>
 
