@@ -12,11 +12,11 @@ import { MarketPriceView } from 'libs/shared-types/src/lib/market/market-price-v
 export class MarketWatchComponent {
   @Input() selectedSymbol = 'BTC/USD';
   @Input() symbols: { symbol: string; name: string }[] = [];
-  @Input() direction: 'up' | 'down' | 'neutral' = 'neutral';
   @Input() prices: MarketPriceView[] = [];
   @Output() symbolSelected = new EventEmitter<string>();
 
   getPrice(symbol: string): MarketPriceView | undefined {
-    return this.prices.find((item) => item.symbol === symbol);
+    const normalizedSymbol = symbol.replace('/', '');
+    return this.prices.find((item) => item.symbol === normalizedSymbol);
   }
 }
