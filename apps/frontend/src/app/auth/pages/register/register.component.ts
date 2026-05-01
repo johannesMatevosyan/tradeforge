@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from 'libs/auth-data-access/src/lib/auth-data-access/auth.service';
+import { AuthService } from '@tradeforge/auth-data-access';
 
 
 @Component({
