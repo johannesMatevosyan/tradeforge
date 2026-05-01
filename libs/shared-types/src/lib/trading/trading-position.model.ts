@@ -4,3 +4,10 @@ export interface TradingPosition {
   averagePrice: number;
   invested: number;
 }
+
+export interface TradingPositionView extends TradingPosition {
+  currentPrice: number;
+  marketValue: number;
+  pnl: number;
+  pnlPercent: number;
+}
