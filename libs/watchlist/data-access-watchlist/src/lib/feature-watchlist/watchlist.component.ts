@@ -95,7 +95,6 @@ export class WatchlistComponent implements OnInit {
 
         this.watchlistApiService.getWatchlist().subscribe({
             next: (items) => {
-                console.log('Loaded watchlist items:', items);
                 this.items.set(items);
                 this.isLoading.set(false);
             },
