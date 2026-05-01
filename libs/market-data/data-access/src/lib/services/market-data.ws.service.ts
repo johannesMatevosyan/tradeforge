@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MarketPrice } from '@tradeforge/shared-types';
-import { map, Observable } from 'rxjs';
+import { MarketPrice, MarketPriceView } from '@tradeforge/shared-types';
+import { map, Observable, pairwise } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 
 @Injectable({
@@ -25,6 +25,33 @@ export class MarketDataWsService {
     });
   }
 
+  pricesView$ = this.prices$().pipe(
+    pairwise(),
+    map(([previous, current]) => {
+      const previousMap = this.toPriceMap(previous);
+
+      return current.map((item) => {
+        const previousPrice = previousMap[item.symbol] ?? null;
+
+        const direction: MarketPriceView['direction'] =
+          previousPrice === null
+            ? 'neutral'
+            : item.price > previousPrice
+              ? 'up'
+              : item.price < previousPrice
+                ? 'down'
+                : 'neutral';
+
+        return {
+          symbol: item.symbol,
+          price: item.price,
+          previousPrice,
+          direction
+        };
+      });
+    })
+  );
+
   pricesMap$ = this.prices$().pipe(
     map((prices) => {
       const map: Record<string, number> = {};
@@ -36,4 +63,11 @@ export class MarketDataWsService {
       return map;
     })
   );
+
+  private toPriceMap(prices: MarketPrice[]): Record<string, number> {
+    return prices.reduce((acc, item) => {
+      acc[item.symbol] = item.price;
+      return acc;
+    }, {} as Record<string, number>);
+  }
 }
