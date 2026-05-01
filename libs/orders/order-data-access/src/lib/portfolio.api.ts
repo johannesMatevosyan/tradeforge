@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
+import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { combineLatest, map } from 'rxjs';
 import { OrdersApi } from './orders.api';
 import { PositionsApi } from './positions.api';
@@ -8,7 +8,7 @@ import { PositionsApi } from './positions.api';
 export class PortfolioApi {
   private positionsApi = inject(PositionsApi);
   private ordersApi = inject(OrdersApi);
-  private marketWs = inject(MarketDataWs);
+  private marketWs = inject(MarketDataWsService);
 
   readonly summary$ = combineLatest([
     this.positionsApi.getPositions(),

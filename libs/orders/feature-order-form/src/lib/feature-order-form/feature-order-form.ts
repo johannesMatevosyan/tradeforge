@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
+import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { OrdersApi, OrderSelectionService, OrdersEvents } from '@tradeforge/orders/order-data-access';
 import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/shared-types';
 
@@ -15,7 +15,7 @@ import { CreateOrderRequest, Order, OrderSide, OrderType } from '@tradeforge/sha
 export class FeatureOrderForm {
   private fb = inject(FormBuilder);
   private ordersApi = inject(OrdersApi);
-  private ws = inject(MarketDataWs);
+  private ws = inject(MarketDataWsService);
   private ordersEvents = inject(OrdersEvents);
   private readonly orderSelection = inject(OrderSelectionService);
   readonly successMessage = signal<string | null>(null);

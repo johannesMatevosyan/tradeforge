@@ -6,7 +6,7 @@ import { io, Socket } from 'socket.io-client';
 @Injectable({
   providedIn: 'root',
 })
-export class MarketDataWs {
+export class MarketDataWsService {
   private socket: Socket;
 
   constructor() {

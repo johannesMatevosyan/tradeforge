@@ -1,6 +1,6 @@
 import { AsyncPipe, CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MarketDataWs, MarketPriceWithDirection } from '@tradeforge/market-data/market-data-access';
+import { MarketDataWsService, MarketPriceWithDirection } from '@tradeforge/market-data/market-data-access';
 import { Observable, scan } from 'rxjs';
 
 @Component({
@@ -11,7 +11,7 @@ import { Observable, scan } from 'rxjs';
   styleUrl: './feature-ticker.scss',
 })
 export class MarketDataFeatureTicker {
-  private readonly ws = inject(MarketDataWs);
+  private readonly ws = inject(MarketDataWsService);
   readonly prices$: Observable<MarketPriceWithDirection[]> = this.ws.prices$().pipe(
 
     scan((prev: MarketPriceWithDirection[], curr) => {

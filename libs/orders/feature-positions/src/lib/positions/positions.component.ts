@@ -1,6 +1,6 @@
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MarketDataWs } from '@tradeforge/market-data/market-data-access';
+import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { PositionsApi } from '@tradeforge/orders/order-data-access';
 import { combineLatest, map } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { combineLatest, map } from 'rxjs';
 })
 export class PositionsComponent {
   private positionsApi = inject(PositionsApi);
-  private readonly marketDataWs = inject(MarketDataWs);
+  private readonly marketDataWs = inject(MarketDataWsService);
 
   readonly positions$ = combineLatest([
     this.positionsApi.getPositions(),
