@@ -1,9 +1,11 @@
 <div class="positions-table">
   <div class="table-header">
     <span>Symbol</span>
-    <span>Quantity</span>
+    <span>Qty</span>
     <span>Avg Price</span>
-    <span>Invested</span>
+    <span>Current</span>
+    <span>Value</span>
+    <span>PnL</span>
   </div>
 
   @for (pos of positions; track pos.symbol) {
@@ -14,7 +16,18 @@
 
       <span>{{ pos.averagePrice | number: '1.2-2' }}</span>
 
-      <span>{{ pos.invested | number: '1.2-2' }}</span>
+      <span>{{ pos.currentPrice | number: '1.2-2' }}</span>
+
+      <span>{{ pos.marketValue | number: '1.2-2' }}</span>
+
+      <span
+          class="pnl"
+          [class.profit]="pos.pnl > 0"
+          [class.loss]="pos.pnl < 0"
+        >
+        {{ pos.pnl | number: '1.2-2' }}
+        ({{ pos.pnlPercent | number: '1.1-1' }}%)
+      </span>
     </div>
   }
 </div>

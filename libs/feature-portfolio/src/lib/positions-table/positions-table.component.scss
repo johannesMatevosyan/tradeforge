@@ -26,3 +26,15 @@
   background: #0f172a;
   color: #e5e7eb;
 }
+
+.pnl {
+  font-weight: 700;
+
+  &.profit {
+    color: #22c55e;
+  }
+
+  &.loss {
+    color: #ef4444;
+  }
+}

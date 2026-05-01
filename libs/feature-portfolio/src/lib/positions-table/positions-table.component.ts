@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { TradingPosition } from '@tradeforge/shared-types';
+import { TradingPositionView } from '@tradeforge/shared-types';
 
 @Component({
   selector: 'lib-positions-table',
@@ -10,5 +10,5 @@ import { TradingPosition } from '@tradeforge/shared-types';
   styleUrls: ['./positions-table.component.scss'],
 })
 export class PositionsTableComponent {
-  @Input() positions: TradingPosition[] = [];
+  @Input() positions: TradingPositionView[] = [];
 }

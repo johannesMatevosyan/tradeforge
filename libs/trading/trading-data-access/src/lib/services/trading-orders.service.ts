@@ -53,6 +53,7 @@ export class TradingOrdersService {
           averagePrice: newQuantity > 0 ? newInvested / newQuantity : 0,
         });
       });
+
     return Array.from(map.values()).filter((position) => position.quantity > 0);
   }
 
