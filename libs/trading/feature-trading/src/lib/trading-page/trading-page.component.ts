@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { TradingOrder } from '@tradeforge/shared-types';
 import { TradingOrdersService, TradingSymbolsService } from '@tradeforge/trading/trading-data-access';
 import {
@@ -8,6 +9,7 @@ import {
   PlaceOrderComponent,
   RecentOrdersComponent
 } from '@tradeforge/trading/ui';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   selector: 'lib-trading-page',
@@ -25,6 +27,8 @@ import {
 export class TradingPageComponent {
   private readonly ordersService = inject(TradingOrdersService);
   private readonly symbolsService = inject(TradingSymbolsService);
+  private readonly marketDataService = inject(MarketDataWsService);
+  readonly pricesMap$ = this.marketDataService.pricesMap$;
 
   orders$ = this.ordersService.orders$;
   symbols = this.symbolsService.symbols;
@@ -32,6 +36,13 @@ export class TradingPageComponent {
 
   selectedSymbol: string = 'BTC/USD';
   orders: TradingOrder[] = [];
+
+  readonly selectedPrice$ = combineLatest([
+    this.selectedSymbol$,
+    this.marketDataService.pricesMap$
+  ]).pipe(
+    map(([symbol, prices]) => prices[symbol] ?? 0)
+  );
 
   onOrderPlaced(order: TradingOrder): void {
     this.ordersService.placeOrder(order);

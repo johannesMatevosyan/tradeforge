@@ -2,7 +2,9 @@
   <div class="trading-main">
     <div class="chart-card">
       <lib-chart
-        [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'">
+        [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+        [price]="(selectedPrice$ | async) ?? 0"
+        >
       </lib-chart>
     </div>
 
@@ -17,6 +19,7 @@
     <div class="order-card">
       <lib-place-order
         [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+        [price]="(selectedPrice$ | async) ?? 0"
         (orderPlaced)="onOrderPlaced($event)">
       </lib-place-order>
     </div>

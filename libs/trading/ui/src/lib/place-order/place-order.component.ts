@@ -12,11 +12,11 @@ import { TradingOrder } from '@tradeforge/shared-types';
 })
 export class PlaceOrderComponent {
   @Input() symbol = 'BTC/USD';
+  @Input() price: number = 0;
   @Output() orderPlaced = new EventEmitter<TradingOrder>();
 
   side: 'BUY' | 'SELL' = 'BUY';
   type: 'MARKET' | 'LIMIT' = 'MARKET';
-  price = 40000;
   quantity = 0.1;
 
   placeOrder(): void {

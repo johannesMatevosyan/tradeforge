@@ -46,14 +46,11 @@
         </div>
       </div>
 
-      <!-- Positions table -->
       <div class="positions-card">
         @if (positions.length) {
           <lib-positions-table [positions]="positions"></lib-positions-table>
         } @else {
-          <div class="empty-state">
-            No positions yet.
-          </div>
+          <div class="empty-state">No positions yet.</div>
         }
       </div>
     }
