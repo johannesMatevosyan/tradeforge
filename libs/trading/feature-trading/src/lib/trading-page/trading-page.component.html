@@ -31,7 +31,6 @@
         [symbols]="symbols"
         [prices]="(pricesView$ | async) ?? []"
         [selectedSymbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
-        [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
         (symbolSelected)="onSymbolSelected($event)">
       </lib-market-watch>
     </div>
