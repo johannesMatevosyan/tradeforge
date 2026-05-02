@@ -53,6 +53,7 @@
       <app-notification-panel
         [notifications]="(notifications$ | async) ?? []"
         appClickOutside
+        (appClickOutside)="isNotificationsOpen.set(false)"
         (notificationClick)="handleNotificationClick($event)"
       />
     </div>

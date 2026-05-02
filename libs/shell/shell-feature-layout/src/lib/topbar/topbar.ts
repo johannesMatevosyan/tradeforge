@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, AuthUser } from '@tradeforge/auth-data-access';
 import { NotificationItem, NotificationService } from '@tradeforge/notifications/notification-data-access';
-import { NotificationPanelComponent } from '@tradeforge/shared-ui';
+import { ClickOutsideDirective, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 import { SearchService } from '@tradeforge/shared/data-access';
 
@@ -16,7 +16,8 @@ import { SearchService } from '@tradeforge/shared/data-access';
     NotificationPanelComponent,
     AppIconComponent,
     RouterLink,
-    AsyncPipe
+    AsyncPipe,
+    ClickOutsideDirective
   ],
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.scss'],
