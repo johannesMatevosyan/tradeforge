@@ -51,7 +51,8 @@
   @if (isNotificationsOpen()) {
     <div class="notifications-popover">
       <app-notification-panel
-        [notifications]="notifications"
+        [notifications]="(notifications$ | async) ?? []"
+        appClickOutside
         (notificationClick)="handleNotificationClick($event)"
       />
     </div>

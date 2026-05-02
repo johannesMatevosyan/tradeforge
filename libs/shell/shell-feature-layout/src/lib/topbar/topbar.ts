@@ -1,8 +1,10 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, inject, Output, Signal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, AuthUser } from '@tradeforge/auth-data-access';
-import { NotificationItem, NotificationPanelComponent } from '@tradeforge/shared-ui';
+import { NotificationItem, NotificationService } from '@tradeforge/notifications/notification-data-access';
+import { NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 import { SearchService } from '@tradeforge/shared/data-access';
 
@@ -13,7 +15,8 @@ import { SearchService } from '@tradeforge/shared/data-access';
     FormsModule,
     NotificationPanelComponent,
     AppIconComponent,
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.scss'],
@@ -22,34 +25,16 @@ import { SearchService } from '@tradeforge/shared/data-access';
 export class TopbarComponent {
   @Output() logoutClicked = new EventEmitter<void>();
   private readonly authService = inject(AuthService);
+  private readonly notificationService = inject(NotificationService);
   private readonly router = inject(Router);
   private readonly searchService = inject(SearchService);
   readonly searchTerm = this.searchService.searchTerm;
+  readonly unreadCount$ = this.notificationService.unreadCount$
+  readonly notifications$ = this.notificationService.notifications$;
   readonly isNotificationsOpen = signal(false);
 
   readonly user$: Signal<AuthUser | null> = this.authService.currentUser$;
   isFocused = false;
-
-  notifications: NotificationItem[] = [
-    {
-      id: '1',
-      actorName: 'System',
-      title: 'BTC price alert triggered',
-      message: 'Bitcoin moved above your target price of $68,000.',
-      createdAtLabel: '2 min ago',
-      isRead: false,
-      meta: 'BTC/USD • Alert',
-    },
-    {
-      id: '2',
-      actorName: 'TradeForge',
-      title: 'Order partially filled',
-      message: 'Your ETH buy order has been partially filled.',
-      createdAtLabel: '15 min ago',
-      isRead: true,
-      meta: 'ETH/USD • Order #48392',
-    },
-  ];
 
   toggleNotifications(): void {
     this.isNotificationsOpen.update((value: boolean) => !value);
