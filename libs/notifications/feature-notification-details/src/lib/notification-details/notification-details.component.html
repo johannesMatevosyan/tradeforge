@@ -1,30 +1,34 @@
 <div class="notification-details-page">
   @if (notification$ | async; as notification) {
     <section class="details-card">
-      <button class="back-btn" type="button" (click)="goBack()">
-        ← Back
-      </button>
+        <button class="back-btn" type="button" (click)="goBack()">
+            ← Back to notifications
+        </button>
 
-      <div class="details-header">
-        <span class="type-badge">{{ notification.type }}</span>
-        <span class="time">{{ notification.createdAtLabel }}</span>
-      </div>
-
-      <h1>{{ notification.title }}</h1>
-
-      <p class="message">
-        {{ notification.message }}
-      </p>
-
-      @if (notification.meta) {
-        <div class="meta">
-          {{ notification.meta }}
+        <div class="details-top">
+            <span class="type-badge">{{ notification.type }}</span>
+            <span class="time">{{ notification.createdAtLabel }}</span>
         </div>
-      }
 
-      <div class="status" [class.read]="notification.isRead">
-        {{ notification.isRead ? 'Read' : 'Unread' }}
-      </div>
+        <h1>{{ notification.title }}</h1>
+
+        <p class="message">{{ notification.message }}</p>
+
+        <div class="details-meta">
+            <div class="meta-row">
+            <span>Status</span>
+            <strong [class.read]="notification.isRead">
+                {{ notification.isRead ? 'Read' : 'Unread' }}
+            </strong>
+            </div>
+
+            @if (notification.meta) {
+            <div class="meta-row">
+                <span>Details</span>
+                <strong>{{ notification.meta }}</strong>
+            </div>
+            }
+        </div>
     </section>
   } @else {
     <section class="details-card empty">
