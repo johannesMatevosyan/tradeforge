@@ -42,7 +42,9 @@ export class TopbarComponent {
   }
 
   handleNotificationClick(item: NotificationItem): void {
-    console.log('Open notification', item);
+    this.isNotificationsOpen.set(false);
+    this.notificationService.markAsRead(item.id);
+    this.router.navigate(['/notifications', item.id]);
   }
 
   onSearchFocus(): void {

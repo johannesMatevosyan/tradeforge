@@ -1,0 +1,36 @@
+<div class="notification-details-page">
+  @if (notification$ | async; as notification) {
+    <section class="details-card">
+      <button class="back-btn" type="button" (click)="goBack()">
+        ← Back
+      </button>
+
+      <div class="details-header">
+        <span class="type-badge">{{ notification.type }}</span>
+        <span class="time">{{ notification.createdAtLabel }}</span>
+      </div>
+
+      <h1>{{ notification.title }}</h1>
+
+      <p class="message">
+        {{ notification.message }}
+      </p>
+
+      @if (notification.meta) {
+        <div class="meta">
+          {{ notification.meta }}
+        </div>
+      }
+
+      <div class="status" [class.read]="notification.isRead">
+        {{ notification.isRead ? 'Read' : 'Unread' }}
+      </div>
+    </section>
+  } @else {
+    <section class="details-card empty">
+      <h1>Notification not found</h1>
+      <p>This notification may have been cleared.</p>
+      <button class="back-btn" type="button" (click)="goBack()">← Back</button>
+    </section>
+  }
+</div>

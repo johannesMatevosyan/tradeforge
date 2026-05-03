@@ -17,7 +17,7 @@ export class TradingOrdersService {
     this.notificationService.add({
       type: 'order',
       title: 'Order placed',
-      message: `${order.side} ${order.quantity} ${order.symbol} at ${order.price}`,
+      message: `${order.side} ${order.quantity} ${order.symbol} at ${order.price}`
     });
   }
 
@@ -30,10 +30,12 @@ export class TradingOrdersService {
 
     this.ordersSubject.next(updated);
 
+    const cancelledOrder = updated.find((order) => order.id === orderId);
+
     this.notificationService.add({
       type: 'order',
       title: 'Order cancelled',
-      message: `Order ${orderId} was cancelled`,
+      message: `${cancelledOrder?.symbol ?? 'Order'} was cancelled`,
     });
   }
 

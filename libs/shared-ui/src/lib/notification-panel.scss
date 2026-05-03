@@ -79,13 +79,14 @@
   padding: 10px 14px;
   cursor: pointer;
   transition: background 0.2s ease;
+  border-bottom: 1px solid #2c2d2e;
 
   display: flex;
   flex-direction: column;
   gap: 4px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
   }
 
   &.unread {

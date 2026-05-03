@@ -58,6 +58,12 @@ export const appRoutes: Route[] = [
             ),
         },
         {
+          path: 'notifications/:id',
+          loadComponent: () =>
+            import('@tradeforge/notifications/feature-notification-details')
+              .then(m => m.NotificationDetailsComponent),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },

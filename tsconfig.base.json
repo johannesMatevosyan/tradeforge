@@ -71,6 +71,9 @@
       "@tradeforge/notifications/notification-data-access": [
         "libs/notifications/notification-data-access/src/index.ts"
       ],
+      "@tradeforge/notifications/feature-notification-details": [
+        "libs/notifications/feature-notification-details/src/index.ts"
+      ],
       "shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
       "feature-profile": ["libs/profile/feature-profile/src/index.ts"],
       "shared/data-access": ["libs/shared/data-access/src/index.ts"],
@@ -100,6 +103,9 @@
       "feature-portfolio": ["libs/feature-portfolio/src/index.ts"],
       "notification-data-access": [
         "libs/notifications/notification-data-access/src/index.ts"
+      ],
+      "feature-notification-details": [
+        "libs/notifications/feature-notification-details/src/index.ts"
       ]
     }
   },
