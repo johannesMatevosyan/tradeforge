@@ -130,3 +130,41 @@ app-notification-panel {
         line-height: 150%;
     }
 }
+
+.notifications-button {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -1px;
+  right: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.notification-badge.pulse {
+  animation: badge-pulse 0.95s ease;
+}
+
+@keyframes badge-pulse {
+  0% {
+    transform: scale(0.75);
+  }
+
+  60% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

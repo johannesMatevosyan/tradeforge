@@ -7,6 +7,7 @@ import { NotificationItem, NotificationService } from '@tradeforge/notifications
 import { ClickOutsideDirective, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 import { SearchService } from '@tradeforge/shared/data-access';
+import { map } from 'rxjs';
 
 
 @Component({
@@ -33,9 +34,27 @@ export class TopbarComponent {
   readonly unreadCount$ = this.notificationService.unreadCount$
   readonly notifications$ = this.notificationService.notifications$;
   readonly isNotificationsOpen = signal(false);
-
+  readonly badgeAnimationKey = signal(0);
   readonly user$: Signal<AuthUser | null> = this.authService.currentUser$;
+  readonly hasUnread$ = this.unreadCount$.pipe(
+    map((count) => count > 0)
+  );
+  readonly shouldAnimateBadge = signal(false);
   isFocused = false;
+
+  constructor() {
+    this.unreadCount$.subscribe((count) => {
+      if (count > 0) {
+        this.badgeAnimationKey.update((value) => value + 1);
+      }
+    });
+
+    this.shouldAnimateBadge.set(false);
+
+    setTimeout(() => {
+      this.shouldAnimateBadge.set(true);
+    });
+  }
 
   toggleNotifications(): void {
     this.isNotificationsOpen.update((value: boolean) => !value);

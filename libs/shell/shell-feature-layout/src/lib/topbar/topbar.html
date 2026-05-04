@@ -29,6 +29,13 @@
 
     <button type="button" class="notifications-button" (click)="toggleNotifications()">
       <lib-app-icon name="bell" [size]="22"></lib-app-icon>
+      @if (unreadCount$ | async; as count) {
+        @if (count > 0) {
+          <span class="notification-badge" [class.pulse]="shouldAnimateBadge()">
+            {{ count }}
+          </span>
+        }
+      }
     </button>
     <a class="profile-button" routerLink="/profile">
       <lib-app-icon name="user" [size]="22"></lib-app-icon>
