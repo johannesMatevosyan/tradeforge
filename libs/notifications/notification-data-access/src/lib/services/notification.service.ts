@@ -16,12 +16,33 @@ export type CreateNotificationInput = {
   providedIn: 'root',
 })
 export class NotificationService {
-    private readonly notificationsSubject = new BehaviorSubject<NotificationItem[]>([]);
+    private readonly storageKey = 'tradeforge_notifications';
+    private readonly notificationsSubject = new BehaviorSubject<NotificationItem[]>(
+        this.loadFromStorage()
+    );
     readonly notifications$ = this.notificationsSubject.asObservable();
-
     readonly unreadCount$ = this.notifications$.pipe(
         map((notifications) => notifications.filter((item) => !item.isRead).length)
     );
+
+    private loadFromStorage(): NotificationItem[] {
+    const raw = localStorage.getItem(this.storageKey);
+
+    if (!raw) {
+        return [];
+    }
+
+    try {
+        return JSON.parse(raw) as NotificationItem[];
+        } catch {
+            return [];
+        }
+    }
+
+    private updateNotifications(notifications: NotificationItem[]): void {
+        this.notificationsSubject.next(notifications);
+        localStorage.setItem(this.storageKey, JSON.stringify(notifications));
+    }
 
     add(input: CreateNotificationInput): void {
 
@@ -44,7 +65,7 @@ export class NotificationService {
 
         const current = this.notificationsSubject.value;
 
-        this.notificationsSubject.next([
+        this.updateNotifications([
             newNotification,
             ...current,
         ].slice(0, 20));
@@ -55,7 +76,7 @@ export class NotificationService {
         item.id === id ? { ...item, isRead: true } : item
         );
 
-        this.notificationsSubject.next(updated);
+        this.updateNotifications(updated);
     }
 
     markAllAsRead(): void {
@@ -64,11 +85,11 @@ export class NotificationService {
             isRead: true,
         }));
 
-        this.notificationsSubject.next(updated);
+        this.updateNotifications(updated);
     }
 
     clear(): void {
-        this.notificationsSubject.next([]);
+        this.updateNotifications([]);
     }
 
 }
