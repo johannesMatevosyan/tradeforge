@@ -35,9 +35,11 @@
         }
       </div>
     } @else {
-      <p class="empty">
-        No orders yet. Place your first order.
-      </p>
+    <lib-empty-state
+        icon="📋"
+        title="No orders yet"
+        description="Your placed market and limit orders will appear here."
+      />
     }
   } @else {
     <p class="empty">Loading orders...</p>

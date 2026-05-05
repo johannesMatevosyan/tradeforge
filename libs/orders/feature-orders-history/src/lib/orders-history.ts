@@ -1,11 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { OrdersApi, OrdersEvents } from '@tradeforge/orders/order-data-access';
+import { EmptyStateComponent } from '@tradeforge/shared-ui';
 import { startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'lib-orders-history',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, EmptyStateComponent],
   standalone: true,
   templateUrl: './orders-history.html',
   styleUrls: ['./orders-history.scss'],
