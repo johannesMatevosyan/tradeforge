@@ -9,7 +9,7 @@ import {
   PlaceOrderComponent,
   RecentOrdersComponent
 } from '@tradeforge/trading/ui';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, interval, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'lib-trading-page',
@@ -53,6 +53,11 @@ export class TradingPageComponent {
     this.symbolsService.selectSymbol(symbol);
   }
 
+  readonly now$ = interval(1000).pipe(
+    startWith(0),
+    map(() => Date.now())
+  );
+
   readonly selectedPriceView$ = combineLatest([
     this.selectedSymbol$,
     this.pricesView$,
@@ -60,15 +65,30 @@ export class TradingPageComponent {
     map(([symbol, prices]) => {
       const normalizedSymbol = symbol.replace('/', '');
 
-      return prices.find((item) => item.symbol === normalizedSymbol) ?? {
-        symbol,
-        price: 0,
-        previousPrice: null,
-        direction: 'neutral' as const,
+      return prices.find((item) => item.symbol === normalizedSymbol) ?? null;
+    })
+  );
+
+  readonly selectedPriceWithTime$ = combineLatest([
+    this.selectedPriceView$,
+    this.now$,
+  ]).pipe(
+    map(([price, now]) => {
+      if (!price) {
+        return null;
       }
 
+      const secondsAgo = Math.max(
+        0,
+        Math.floor((now - price.updatedAt) / 1000)
+      );
+
+      return {
+        ...price,
+        secondsAgo,
+      };
     })
-  )
+  );
 
   readonly selectedPriceHistory$ = combineLatest([
     this.selectedSymbol$,

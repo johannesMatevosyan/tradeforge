@@ -3,4 +3,5 @@ export interface MarketPriceView {
   price: number;
   previousPrice: number | null;
   direction: 'up' | 'down' | 'neutral';
+  updatedAt: number;
 }

@@ -6,6 +6,12 @@
     >
     {{ price | number: '1.2-2' }}
   </div>
+
+  @if (updatedAgoLabel; as updatedAgoLabel) {
+    <span>
+      {{ updatedAgoLabel === 'Just now' ? updatedAgoLabel : 'Updated ' + updatedAgoLabel }}
+    </span>
+  }
 </div>
 
 <div

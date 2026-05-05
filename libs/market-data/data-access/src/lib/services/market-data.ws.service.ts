@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MarketPrice, MarketPriceView } from '@tradeforge/shared-types';
-import { map, Observable, pairwise, scan } from 'rxjs';
+import { map, Observable, scan, shareReplay } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 
 @Injectable({
@@ -9,47 +9,71 @@ import { io, Socket } from 'socket.io-client';
 export class MarketDataWsService {
   private socket: Socket;
 
+  private readonly pricesStream$ = new Observable<MarketPrice[]>((observer) => {
+    this.socket.on('prices', (data: MarketPrice[]) => {
+      observer.next(data);
+    });
+
+    return () => {
+      this.socket.off('prices');
+    };
+  }).pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
   constructor() {
     this.socket = io('http://localhost:3000');
   }
 
   prices$(): Observable<MarketPrice[]> {
-    return new Observable((observer) => {
-      this.socket.on('prices', (data: MarketPrice[]) => {
-        observer.next(data);
-      });
-
-      return () => {
-        this.socket.off('prices');
-      };
-    });
+    return this.pricesStream$;
   }
 
   pricesView$ = this.prices$().pipe(
-    pairwise(),
-    map(([previous, current]) => {
-      const previousMap = this.toPriceMap(previous);
+    scan(
+      (state, current) => {
+        const nextPriceMap = this.toPriceMap(current);
+        const nextUpdatedAtMap = { ...state.updatedAtMap };
+        const now = Date.now();
 
-      return current.map((item) => {
-        const previousPrice = previousMap[item.symbol] ?? null;
+        const pricesView = current.map((item) => {
+          const previousPrice = state.priceMap[item.symbol] ?? null;
+          const priceChanged = previousPrice === null || item.price !== previousPrice;
+          const updatedAt = priceChanged
+            ? now
+            : nextUpdatedAtMap[item.symbol] ?? now;
 
-        const direction: MarketPriceView['direction'] =
-          previousPrice === null
-            ? 'neutral'
-            : item.price > previousPrice
-              ? 'up'
-              : item.price < previousPrice
-                ? 'down'
-                : 'neutral';
+          nextUpdatedAtMap[item.symbol] = updatedAt;
+
+          const direction: MarketPriceView['direction'] =
+            previousPrice === null
+              ? 'neutral'
+              : item.price > previousPrice
+                ? 'up'
+                : item.price < previousPrice
+                  ? 'down'
+                  : 'neutral';
+
+          return {
+            symbol: item.symbol,
+            price: item.price,
+            previousPrice,
+            direction,
+            updatedAt,
+          };
+        });
 
         return {
-          symbol: item.symbol,
-          price: item.price,
-          previousPrice,
-          direction
+          priceMap: nextPriceMap,
+          updatedAtMap: nextUpdatedAtMap,
+          pricesView,
         };
-      });
-    })
+      },
+      {
+        priceMap: {} as Record<string, number>,
+        updatedAtMap: {} as Record<string, number>,
+        pricesView: [] as MarketPriceView[],
+      }
+    ),
+    map((state) => state.pricesView)
   );
 
   pricesMap$ = this.prices$().pipe(

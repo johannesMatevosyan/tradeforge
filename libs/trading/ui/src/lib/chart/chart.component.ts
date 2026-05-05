@@ -13,6 +13,31 @@ export class ChartComponent {
   @Input() price: number = 0;
   @Input() direction: 'up' | 'down' | 'neutral' = 'neutral';
   @Input() history: number[] = [];
+  @Input() secondsAgo: number | null = null;
+
+  get updatedAgoLabel(): string | null {
+    if (this.secondsAgo === null) {
+      return null;
+    }
+
+    if (this.secondsAgo < 5) {
+      return 'Just now';
+    }
+
+    if (this.secondsAgo < 60) {
+      return `${this.secondsAgo}s ago`;
+    }
+
+    const minutesAgo = Math.floor(this.secondsAgo / 60);
+
+    if (minutesAgo < 60) {
+      return `${minutesAgo}m ago`;
+    }
+
+    const hoursAgo = Math.floor(minutesAgo / 60);
+
+    return `${hoursAgo}h ago`;
+  }
 
   get points(): string {
     if (this.history.length < 2) {
