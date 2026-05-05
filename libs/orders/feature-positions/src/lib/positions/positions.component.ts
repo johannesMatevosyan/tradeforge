@@ -2,11 +2,12 @@ import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { PositionsApi } from '@tradeforge/orders/order-data-access';
+import { EmptyStateComponent } from '@tradeforge/shared-ui';
 import { combineLatest, map } from 'rxjs';
 
 @Component({
   selector: 'lib-positions',
-  imports: [AsyncPipe, DecimalPipe],
+  imports: [AsyncPipe, DecimalPipe, EmptyStateComponent],
   standalone: true,
   templateUrl: './positions.component.html',
   styleUrls: ['./positions.component.scss'],
@@ -21,7 +22,8 @@ export class PositionsComponent {
   ]).pipe(
     map(([positions, prices]) =>
       positions.map((position) => {
-        const livePrice = prices.find((p) => p.symbol === position.symbol)?.price ?? null;
+        const normalizedSymbol = position.symbol.replace('/', '');
+        const livePrice = prices.find((p) => p.symbol === normalizedSymbol)?.price ?? null;
 
         const marketValue =
           livePrice !== null ? position.quantity * livePrice : null;

@@ -48,7 +48,11 @@
         </div>
       }
     } @else {
-      <p class="empty">No open positions</p>
+      <lib-empty-state
+        icon="📊"
+        title="No active long positions"
+        description="Filled buy orders will appear here when your buy quantity is greater than your sell quantity."
+      />
     }
   }
 </section>
