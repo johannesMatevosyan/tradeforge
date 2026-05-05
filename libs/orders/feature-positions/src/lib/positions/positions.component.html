@@ -55,4 +55,31 @@
       />
     }
   }
+
+  <h3>Closed Positions</h3>
+
+    @if ((closedPositions$ | async); as positions) {
+      @if (positions.length > 0) {
+
+        @for (p of positions; track p.symbol) {
+          <div class="closed-position">
+            <strong>{{ p.symbol }}</strong>
+
+            <span>Closed: {{ p.closedQuantity }}</span>
+            <span>Buy: {{ p.totalBuy }}</span>
+            <span>Sell: {{ p.totalSell }}</span>
+
+            <span class="status">CLOSED</span>
+          </div>
+        }
+
+      } @else {
+        <lib-empty-state
+          icon="📦"
+          title="No closed positions"
+          description="Completed trades will appear here."
+        />
+      }
+    }
+
 </section>

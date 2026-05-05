@@ -1,7 +1,7 @@
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
-import { PositionsApi } from '@tradeforge/orders/order-data-access';
+import { OrdersApi, PositionsApi } from '@tradeforge/orders/order-data-access';
 import { EmptyStateComponent } from '@tradeforge/shared-ui';
 import { combineLatest, map } from 'rxjs';
 
@@ -15,6 +15,10 @@ import { combineLatest, map } from 'rxjs';
 export class PositionsComponent {
   private positionsApi = inject(PositionsApi);
   private readonly marketDataWs = inject(MarketDataWsService);
+  private ordersApi = inject(OrdersApi);
+  readonly closedPositions$ = this.ordersApi.getOrders().pipe(
+    map((orders) => this.positionsApi.buildClosedPositions(orders))
+  );
 
   readonly positions$ = combineLatest([
     this.positionsApi.getPositions(),
