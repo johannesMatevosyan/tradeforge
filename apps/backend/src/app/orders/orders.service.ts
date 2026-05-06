@@ -50,7 +50,10 @@ export class OrdersService {
     }
 
     async create(userId: string, payload: CreateOrderDto): Promise<OrderResponseDto> {
-      const normalizedCode = payload.symbol.toUpperCase();
+      const normalizedCode = payload.symbol
+        .trim()
+        .toUpperCase()
+        .replace('/', '');
 
       this.validateQuantity(payload.quantity);
       this.validatePrice(payload.price, payload.type);

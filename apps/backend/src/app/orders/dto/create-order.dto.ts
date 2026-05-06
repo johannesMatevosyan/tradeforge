@@ -14,8 +14,8 @@ export class CreateOrderDto {
   @ApiProperty({ example: 'BTCUSD' })
   @IsString()
   @Length(3, 20)
-  @Matches(/^[A-Za-z]+$/, {
-    message: 'Symbol must contain only letters',
+  @Matches(/^[A-Z]+\/[A-Z]+$/, {
+    message: 'Symbol must be in format BASE/QUOTE',
   })
   symbol!: string;
 
