@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { OrderSide, OrderStatus, OrderType } from '@prisma/generated';
+import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
@@ -7,16 +8,16 @@ import { OrderResponseDto } from './dto/order-response.dto';
 
 @Injectable()
 export class OrdersService {
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(
+      private readonly prismaService: PrismaService,
+      private readonly notificationsService: NotificationsService
+    ) {}
 
-    private readonly demoUserEmail = 'demo@tradeforge.local';
-
-    async findAll(): Promise<OrderResponseDto[]> {
-      const user = await this.getDemoUser();
+    async findAll(userId: string): Promise<OrderResponseDto[]> {
 
       const orders = await this.prismaService.order.findMany({
         where: {
-          userId: user.id,
+          userId,
         },
         include: {
           symbol: true,
@@ -29,13 +30,12 @@ export class OrdersService {
       return orders.map((order) => this.toResponseDto(order));
     }
 
-    async findOne(id: string): Promise<OrderResponseDto> {
-      const user = await this.getDemoUser();
+    async findOne(userId: string, id: string): Promise<OrderResponseDto> {
 
       const order = await this.prismaService.order.findFirst({
         where: {
           id,
-          userId: user.id,
+          userId,
         },
         include: {
           symbol: true,
@@ -49,9 +49,7 @@ export class OrdersService {
       return this.toResponseDto(order);
     }
 
-    async create(payload: CreateOrderDto): Promise<OrderResponseDto> {
-
-      const user = await this.getDemoUser();
+    async create(userId: string, payload: CreateOrderDto): Promise<OrderResponseDto> {
       const normalizedCode = payload.symbol.toUpperCase();
 
       this.validateQuantity(payload.quantity);
@@ -77,7 +75,7 @@ export class OrdersService {
 
       const createdOrder = await this.prismaService.order.create({
         data: {
-          userId: user.id,
+          userId,
           symbolId: symbol.id,
           side: payload.side as OrderSide,
           type: payload.type as OrderType,
@@ -93,16 +91,27 @@ export class OrdersService {
         },
       });
 
+      await this.notificationsService.create({
+        userId,
+        type: 'order',
+        title: 'Order placed',
+        message: `${createdOrder.side} ${createdOrder.quantity} ${createdOrder.symbol.code}`,
+        meta: {
+          orderId: createdOrder.id,
+          symbol: createdOrder.symbol.code,
+          side: createdOrder.side,
+        },
+      });
+
       return this.toResponseDto(createdOrder);
     }
 
-    async cancel(id: string): Promise<OrderResponseDto> {
-      const user = await this.getDemoUser();
+    async cancel(userId: string, id: string): Promise<OrderResponseDto> {
 
       const existingOrder = await this.prismaService.order.findFirst({
         where: {
           id,
-          userId: user.id,
+          userId,
         },
         include: {
           symbol: true,
@@ -127,6 +136,18 @@ export class OrdersService {
         include: {
           symbol: true,
         },
+      });
+
+      await this.notificationsService.create({
+        userId,
+        type: 'order',
+        title: 'Order cancelled',
+        message: `${updatedOrder.side} ${updatedOrder.quantity} ${updatedOrder.symbol.code}`,
+        meta: {
+            orderId: updatedOrder.id,
+            symbol: updatedOrder.symbol.code,
+            side: updatedOrder.side,
+          },
       });
 
       return this.toResponseDto(updatedOrder);
@@ -160,20 +181,6 @@ export class OrdersService {
           throw new BadRequestException('Price must be greater than 0.');
         }
       }
-    }
-
-    private async getDemoUser() {
-      const user = await this.prismaService.user.findUnique({
-        where: {
-          email: this.demoUserEmail,
-        },
-      });
-
-      if (!user) {
-        throw new NotFoundException('Demo user not found.');
-      }
-
-      return user;
     }
 
     private toResponseDto(order: {
