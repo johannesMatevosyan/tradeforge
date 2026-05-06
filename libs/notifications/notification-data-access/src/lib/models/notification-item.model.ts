@@ -10,6 +10,12 @@ export interface NotificationItem {
   createdAt: string;
   createdAtLabel: string;
   isRead: boolean;
-  meta?: string;
+  meta?: NotificationMeta;
   route?: string;
+}
+
+export interface NotificationMeta {
+  orderId?: string;
+  symbol?: string;
+  side?: string;
 }

@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, inject, Output, Signal, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, AuthUser } from '@tradeforge/auth-data-access';
@@ -43,7 +44,11 @@ export class TopbarComponent {
   isFocused = false;
 
   constructor() {
-    this.unreadCount$.subscribe((count) => {
+    this.notificationService.loadNotifications();
+
+    this.unreadCount$
+    .pipe(takeUntilDestroyed())
+    .subscribe((count) => {
       if (count > 0) {
         this.badgeAnimationKey.update((value) => value + 1);
       }
@@ -54,6 +59,7 @@ export class TopbarComponent {
     setTimeout(() => {
       this.shouldAnimateBadge.set(true);
     });
+
   }
 
   toggleNotifications(): void {

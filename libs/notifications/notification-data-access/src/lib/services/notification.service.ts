@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { NotificationItem } from '../models/notification-item.model';
+import { NotificationsApiService } from './notification-api.service';
 
 export type CreateNotificationInput = {
   type: 'order' | 'system';
@@ -16,80 +17,54 @@ export type CreateNotificationInput = {
   providedIn: 'root',
 })
 export class NotificationService {
-    private readonly storageKey = 'tradeforge_notifications';
-    private readonly notificationsSubject = new BehaviorSubject<NotificationItem[]>(
-        this.loadFromStorage()
-    );
-    readonly notifications$ = this.notificationsSubject.asObservable();
-    readonly unreadCount$ = this.notifications$.pipe(
-        map((notifications) => notifications.filter((item) => !item.isRead).length)
-    );
+  private readonly notificationsApi = inject(NotificationsApiService);
+  private readonly notificationsSubject =
+    new BehaviorSubject<NotificationItem[]>([]);
 
-    private loadFromStorage(): NotificationItem[] {
-    const raw = localStorage.getItem(this.storageKey);
+  readonly notifications$ = this.notificationsSubject.asObservable();
 
-    if (!raw) {
-        return [];
-    }
+  readonly unreadCount$ = this.notifications$.pipe(
+    map((notifications) => notifications.filter((item) => !item.isRead).length)
+  );
 
-    try {
-        return JSON.parse(raw) as NotificationItem[];
-        } catch {
-            return [];
-        }
-    }
-
-    private updateNotifications(notifications: NotificationItem[]): void {
+  loadNotifications(): void {
+    this.notificationsApi.getNotifications().subscribe({
+      next: (notifications) => {
         this.notificationsSubject.next(notifications);
-        localStorage.setItem(this.storageKey, JSON.stringify(notifications));
-    }
+      },
+    });
+  }
 
-    add(input: CreateNotificationInput): void {
-
-        const newNotification: NotificationItem = {
-            id: crypto.randomUUID(),
-            type: input.type,
-            title: input.title,
-            message: input.message,
-
-            actorName: input.actorName ?? 'System',
-            actorAvatarUrl: input.actorAvatarUrl,
-
-            createdAt: new Date().toISOString(),
-            createdAtLabel: 'Just now',
-            isRead: false,
-
-            route: input.route,
-            meta: input.meta,
-        };
-
-        const current = this.notificationsSubject.value;
-
-        this.updateNotifications([
-            newNotification,
-            ...current,
-        ].slice(0, 20));
-    }
-
-    markAsRead(id: string): void {
+  markAsRead(id: string): void {
+    this.notificationsApi.markAsRead(id).subscribe({
+      next: () => {
         const updated = this.notificationsSubject.value.map((item) =>
-        item.id === id ? { ...item, isRead: true } : item
+          item.id === id ? { ...item, isRead: true } : item
         );
 
-        this.updateNotifications(updated);
-    }
+        this.notificationsSubject.next(updated);
+      },
+    });
+  }
 
-    markAllAsRead(): void {
+  markAllAsRead(): void {
+    this.notificationsApi.markAllAsRead().subscribe({
+      next: () => {
         const updated = this.notificationsSubject.value.map((item) => ({
-            ...item,
-            isRead: true,
+          ...item,
+          isRead: true,
         }));
 
-        this.updateNotifications(updated);
-    }
+        this.notificationsSubject.next(updated);
+      },
+    });
+  }
 
-    clear(): void {
-        this.updateNotifications([]);
-    }
-
+  clear(): void {
+    this.notificationsApi.clearAll().subscribe({
+      next: () => {
+        this.notificationsSubject.next([]);
+      },
+    });
+  }
 }

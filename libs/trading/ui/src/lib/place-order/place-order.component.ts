@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TradingOrder } from '@tradeforge/shared-types';
+import { PlaceOrderPayload } from "@tradeforge/shared-types";
 
 @Component({
   selector: 'lib-place-order',
@@ -13,30 +13,37 @@ import { TradingOrder } from '@tradeforge/shared-types';
 export class PlaceOrderComponent {
   @Input() symbol = 'BTC/USD';
   @Input() price: number = 0;
-  @Output() orderPlaced = new EventEmitter<TradingOrder>();
+  @Output() orderPlaced = new EventEmitter<PlaceOrderPayload>();
 
   side: 'BUY' | 'SELL' = 'BUY';
   type: 'MARKET' | 'LIMIT' = 'MARKET';
-  quantity = 0.1;
+  quantity = '0.1';
 
   placeOrder(): void {
-    if (!this.symbol.trim() || this.quantity <= 0 || this.price <= 0) {
+    if (!this.symbol.trim() || !this.quantity || parseFloat(this.quantity) <= 0) {
       return;
     }
 
-    const order: TradingOrder = {
-      id: crypto.randomUUID(),
+    if (this.type === 'LIMIT' && this.price <= 0) {
+      return;
+    }
+
+    this.orderPlaced.emit({
       symbol: this.symbol.trim().toUpperCase(),
       side: this.side,
       type: this.type,
-      price: parseFloat((this.price * (1 + (Math.random() - 0.5) / 10)).toFixed(3)), // Simulate some price variation
-      quantity: this.quantity,
-      status: this.type === 'MARKET' ? 'FILLED' : 'OPEN',
-      createdAt: new Date(),
-    };
+      quantity: String(this.quantity),
+      price: this.type === 'LIMIT' ? String(this.price) : '',
+    });
 
-    this.orderPlaced.emit(order);
+    this.quantity = '0.1';
+  }
 
-    this.quantity = 0.1;
+  get isPlaceOrderDisabled(): boolean {
+    return (
+      !this.symbol.trim() ||
+      Number(this.quantity) <= 0 ||
+      (this.type === 'LIMIT' && Number(this.price) <= 0)
+    );
   }
 }

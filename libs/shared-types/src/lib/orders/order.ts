@@ -30,3 +30,11 @@ export interface CreateOrderRequest {
   quantity: string;
   price?: string;
 }
+
+export interface PlaceOrderPayload {
+  symbol: string;
+  side: 'BUY' | 'SELL';
+  type: 'MARKET' | 'LIMIT';
+  price: string;
+  quantity: string;
+}

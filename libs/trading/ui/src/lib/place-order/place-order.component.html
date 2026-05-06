@@ -41,12 +41,13 @@
     <option value="LIMIT">Limit</option>
     </select>
 
-    <button
-        type="button"
-        class="place-order-btn"
-        [ngClass]="side.toLowerCase()"
-        [disabled]="!symbol.trim() || quantity <= 0 || price <= 0"
-        (click)="placeOrder()">
-        Place {{side}} Order
-    </button>
+<button
+  type="button"
+  class="place-order-btn"
+  [ngClass]="side.toLowerCase()"
+  [disabled]="isPlaceOrderDisabled"
+  (click)="placeOrder()"
+>
+  Place {{ side }} Order
+</button>
 </div>

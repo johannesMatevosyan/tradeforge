@@ -1,7 +1,9 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
-import { TradingOrder } from '@tradeforge/shared-types';
+import { NotificationService } from '@tradeforge/notifications/notification-data-access';
+import { OrdersApiService } from '@tradeforge/orders/order-data-access';
+import { PlaceOrderPayload, TradingOrder } from '@tradeforge/shared-types';
 import { TradingOrdersService, TradingSymbolsService } from '@tradeforge/trading/trading-data-access';
 import {
   ChartComponent,
@@ -27,6 +29,8 @@ import { combineLatest, interval, map, startWith } from 'rxjs';
 export class TradingPageComponent {
   private readonly ordersService = inject(TradingOrdersService);
   private readonly symbolsService = inject(TradingSymbolsService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly ordersApiervice = inject(OrdersApiService);
   private readonly marketDataService = inject(MarketDataWsService);
   readonly pricesMap$ = this.marketDataService.pricesMap$;
   readonly pricesView$ = this.marketDataService.pricesView$;
@@ -45,8 +49,13 @@ export class TradingPageComponent {
     map(([symbol, prices]) => prices[symbol] ?? 0)
   );
 
-  onOrderPlaced(order: TradingOrder): void {
-    this.ordersService.placeOrder(order);
+  onOrderPlaced(order: PlaceOrderPayload): void {
+    this.ordersApiervice.createOrder(order).subscribe({
+      next: () => {
+        this.ordersApiervice.getOrders(); // reload orders
+        this.notificationService.loadNotifications();
+      },
+    });
   }
 
   onSymbolSelected(symbol: string): void {

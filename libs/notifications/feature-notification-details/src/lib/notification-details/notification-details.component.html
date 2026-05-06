@@ -23,10 +23,26 @@
             </div>
 
             @if (notification.meta) {
-            <div class="meta-row">
-                <span>Details</span>
-                <strong>{{ notification.meta }}</strong>
-            </div>
+              @if (notification.meta.symbol) {
+                <div class="meta-row">
+                  <span>Symbol</span>
+                  <strong>{{ notification.meta.symbol }}</strong>
+                </div>
+              }
+
+              @if (notification.meta.side) {
+                <div class="meta-row">
+                  <span>Side</span>
+                  <strong>{{ notification.meta.side }}</strong>
+                </div>
+              }
+
+              @if (notification.meta.orderId) {
+                <div class="meta-row">
+                  <span>Order ID</span>
+                  <strong>{{ notification.meta.orderId }}</strong>
+                </div>
+              }
             }
         </div>
     </section>
