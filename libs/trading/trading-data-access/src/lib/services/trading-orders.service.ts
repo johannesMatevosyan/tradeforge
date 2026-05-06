@@ -1,24 +1,16 @@
-import { inject, Injectable } from "@angular/core";
-import { NotificationService } from '@tradeforge/notifications/notification-data-access';
+import { Injectable } from "@angular/core";
 import { TradingOrder, TradingPosition, TradingPositionView } from '@tradeforge/shared-types';
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class TradingOrdersService {
   private ordersSubject = new BehaviorSubject<TradingOrder[]>([]);
-  private notificationService = inject(NotificationService);
 
   orders$ = this.ordersSubject.asObservable();
 
   placeOrder(order: TradingOrder): void {
     const currentOrders = this.ordersSubject.value;
     this.ordersSubject.next([order, ...currentOrders].slice(0, 10));
-
-    this.notificationService.add({
-      type: 'order',
-      title: 'Order placed',
-      message: `${order.side} ${order.quantity} ${order.symbol} at ${order.price}`
-    });
   }
 
   cancelOrder(orderId: string): void {
@@ -29,14 +21,6 @@ export class TradingOrdersService {
     );
 
     this.ordersSubject.next(updated);
-
-    const cancelledOrder = updated.find((order) => order.id === orderId);
-
-    this.notificationService.add({
-      type: 'order',
-      title: 'Order cancelled',
-      message: `${cancelledOrder?.symbol ?? 'Order'} was cancelled`,
-    });
   }
 
   getPositions(orders: TradingOrder[]): TradingPosition[] {
