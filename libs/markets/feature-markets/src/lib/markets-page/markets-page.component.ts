@@ -128,6 +128,10 @@ export class MarketsPageComponent {
     );
 
     onSymbolSelected(symbol: string): void {
-        // later: this.router.navigate(['/trading'], { queryParams: { symbol } });
+        // TODO: Navigate to Trading page with selected symbol.
+        // Example later:
+        // this.router.navigate(['/trading'], {
+        //   queryParams: { symbol },
+        // });
     }
 }
