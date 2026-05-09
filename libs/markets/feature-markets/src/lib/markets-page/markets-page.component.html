@@ -96,7 +96,7 @@
                   <tr (click)="onSymbolSelected(market.symbol)">
                     <td>
                       <div class="symbol-cell">
-                        <strong>{{ market.symbol }}</strong>
+                        <strong>{{ formatSymbol(market.symbol) }}</strong>
                         <span>{{ market.name }}</span>
                       </div>
                     </td>
@@ -158,7 +158,7 @@
         @if (topGainers$ | async; as gainers) {
           @for (market of gainers; track market.symbol) {
             <button type="button" (click)="onSymbolSelected(market.symbol)">
-              <span>{{ market.symbol }}</span>
+              <span>{{ formatSymbol(market.symbol) }}</span>
               <strong class="positive">
                 +{{ market.changePercent | number: '1.2-2' }}%
               </strong>
@@ -175,7 +175,7 @@
         @if (topLosers$ | async; as losers) {
           @for (market of losers; track market.symbol) {
             <button type="button" (click)="onSymbolSelected(market.symbol)">
-              <span>{{ market.symbol }}</span>
+              <span>{{ formatSymbol(market.symbol) }}</span>
               <strong class="negative">
                 {{ market.changePercent | number: '1.2-2' }}%
               </strong>
