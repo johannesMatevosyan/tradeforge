@@ -1,0 +1,190 @@
+<section class="markets-page">
+  <header class="markets-header">
+    <div>
+      <p class="eyebrow">Markets</p>
+      <h1>Live Markets</h1>
+      <p class="subtitle">
+        Track realtime prices, market direction, and top movers.
+      </p>
+    </div>
+  </header>
+
+  @if (overview$ | async; as overview) {
+    <section class="overview-grid">
+      <article class="overview-card">
+        <span>Total Markets</span>
+        <strong>{{ overview.totalMarkets }}</strong>
+        <small>Active tradable symbols</small>
+      </article>
+
+      <article class="overview-card">
+        <span>Top Gainer</span>
+
+        @if (overview.topGainer) {
+          <strong class="positive">
+            {{ overview.topGainer.symbol }}
+          </strong>
+          <small>
+            +{{ overview.topGainer.changePercent | number: '1.2-2' }}%
+          </small>
+        } @else {
+          <strong>-</strong>
+          <small>No movement yet</small>
+        }
+      </article>
+
+      <article class="overview-card">
+        <span>Top Loser</span>
+
+        @if (overview.topLoser) {
+          <strong class="negative">
+            {{ overview.topLoser.symbol }}
+          </strong>
+          <small>
+            {{ overview.topLoser.changePercent | number: '1.2-2' }}%
+          </small>
+        } @else {
+          <strong>-</strong>
+          <small>No movement yet</small>
+        }
+      </article>
+
+      <article class="overview-card">
+        <span>Watchlist</span>
+        <strong>-</strong>
+        <small>Coming soon</small>
+      </article>
+    </section>
+  }
+
+  <section class="markets-toolbar">
+    <div class="search-box">
+      <span>Search</span>
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Search BTC/USD, ETH/USD..."
+      />
+    </div>
+  </section>
+
+  <section class="markets-content">
+    <article class="markets-table-card">
+      <div class="card-header">
+        <div>
+          <h2>Live Prices</h2>
+          <p>Realtime updates from market stream</p>
+        </div>
+      </div>
+
+      @if (filteredMarkets$ | async; as markets) {
+        @if (markets.length > 0) {
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Price</th>
+                  <th>Direction</th>
+                  <th>Change</th>
+                  <th>24h %</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (market of markets; track market.symbol) {
+                  <tr (click)="onSymbolSelected(market.symbol)">
+                    <td>
+                      <div class="symbol-cell">
+                        <strong>{{ market.symbol }}</strong>
+                        <span>{{ market.name }}</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      {{ market.price | number: '1.2-2' }}
+                    </td>
+
+                    <td>
+                      <span
+                        class="direction-pill"
+                        [class.positive]="market.direction === 'up'"
+                        [class.negative]="market.direction === 'down'"
+                        [class.neutral]="market.direction === 'neutral'"
+                      >
+                        {{ market.direction }}
+                      </span>
+                    </td>
+
+                    <td
+                      [class.positive]="market.change > 0"
+                      [class.negative]="market.change < 0"
+                      [class.neutral]="market.change === 0"
+                    >
+                      {{ market.change | number: '1.2-2' }}
+                    </td>
+
+                    <td
+                      [class.positive]="market.changePercent > 0"
+                      [class.negative]="market.changePercent < 0"
+                      [class.neutral]="market.changePercent === 0"
+                    >
+                      {{ market.changePercent | number: '1.2-2' }}%
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="empty-state">
+            No markets found.
+          </div>
+        }
+      }
+    </article>
+
+    <aside class="top-movers-card">
+      <div class="card-header">
+        <div>
+          <h2>Top Movers</h2>
+          <p>Strongest realtime movements</p>
+        </div>
+      </div>
+
+      <div class="movers-section">
+        <h3>Gainers</h3>
+
+        @if (topGainers$ | async; as gainers) {
+          @for (market of gainers; track market.symbol) {
+            <button type="button" (click)="onSymbolSelected(market.symbol)">
+              <span>{{ market.symbol }}</span>
+              <strong class="positive">
+                +{{ market.changePercent | number: '1.2-2' }}%
+              </strong>
+            </button>
+          } @empty {
+            <p class="muted">No gainers yet.</p>
+          }
+        }
+      </div>
+
+      <div class="movers-section">
+        <h3>Losers</h3>
+
+        @if (topLosers$ | async; as losers) {
+          @for (market of losers; track market.symbol) {
+            <button type="button" (click)="onSymbolSelected(market.symbol)">
+              <span>{{ market.symbol }}</span>
+              <strong class="negative">
+                {{ market.changePercent | number: '1.2-2' }}%
+              </strong>
+            </button>
+          } @empty {
+            <p class="muted">No losers yet.</p>
+          }
+        }
+      </div>
+    </aside>
+  </section>
+</section>
