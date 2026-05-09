@@ -64,6 +64,13 @@ export const appRoutes: Route[] = [
               .then(m => m.NotificationDetailsComponent),
         },
         {
+          path: 'markets',
+          loadChildren: () =>
+            import('@tradeforge/markets/feature-markets').then(
+              (m) => m.marketsRoutes
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },
