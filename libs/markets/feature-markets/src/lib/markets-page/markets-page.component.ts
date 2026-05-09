@@ -2,7 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MarketDataWsService, SymbolsApiService } from '@tradeforge/market-data/market-data-access';
-import { combineLatest, debounceTime, distinctUntilChanged, map, shareReplay, startWith } from 'rxjs';
+import {
+    MarketOverviewView,
+    MarketRowView
+} from '@tradeforge/shared-types';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, shareReplay, startWith } from 'rxjs';
 
 @Component({
   selector: 'markets-page.component',
@@ -50,7 +54,7 @@ export class MarketsPageComponent {
         distinctUntilChanged()
     );
 
-    readonly markets$ = combineLatest([
+    readonly markets$: Observable<MarketRowView[]> = combineLatest([
         this.symbols$,
         this.marketDataService.pricesView$,
     ]).pipe(
@@ -76,7 +80,7 @@ export class MarketsPageComponent {
         )
     );
 
-    readonly filteredMarkets$ = combineLatest([
+    readonly filteredMarkets$: Observable<MarketRowView[]> = combineLatest([
         this.markets$,
         this.search$,
     ]).pipe(
@@ -90,7 +94,7 @@ export class MarketsPageComponent {
         })
     );
 
-    readonly overview$ = this.markets$.pipe(
+    readonly overview$: Observable<MarketOverviewView> = this.markets$.pipe(
         map((markets) => {
         const sorted = [...markets].sort(
             (a, b) => b.changePercent - a.changePercent
@@ -105,7 +109,7 @@ export class MarketsPageComponent {
         })
     );
 
-    readonly topGainers$ = this.markets$.pipe(
+    readonly topGainers$: Observable<MarketRowView[]> = this.markets$.pipe(
         map((markets) =>
         [...markets]
             .filter((market) => market.changePercent > 0)
@@ -114,7 +118,7 @@ export class MarketsPageComponent {
         )
     );
 
-    readonly topLosers$ = this.markets$.pipe(
+    readonly topLosers$: Observable<MarketRowView[]> = this.markets$.pipe(
         map((markets) =>
         [...markets]
             .filter((market) => market.changePercent < 0)
