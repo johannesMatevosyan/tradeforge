@@ -1,15 +1,42 @@
 <section class="watchlist">
-  <h3>Watchlist</h3>
+  <div class="watchlist-title">
+    <h3>Watchlist</h3>
+    <p>Track selected markets with realtime price updates.</p>
+  </div>
+
+  <div class="watchlist-header">
+
+    <div class="watchlist-add">
+      <select [value]="selectedSymbolToAdd()" class="watchlist-select" (change)="onSymbolToAddChanged($event)">
+        <option value="">Add symbol</option>
+
+        @for (symbol of availableSymbols(); track symbol.code) {
+          <option [value]="symbol.code">
+            {{ getSymbolLabel(symbol) }}
+          </option>
+        }
+      </select>
+
+      <button
+        type="button"
+        class="watchlist-add-button"
+        [disabled]="!selectedSymbolToAdd()"
+        (click)="addSelectedSymbol()"
+      >
+        Add
+      </button>
+    </div>
+  </div>
 
   @if (isLoading()) {
     <div class="watchlist-state">Loading watchlist...</div>
   } @else if (error()) {
     <div class="watchlist-state">{{ error() }}</div>
-  } @else if (filteredItems().length === 0) {
+  } @else if (items().length === 0) {
     <div class="watchlist-state">No matching symbols found.</div>
   } @else {
     <ul class="watchlist-data">
-      @for (item of filteredItems(); track item.id) {
+      @for (item of items(); track item.id) {
 
       <li class="watchlist-data-item">
         @let live = getLivePrice(item.symbolCode);
@@ -34,7 +61,7 @@
                 {{ live.direction === 'up' ? '▲' : live.direction === 'down' ? '▼' : '•' }}
               </span>
             } @else {
-              <strong>—</strong>
+              <span class="watchlist-offline">Offline</span>
             }
           </div>
         </button>

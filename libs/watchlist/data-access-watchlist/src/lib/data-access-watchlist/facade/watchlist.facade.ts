@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { MarketDataWsService } from "@tradeforge/market-data/market-data-access";
+import { MarketDataWsService, MarketSymbol, SymbolsApiService } from "@tradeforge/market-data/market-data-access";
 import { BehaviorSubject, combineLatest, map, shareReplay, switchMap, tap } from "rxjs";
 import { calculatePercentageChange } from "../../util/calculate-percentage-change";
 import { WatchlistApiService } from "../services/watchlist-api.service";
@@ -8,12 +8,25 @@ import { WatchlistApiService } from "../services/watchlist-api.service";
 export class WatchlistFacade {
   private readonly watchlistApiService = inject(WatchlistApiService);
   private readonly marketDataWs = inject(MarketDataWsService);
-
+  private readonly symbolsApi = inject(SymbolsApiService);
   private readonly reload$ = new BehaviorSubject<void>(undefined);
 
   readonly items$ = this.reload$.pipe(
     switchMap(() => this.watchlistApiService.getWatchlist()),
     shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  readonly availableSymbols$ = combineLatest([
+    this.symbolsApi.getSymbols(),
+    this.items$,
+  ]).pipe(
+    map(([symbols, items]) => {
+      const existingCodes = new Set(items.map((item) => item.symbolCode));
+
+      return symbols.filter(
+        (symbol) => symbol.isActive && !existingCodes.has(symbol.code)
+      );
+    })
   );
 
   readonly watchlistRows$ = combineLatest([
@@ -47,8 +60,11 @@ export class WatchlistFacade {
     )
   );
 
-  addSymbol(symbol: string) {
-    return this.watchlistApiService.addSymbol(symbol).pipe(
+  addSymbol(symbol: MarketSymbol) {
+    const displayName =
+      symbol.description ?? `${symbol.baseAsset} / ${symbol.quoteAsset}`;
+
+    return this.watchlistApiService.addSymbol(symbol.code, displayName).pipe(
       tap(() => this.reload$.next())
     );
   }
@@ -58,4 +74,11 @@ export class WatchlistFacade {
       tap(() => this.reload$.next())
     );
   }
+
+  removeItem(id: string) {
+    return this.watchlistApiService.removeSymbol(id).pipe(
+      tap(() => this.reload$.next())
+    );
+  }
+
 }

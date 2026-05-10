@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
-import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MarketDataWsService, MarketSymbol } from '@tradeforge/market-data/market-data-access';
 import { OrderSelectionService } from '@tradeforge/orders/order-data-access';
 import { SearchService } from '@tradeforge/shared/data-access';
-import { BehaviorSubject, tap } from 'rxjs';
-import { LivePriceState, PriceDirection, WatchlistItem } from '../data-access-watchlist/models/watchlist-item.model';
+import { WatchlistFacade } from '../..';
+import { LivePriceState, PriceDirection } from '../data-access-watchlist/models/watchlist-item.model';
 import { WatchlistApiService } from '../data-access-watchlist/services/watchlist-api.service';
 
 @Component({
@@ -19,18 +20,24 @@ export class WatchlistComponent implements OnInit {
     private readonly watchlistApiService = inject(WatchlistApiService);
     private readonly marketDataWs = inject(MarketDataWsService);
     private readonly orderSelection = inject(OrderSelectionService);
-    private readonly reload$ = new BehaviorSubject<void>(undefined);
-    private readonly debugEffect = effect(() => {
-        this.debugFilteredItems();
-    });
+    private readonly watchlistFacade = inject(WatchlistFacade);
 
-    readonly items = signal<WatchlistItem[]>([]);
+    readonly selectedSymbolToAdd = signal('');
+    readonly availableSymbols = toSignal(
+        this.watchlistFacade.availableSymbols$,
+        { initialValue: [] }
+    );
+    // readonly items = signal<WatchlistItem[]>([]);
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
     readonly livePrices = signal<Record<string, LivePriceState>>({});
     readonly selectedSymbol = this.orderSelection.selectedSymbol;
 
-    readonly searchTerm = this.searchService.searchTerm;
+    readonly items = toSignal(this.watchlistFacade.items$, {
+        initialValue: [],
+    });
+
+    readonly searchTerm = signal('');
 
     readonly filteredItems = computed(() => {
         const term = this.searchTerm().toLowerCase().trim();
@@ -45,16 +52,8 @@ export class WatchlistComponent implements OnInit {
             const name = item.displayName.toLowerCase();
             const label = item.label.toLowerCase();
 
-            return (
-                code.includes(term) ||
-                name.includes(term) ||
-                label.includes(term)
-            );
+            return code.includes(term) || name.includes(term) || label.includes(term);
         });
-    });
-
-    readonly debugFilteredItems = computed(() => {
-        return this.filteredItems();
     });
 
     getLivePrice(symbolCode: string): LivePriceState | null {
@@ -62,7 +61,6 @@ export class WatchlistComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loadWatchlist();
 
         this.marketDataWs.prices$().subscribe((prices) => {
             this.livePrices.update((previous) => {
@@ -91,29 +89,43 @@ export class WatchlistComponent implements OnInit {
         });
     }
 
-    loadWatchlist(): void {
-        this.isLoading.set(true);
-        this.error.set(null);
-
-        this.watchlistApiService.getWatchlist().subscribe({
-            next: (items) => {
-                this.items.set(items);
-                this.isLoading.set(false);
-            },
-            error: (error) => {
-                this.error.set('Failed to load watchlist.');
-                this.isLoading.set(false);
-            },
-        });
-    }
-
     selectForOrder(symbolCode: string): void {
         this.orderSelection.selectSymbol(symbolCode);
     }
 
-    removeItem(id: string) {
-        return this.watchlistApiService.removeSymbol(id).pipe(
-            tap(() => this.reload$.next())
+    removeItem(id: string): void {
+        this.watchlistFacade.removeItem(id).subscribe({
+            error: (error) => {
+                console.error('Failed to remove watchlist item', error);
+            },
+        });
+    }
+
+    onSymbolToAddChanged(event: Event): void {
+        const value = (event.target as HTMLSelectElement).value;
+        this.selectedSymbolToAdd.set(value);
+    }
+
+    addSelectedSymbol(): void {
+        const symbolCode = this.selectedSymbolToAdd();
+        const symbol = this.availableSymbols().find(
+            (item) => item.code === symbolCode
         );
+
+        if (!symbolCode) {
+            return;
+        }
+
+        if (!symbol) {
+            return;
+        }
+
+        this.watchlistFacade.addSymbol(symbol).subscribe(() => {
+            this.selectedSymbolToAdd.set('');
+        });
+    }
+
+    getSymbolLabel(symbol: MarketSymbol): string {
+        return `${symbol.code} - ${symbol.description ?? `${symbol.baseAsset} / ${symbol.quoteAsset}`}`;
     }
 }

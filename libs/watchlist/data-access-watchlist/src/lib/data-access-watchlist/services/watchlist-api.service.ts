@@ -16,8 +16,8 @@ export class WatchlistApiService {
         return this.http.get<WatchlistItem[]>(this.baseUrl);
     }
 
-    addSymbol(symbol: string) {
-        return this.http.post<WatchlistItemResponse>('/api/watchlist', { symbol });
+    addSymbol(symbolCode: string, displayName: string) {
+        return this.http.post<WatchlistItemResponse>('/api/watchlist', { symbolCode, displayName });
     }
 
     removeSymbol(symbol: string) {
