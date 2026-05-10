@@ -2,13 +2,13 @@ import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, inject, Output, Signal, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, TitleStrategy } from '@angular/router';
 import { AuthService, AuthUser } from '@tradeforge/auth-data-access';
 import { NotificationItem, NotificationService } from '@tradeforge/notifications/notification-data-access';
 import { ClickOutsideDirective, NotificationPanelComponent } from '@tradeforge/shared-ui';
 import { AppIconComponent } from '@tradeforge/shared-ui-icons/app-icon';
 import { SearchService } from '@tradeforge/shared/data-access';
-import { map } from 'rxjs';
+import { filter, map, startWith } from 'rxjs';
 
 
 @Component({
@@ -30,7 +30,9 @@ export class TopbarComponent {
   private readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
   private readonly router = inject(Router);
+  private readonly titleStrategy = inject(TitleStrategy);
   private readonly searchService = inject(SearchService);
+  readonly pageTitle = signal('Dashboard');
   readonly searchTerm = this.searchService.searchTerm;
   readonly unreadCount$ = this.notificationService.unreadCount$
   readonly notifications$ = this.notificationService.notifications$;
@@ -60,6 +62,20 @@ export class TopbarComponent {
       this.shouldAnimateBadge.set(true);
     });
 
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        startWith(new NavigationEnd(0, this.router.url, this.router.url)),
+        takeUntilDestroyed()
+      )
+      .subscribe(() => {
+        this.pageTitle.set(this.getCurrentPageTitle());
+      });
+
+  }
+
+  private getCurrentPageTitle(): string {
+    return this.titleStrategy.buildTitle(this.router.routerState.snapshot) ?? 'Dashboard';
   }
 
   toggleNotifications(): void {

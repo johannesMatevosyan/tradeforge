@@ -22,10 +22,12 @@ export const appRoutes: Route[] = [
         },
         {
           path: 'dashboard',
+          title: 'Dashboard',
           component: DashboardComponent, // temporary page
         },
         {
           path: 'admin',
+          title: 'Admin',
           canActivate: [roleGuard],
           data: { role: UserRole.ADMIN },
           loadComponent: () =>
@@ -33,11 +35,13 @@ export const appRoutes: Route[] = [
         },
         {
           path: 'profile',
+          title: 'Profile',
           loadChildren: () =>
             import('@tradeforge/feature-profile').then((m) => m.featureProfileRoutes),
         },
         {
           path: 'trading',
+          title: 'Trading',
           loadComponent: () =>
             import('@tradeforge/trading/feature-trading').then(
               (m) => m.TradingPageComponent
@@ -45,6 +49,7 @@ export const appRoutes: Route[] = [
         },
         {
           path: 'orders',
+          title: 'Orders',
           loadComponent: () =>
             import('@tradeforge/orders/feature-orders').then(
               (m) => m.OrdersPageComponent
@@ -52,6 +57,7 @@ export const appRoutes: Route[] = [
         },
         {
           path: 'portfolio',
+          title: 'Portfolio',
           loadComponent: () =>
             import('@tradeforge/portfolio/feature-portfolio').then(
               (m) => m.PortfolioPageComponent
@@ -59,12 +65,14 @@ export const appRoutes: Route[] = [
         },
         {
           path: 'notifications/:id',
+          title: 'Notification',
           loadComponent: () =>
             import('@tradeforge/notifications/feature-notification-details')
               .then(m => m.NotificationDetailsComponent),
         },
         {
           path: 'markets',
+          title: 'Markets',
           loadChildren: () =>
             import('@tradeforge/markets/feature-markets').then(
               (m) => m.marketsRoutes
@@ -72,6 +80,7 @@ export const appRoutes: Route[] = [
         },
         {
           path: 'watchlist',
+          title: 'Watchlist',
           loadComponent: () =>
             import('@tradeforge/watchlist/feature-watchlist').then(
               (m) => m.WatchlistComponent
