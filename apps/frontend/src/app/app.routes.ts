@@ -71,6 +71,13 @@ export const appRoutes: Route[] = [
             ),
         },
         {
+          path: 'watchlist',
+          loadComponent: () =>
+            import('@tradeforge/watchlist/feature-watchlist').then(
+              (m) => m.WatchlistComponent
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },

@@ -3,8 +3,9 @@ import { Component, OnInit, computed, effect, inject, signal } from '@angular/co
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { OrderSelectionService } from '@tradeforge/orders/order-data-access';
 import { SearchService } from '@tradeforge/shared/data-access';
-import { WatchlistApiService } from '../data-access-watchlist/watchlist-api.service';
-import { LivePriceState, PriceDirection, WatchlistItem } from '../data-access-watchlist/watchlist-item.model';
+import { BehaviorSubject, tap } from 'rxjs';
+import { LivePriceState, PriceDirection, WatchlistItem } from '../data-access-watchlist/models/watchlist-item.model';
+import { WatchlistApiService } from '../data-access-watchlist/services/watchlist-api.service';
 
 @Component({
   selector: 'app-watchlist',
@@ -18,6 +19,7 @@ export class WatchlistComponent implements OnInit {
     private readonly watchlistApiService = inject(WatchlistApiService);
     private readonly marketDataWs = inject(MarketDataWsService);
     private readonly orderSelection = inject(OrderSelectionService);
+    private readonly reload$ = new BehaviorSubject<void>(undefined);
     private readonly debugEffect = effect(() => {
         this.debugFilteredItems();
     });
@@ -107,5 +109,11 @@ export class WatchlistComponent implements OnInit {
 
     selectForOrder(symbolCode: string): void {
         this.orderSelection.selectSymbol(symbolCode);
+    }
+
+    removeItem(id: string) {
+        return this.watchlistApiService.removeSymbol(id).pipe(
+            tap(() => this.reload$.next())
+        );
     }
 }

@@ -12,13 +12,14 @@
 .watchlist-data {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin-top: 20px;
 
   .watchlist-data-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
+    gap: 12px;
     font-size: 14px;
     line-height: 150%;
   }
@@ -35,7 +36,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  flex: 1;
   padding: 10px 12px;
   border-radius: 10px;
   background: #0f172a;
@@ -94,4 +95,22 @@
 .watchlist-row.watchlist-row--down .watchlist-right strong,
 .watchlist-row.watchlist-row--down .direction {
   color: #ef4444;
+}
+
+
+.watchlist-remove {
+  min-width: 48px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: 0.2s ease;
+  padding: 10px 12px;
+
+  &:hover {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.08);
+  }
 }
