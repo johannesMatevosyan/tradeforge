@@ -8,12 +8,6 @@
   gap: 24px;
 }
 
-.dashboard-header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .dashboard-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 360px;

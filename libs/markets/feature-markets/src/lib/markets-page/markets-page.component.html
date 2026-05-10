@@ -1,13 +1,9 @@
 <section class="markets-page">
-  <header class="markets-header">
-    <div>
-      <p class="eyebrow">Markets</p>
-      <h1>Live Markets</h1>
-      <p class="subtitle">
-        Track realtime prices, market direction, and top movers.
-      </p>
-    </div>
-  </header>
+  <lib-page-header
+    [pageEyebrow]="'Markets'"
+    [pageTitle]="'Live Markets'"
+    [pageDescription]="'Track realtime prices, market direction, and top movers.'"
+  ></lib-page-header>
 
   @if (overview$ | async; as overview) {
     <section class="overview-grid">

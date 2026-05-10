@@ -6,11 +6,12 @@ import {
     MarketOverviewView,
     MarketRowView
 } from '@tradeforge/shared-types';
+import { PageHeaderComponent } from '@tradeforge/shared-ui';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, shareReplay, startWith } from 'rxjs';
 
 @Component({
   selector: 'markets-page.component',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, PageHeaderComponent],
   standalone: true,
   templateUrl: './markets-page.component.html',
   styleUrls: ['./markets-page.component.scss'],

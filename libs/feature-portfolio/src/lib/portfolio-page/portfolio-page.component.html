@@ -1,10 +1,9 @@
 <section class="portfolio-page">
-    <header class="portfolio-header">
-      <div>
-        <h1>Portfolio</h1>
-        <p>Track your holdings, exposure and position value</p>
-      </div>
-    </header>
+    <lib-page-header
+      [pageEyebrow]="'Portfolio'"
+      [pageTitle]="'Portfolio'"
+      [pageDescription]="'Track your holdings, exposure and position value.'"
+    ></lib-page-header>
 
     @if (positionsView$ | async; as positions) {
       <!-- Summary (still static for now, will upgrade next) -->

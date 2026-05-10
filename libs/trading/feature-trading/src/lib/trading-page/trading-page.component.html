@@ -1,39 +1,50 @@
 <section class="trading-page">
-  <div class="trading-main">
-    <div class="chart-card">
-      <lib-chart
-        [symbol]="(selectedPriceView$ | async)?.symbol ?? 'BTC/USD'"
-        [price]="(selectedPriceView$ | async)?.price ?? 0"
-        [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
-        [history]="(selectedPriceHistory$ | async) ?? []"
-        [secondsAgo]="(selectedPriceWithTime$ | async)?.secondsAgo ?? 0"
-        >
-      </lib-chart>
+
+  <lib-page-header
+    [pageEyebrow]="'Execution terminal'"
+    [pageTitle]="'Trading'"
+    [pageDescription]="'Execute trades, monitor realtime market movement, and manage orders with live pricing.'"
+  ></lib-page-header>
+
+  <div class="trading-page-summary">
+
+    <div class="trading-main">
+      <div class="chart-card">
+        <lib-chart
+          [symbol]="(selectedPriceView$ | async)?.symbol ?? 'BTC/USD'"
+          [price]="(selectedPriceView$ | async)?.price ?? 0"
+          [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
+          [history]="(selectedPriceHistory$ | async) ?? []"
+          [secondsAgo]="(selectedPriceWithTime$ | async)?.secondsAgo ?? 0"
+          >
+        </lib-chart>
+      </div>
+
+      <div class="orders-card">
+        <lib-recent-orders
+          [orders]="(orders$ | async) ?? []">
+        </lib-recent-orders>
+      </div>
     </div>
 
-    <div class="orders-card">
-      <lib-recent-orders
-        [orders]="(orders$ | async) ?? []">
-      </lib-recent-orders>
-    </div>
+    <aside class="trading-side">
+      <div class="order-card">
+        <lib-place-order
+          [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+          [price]="(selectedPrice$ | async) ?? 0"
+          (orderPlaced)="onOrderPlaced($event)">
+        </lib-place-order>
+      </div>
+
+      <div class="watchlist-card">
+        <lib-market-watch
+          [symbols]="symbols"
+          [prices]="(pricesView$ | async) ?? []"
+          [selectedSymbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+          (symbolSelected)="onSymbolSelected($event)">
+        </lib-market-watch>
+      </div>
+    </aside>
+
   </div>
-
-  <aside class="trading-side">
-    <div class="order-card">
-      <lib-place-order
-        [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
-        [price]="(selectedPrice$ | async) ?? 0"
-        (orderPlaced)="onOrderPlaced($event)">
-      </lib-place-order>
-    </div>
-
-    <div class="watchlist-card">
-      <lib-market-watch
-        [symbols]="symbols"
-        [prices]="(pricesView$ | async) ?? []"
-        [selectedSymbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
-        (symbolSelected)="onSymbolSelected($event)">
-      </lib-market-watch>
-    </div>
-  </aside>
 </section>

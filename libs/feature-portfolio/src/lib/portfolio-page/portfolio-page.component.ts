@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { TradingOrder, TradingPosition, TradingPositionView } from '@tradeforge/shared-types';
+import { PageHeaderComponent } from '@tradeforge/shared-ui';
 import { TradingOrdersService } from '@tradeforge/trading/trading-data-access';
 import { combineLatest, map } from 'rxjs';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
 
 @Component({
   selector: 'lib-portfolio-page',
-  imports: [CommonModule, PositionsTableComponent],
+  imports: [CommonModule, PositionsTableComponent, PageHeaderComponent],
   standalone: true,
   templateUrl: './portfolio-page.component.html',
   styleUrls: ['./portfolio-page.component.scss'],

@@ -15,34 +15,6 @@
   color: #94a3b8;
 }
 
-.markets-page {
-  padding: 32px;
-}
-
-.markets-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 28px;
-
-  .eyebrow {
-    margin: 0 0 6px;
-    color: #94a3b8;
-    font-size: 14px;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 700;
-  }
-
-  .subtitle {
-    margin: 8px 0 0;
-    color: #cbd5e1;
-  }
-}
-
 .overview-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -307,9 +279,6 @@ tbody {
 }
 
 @media (max-width: 768px) {
-  .markets-page {
-    padding: 20px;
-  }
 
   .overview-grid {
     grid-template-columns: 1fr;
@@ -317,9 +286,5 @@ tbody {
 
   .markets-toolbar {
     flex-direction: column;
-  }
-
-  .markets-header h1 {
-    font-size: 26px;
   }
 }

@@ -4,6 +4,7 @@ import { MarketDataWsService } from '@tradeforge/market-data/market-data-access'
 import { NotificationService } from '@tradeforge/notifications/notification-data-access';
 import { OrdersApiService } from '@tradeforge/orders/order-data-access';
 import { PlaceOrderPayload, TradingOrder } from '@tradeforge/shared-types';
+import { PageHeaderComponent } from '@tradeforge/shared-ui';
 import { TradingOrdersService, TradingSymbolsService } from '@tradeforge/trading/trading-data-access';
 import {
   ChartComponent,
@@ -21,6 +22,7 @@ import { combineLatest, interval, map, startWith } from 'rxjs';
     PlaceOrderComponent,
     AsyncPipe,
     MarketWatchComponent,
+    PageHeaderComponent
   ],
   standalone: true,
   templateUrl: './trading-page.component.html',

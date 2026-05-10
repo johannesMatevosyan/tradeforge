@@ -3,6 +3,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MarketDataWsService, MarketSymbol } from '@tradeforge/market-data/market-data-access';
 import { OrderSelectionService } from '@tradeforge/orders/order-data-access';
+import { PageHeaderComponent } from '@tradeforge/shared-ui';
 import { SearchService } from '@tradeforge/shared/data-access';
 import { WatchlistFacade } from '../..';
 import { LivePriceState, PriceDirection } from '../data-access-watchlist/models/watchlist-item.model';
@@ -11,7 +12,7 @@ import { WatchlistApiService } from '../data-access-watchlist/services/watchlist
 @Component({
   selector: 'app-watchlist',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PageHeaderComponent],
   templateUrl: './watchlist.component.html',
     styleUrls: ['./watchlist.component.scss'],
 })
