@@ -8,3 +8,4 @@ export * from './lib/not-found/not-found';
 
 export * from './lib/directives/click-outside.directive';
 
+export * from './lib/page-header/page-header.component';

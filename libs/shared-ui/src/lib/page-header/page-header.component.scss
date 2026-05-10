@@ -1,0 +1,25 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-header__eyebrow {
+  margin: 0 0 0.4rem;
+  color: #93c5fd;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.page-header__title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.75rem, 2vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.page-header__description {
+  margin: 0.5rem 0 0;
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.5;
+}
