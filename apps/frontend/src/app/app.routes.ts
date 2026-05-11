@@ -87,6 +87,14 @@ export const appRoutes: Route[] = [
             ),
         },
         {
+          path: 'analytics',
+          title: 'Analytics',
+          loadChildren: () =>
+            import('@tradeforge/analytics/feature-analytics').then(
+              (m) => m.featureAnalyticsRoutes
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },

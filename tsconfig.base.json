@@ -22,6 +22,9 @@
       "@tradeforge/orders/feature-portfolio-summary": [
         "libs/orders/feature-portfolio-summary/src/index.ts"
       ],
+      "@tradeforge/analytics/feature-analytics": [
+        "libs/analytics/feature-analytics/src/index.ts"
+      ],
       "@tradeforge/shared-utils": ["libs/shared-utils/src/index.ts"],
       "@tradeforge/shared-ui": ["libs/shared-ui/src/index.ts"],
       "@tradeforge/shared-ui-icons": ["libs/shared-ui-icons/src/index.ts"],
@@ -110,7 +113,8 @@
       "feature-notification-details": [
         "libs/notifications/feature-notification-details/src/index.ts"
       ],
-      "feature-markets": ["libs/markets/feature-markets/src/index.ts"]
+      "feature-markets": ["libs/markets/feature-markets/src/index.ts"],
+      "feature-analytics": ["libs/analytics/feature-analytics/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
