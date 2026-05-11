@@ -1,1 +1,110 @@
-<p>analytics-page.component works!</p>
+<section class="analytics-page">
+    <lib-page-header
+        [pageEyebrow]="'Analytics'"
+        [pageTitle]="'Trading performance insights'"
+        [pageDescription]="'Track portfolio activity, trading behavior, symbol exposure, and performance trends.'"
+    ></lib-page-header>
+
+  @if (vm$ | async; as vm) {
+
+    @if (vm.overview.totalTrades === 0) {
+
+      <lib-empty-state
+        title="No analytics yet"
+        description="Create a few trades to unlock trading performance insights."
+      />
+
+    } @else {
+    <section class="overview-grid">
+      <article class="stat-card">
+        <span>Total trades</span>
+        <strong>{{ vm.overview.totalTrades }}</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Open positions</span>
+        <strong>{{ vm.overview.openPositions }}</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Closed positions</span>
+        <strong>{{ vm.overview.closedPositions }}</strong>
+      </article>
+
+      <article class="stat-card pnl">
+        <span>Unrealized PnL</span>
+        <strong>{{ vm.overview.unrealizedPnl | number: '1.2-2' }}</strong>
+      </article>
+    </section>
+
+    <section class="analytics-grid">
+      <article class="panel">
+        <h3>Trading activity</h3>
+
+        <div class="activity-list">
+          <div>
+            <span>Buy orders</span>
+            <strong>{{ vm.activity.buyOrders }}</strong>
+          </div>
+
+          <div>
+            <span>Sell orders</span>
+            <strong>{{ vm.activity.sellOrders }}</strong>
+          </div>
+
+          <div>
+            <span>Filled orders</span>
+            <strong>{{ vm.activity.filledOrders }}</strong>
+          </div>
+
+          <div>
+            <span>Open orders</span>
+            <strong>{{ vm.activity.openOrders }}</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel chart-panel">
+        <div class="panel-header">
+          <h3>PnL performance</h3>
+          <span>Mock stage 1</span>
+        </div>
+
+        <div class="chart-placeholder">
+          <div class="chart-line"></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h3>Symbol breakdown</h3>
+
+        <div class="symbol-list">
+          @for (item of vm.symbols; track item.symbol) {
+            <div class="symbol-row">
+              <div>
+                <strong>{{ item.symbol }}</strong>&nbsp;
+                <span>{{ item.orderCount }} orders</span>
+              </div>
+
+              <span>{{ item.volume }}</span>
+            </div>
+          }
+        </div>
+      </article>
+
+      <article class="panel">
+        <h3>Recent insights</h3>
+
+        <div class="insight-list">
+          @for (insight of vm.insights; track insight.label) {
+            <div class="insight" [class]="insight.tone">
+              <span>{{ insight.label }}</span>
+              <strong>{{ insight.value }}</strong>
+            </div>
+          }
+        </div>
+      </article>
+    </section>
+    }
+  }
+</section>
