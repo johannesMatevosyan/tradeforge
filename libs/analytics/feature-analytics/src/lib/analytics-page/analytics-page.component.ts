@@ -17,6 +17,7 @@ export class AnalyticsPageComponent {
   private readonly positionsApi = inject(PositionsApi);
   private readonly marketDataWs = inject(MarketDataWsService);
   private readonly analyticsApi = inject(AnalyticsApiService);
+  protected readonly Math = Math;
 
   readonly vm$ = combineLatest([
     this.analyticsApi.getOverview(),
@@ -49,7 +50,12 @@ export class AnalyticsPageComponent {
           },
           {
             label: 'Unrealized PnL',
-            value: `$${unrealizedPnl.toFixed(2)}`,
+            value: `${unrealizedPnl < 0 ? '-$' : '$'}${Math.abs(
+                unrealizedPnl
+              ).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`,
             tone: unrealizedPnl >= 0 ? ('positive' as const) : ('negative' as const),
           },
           {

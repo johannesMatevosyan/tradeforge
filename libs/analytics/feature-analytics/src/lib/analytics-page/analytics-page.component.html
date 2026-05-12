@@ -33,7 +33,10 @@
 
       <article class="stat-card pnl">
         <span>Unrealized PnL</span>
-        <strong>{{ vm.overview.unrealizedPnl | number: '1.2-2' }}</strong>
+        <strong>
+          {{ vm.overview.unrealizedPnl < 0 ? '-$' : '$' }}
+          {{ Math.abs(vm.overview.unrealizedPnl) | number:'1.2-2' }}
+        </strong>
       </article>
     </section>
 
