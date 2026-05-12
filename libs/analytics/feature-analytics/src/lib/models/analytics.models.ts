@@ -6,7 +6,7 @@ export interface AnalyticsOverview {
   unrealizedPnl: number;
 }
 
-export interface TradingActivity {
+export interface AnalyticsActivity {
   buyOrders: number;
   sellOrders: number;
   filledOrders: number;

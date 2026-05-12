@@ -1,6 +1,6 @@
-import { AnalyticsOrder, TradingActivity } from '../models/analytics.models';
+import { AnalyticsActivity, AnalyticsOrder } from '../models/analytics.models';
 
-export function buildTradingActivity(orders: AnalyticsOrder[]): TradingActivity {
+export function buildTradingActivity(orders: AnalyticsOrder[]): AnalyticsActivity {
   return {
     buyOrders: orders.filter((o) => o.side === 'BUY').length,
     sellOrders: orders.filter((o) => o.side === 'SELL').length,
