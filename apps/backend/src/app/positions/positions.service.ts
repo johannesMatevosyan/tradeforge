@@ -6,21 +6,25 @@ import { PrismaService } from '../prisma/prisma.service';
 export class PositionsService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async getPositions() {
+    async getPositions(userId?: string) {
         const filledOrders = await this.prisma.order.findMany({
             where: {
                 status: OrderStatus.FILLED,
+                ...(userId ? { userId } : {}),
             },
             include: {
                 symbol: true,
             },
         });
 
-        const map = new Map<string, {
-            symbol: string;
-            quantity: number;
-            totalCost: number;
-        }>();
+        const map = new Map<
+            string,
+            {
+                symbol: string;
+                quantity: number;
+                totalCost: number;
+            }
+        >();
 
         for (const order of filledOrders) {
             const key = order.symbol.code;
@@ -49,9 +53,9 @@ export class PositionsService {
         return Array.from(map.values())
             .filter((p) => p.quantity > 0)
             .map((p) => ({
-                symbol: p.symbol,
-                quantity: p.quantity,
-                avgPrice: p.totalCost / p.quantity,
+            symbol: p.symbol,
+            quantity: p.quantity,
+            avgPrice: p.totalCost / p.quantity,
             }));
     }
 }
