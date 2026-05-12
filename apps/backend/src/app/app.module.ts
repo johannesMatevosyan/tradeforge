@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -21,7 +22,8 @@ import { WatchlistModule } from './watchlist/watchlist.module';
     AuthModule,
     UsersModule,
     MarketDataModule,
-    PositionsModule
+    PositionsModule,
+    AnalyticsModule
   ],
   controllers: [AppController],
   providers: [AppService],
