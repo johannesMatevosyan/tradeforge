@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
-import { OrdersApi, PositionsApi } from '@tradeforge/orders/order-data-access';
+import { PositionsApi } from '@tradeforge/orders/order-data-access';
 import { EmptyStateComponent, PageHeaderComponent } from '@tradeforge/shared-ui';
 import { combineLatest, map } from 'rxjs';
-import { buildSymbolAnalytics } from '../utils/build-symbol-analytics';
-import { buildTradingActivity } from '../utils/build-trading-activity';
+import { AnalyticsApiService } from '../services/analytics-api.service';
 
 @Component({
   selector: 'analytics-page.component',
@@ -15,34 +14,29 @@ import { buildTradingActivity } from '../utils/build-trading-activity';
   styleUrls: ['./analytics-page.component.scss'],
 })
 export class AnalyticsPageComponent {
-  private readonly ordersApi = inject(OrdersApi);
   private readonly positionsApi = inject(PositionsApi);
   private readonly marketDataWs = inject(MarketDataWsService);
+  private readonly analyticsApi = inject(AnalyticsApiService);
 
   readonly vm$ = combineLatest([
-    this.ordersApi.getOrders(),
+    this.analyticsApi.getOverview(),
+    this.analyticsApi.getActivity(),
+    this.analyticsApi.getSymbols(),
     this.positionsApi.getPositions(),
     this.marketDataWs.pricesView$,
   ]).pipe(
-    map(([orders, positions, prices]) => {
-      const activity = buildTradingActivity(orders);
-      const symbols = buildSymbolAnalytics(orders);
-
+    map(([overview, activity, symbols, positions, prices]) => {
       const unrealizedPnl = positions.reduce((total, position) => {
         const livePrice =
-          prices.find((price) => price.symbol === position.symbol)?.price ?? position.avgPrice;
+          prices.find((price) => price.symbol === position.symbol)?.price ??
+          position.avgPrice;
 
-        const pnl = (livePrice - position.avgPrice) * position.quantity;
-
-        return total + pnl;
+        return total + (livePrice - position.avgPrice) * position.quantity;
       }, 0);
 
       return {
         overview: {
-          totalTrades: orders.length,
-          openPositions: positions.length,
-          closedPositions: 0, // mock for stage 1
-          realizedPnl: 0, // mock for stage 1
+          ...overview,
           unrealizedPnl,
         },
         activity,
@@ -56,14 +50,14 @@ export class AnalyticsPageComponent {
           {
             label: 'Unrealized PnL',
             value: `$${unrealizedPnl.toFixed(2)}`,
-            tone: unrealizedPnl >= 0 ? 'positive' as const : 'negative' as const,
+            tone: unrealizedPnl >= 0 ? ('positive' as const) : ('negative' as const),
           },
           {
             label: 'Win rate',
             value: 'Coming soon',
             tone: 'neutral' as const,
           },
-        ],
+        ]
       };
     })
   );
