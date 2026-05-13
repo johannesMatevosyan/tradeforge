@@ -95,6 +95,13 @@ export const appRoutes: Route[] = [
             ),
         },
         {
+          path: 'settings',
+          loadChildren: () =>
+            import('@tradeforge/settings/feature-settings').then(
+              (m) => m.settingsRoutes
+            ),
+        },
+        {
           path: '**',
           component: NotFoundComponent,
         },
