@@ -1,1 +1,210 @@
-<p>settings-page.component works!</p>
+<section class="settings-page">
+  <header class="page-header">
+    <p class="eyebrow">Account & workspace</p>
+    <h1>Settings</h1>
+    <p>
+      Manage your account, trading defaults, notifications, and workspace preferences.
+    </p>
+  </header>
+
+  <div class="settings-grid">
+    <section class="settings-card profile-card">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">Profile</p>
+          <h3>Account Summary</h3>
+        </div>
+
+        <span class="status-badge role" [class.admin]="user()?.role === 'ADMIN'">
+          {{ user()?.role || 'VIEWER' }}
+        </span>
+      </div>
+
+      <div class="profile-summary">
+        <div class="avatar">
+          {{ userInitials() }}
+        </div>
+
+        <div>
+          <h4>{{ user()?.name || 'TradeForge User' }}</h4>
+          <p>{{ user()?.email || 'user@tradeforge.local' }}</p>
+        </div>
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-row">
+            <span>Account type</span>
+            <strong>{{ user()?.role === 'ADMIN' ? 'Administrator' : 'Standard user' }}</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Profile status</span>
+          <strong>Active</strong>
+        </div>
+      </div>
+
+      <button class="secondary-button" type="button">
+        Edit profile
+      </button>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">Trading</p>
+          <h3>Trading Preferences</h3>
+        </div>
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-row">
+          <span>Default order type</span>
+          <strong>{{ tradingPreferences().defaultOrderType }}</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Preferred chart interval</span>
+          <strong>{{ tradingPreferences().chartInterval }}</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Preferred currency</span>
+          <strong>{{ tradingPreferences().currency }}</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Dark mode</span>
+          <strong>{{ tradingPreferences().darkMode ? 'Enabled' : 'Disabled' }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">Notifications</p>
+          <h3>Notification Preferences</h3>
+        </div>
+      </div>
+
+      <div class="toggle-list">
+        <label class="toggle-row">
+          <span>
+            <strong>Email notifications</strong>
+            <small>Receive important account updates by email.</small>
+          </span>
+
+          <input
+            type="checkbox"
+            [checked]="notificationPreferences().emailNotifications"
+            (change)="updateNotificationPreference('emailNotifications', $any($event.target).checked)"
+          />
+        </label>
+
+        <label class="toggle-row">
+          <span>
+            <strong>Price alerts</strong>
+            <small>Notify me when watched symbols move sharply.</small>
+          </span>
+
+          <input
+            type="checkbox"
+            [checked]="notificationPreferences().priceAlerts"
+            (change)="updateNotificationPreference('priceAlerts', $any($event.target).checked)"
+          />
+        </label>
+
+        <label class="toggle-row">
+          <span>
+            <strong>Order execution</strong>
+            <small>Show updates when orders are filled or rejected.</small>
+          </span>
+
+          <input
+            type="checkbox"
+            [checked]="notificationPreferences().orderExecutions"
+            (change)="updateNotificationPreference('orderExecutions', $any($event.target).checked)"
+          />
+        </label>
+
+        <label class="toggle-row">
+          <span>
+            <strong>Marketing & news</strong>
+            <small>Receive platform news and product updates.</small>
+          </span>
+
+          <input
+            type="checkbox"
+            [checked]="notificationPreferences().marketingNews"
+            (change)="updateNotificationPreference('marketingNews', $any($event.target).checked)"
+          />
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">Security</p>
+          <h3>Security</h3>
+        </div>
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-row">
+          <span>Password</span>
+          <strong>Last changed: Coming soon</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Last login</span>
+          <strong>{{ securitySettings().lastLogin }}</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Active sessions</span>
+          <strong>{{ securitySettings().activeSessions }}</strong>
+        </div>
+
+        <div class="settings-row">
+          <span>Two-factor authentication</span>
+          <strong>{{ securitySettings().twoFactorEnabled ? 'Enabled' : 'Disabled' }}</strong>
+        </div>
+      </div>
+
+      <button class="secondary-button" type="button">
+        Change password
+      </button>
+    </section>
+
+    <section class="settings-card developer-card">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">Developer</p>
+          <h3>Admin / Developer Info</h3>
+        </div>
+
+        <span class="status-badge dev">
+          {{ developerInfo.environment }}
+        </span>
+      </div>
+
+      <div class="developer-grid">
+        <div class="developer-item">
+          <span>WebSocket</span>
+          <strong class="success-dot">{{ developerInfo.websocketStatus }}</strong>
+        </div>
+
+        <div class="developer-item">
+          <span>Backend API</span>
+          <strong class="success-dot">{{ developerInfo.apiStatus }}</strong>
+        </div>
+
+        <div class="developer-item">
+          <span>App version</span>
+          <strong>{{ developerInfo.appVersion }}</strong>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
