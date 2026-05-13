@@ -44,7 +44,7 @@
       </div>
 
       <button class="secondary-button" type="button">
-        Edit profile
+        Edit profile · Coming soon
       </button>
     </section>
 
@@ -150,61 +150,65 @@
         </div>
       </div>
 
-      <div class="settings-list">
-        <div class="settings-row">
-          <span>Password</span>
-          <strong>Last changed: Coming soon</strong>
+        <div class="settings-list">
+            <div class="settings-row">
+                <span>Password</span>
+                <strong>Last changed: Coming soon</strong>
+            </div>
+
+            <div class="settings-row">
+                <span>Last login</span>
+                <strong>{{ securitySettings().lastLogin }}</strong>
+            </div>
+
+            <div class="settings-row">
+                <span>Active sessions</span>
+                <strong>{{ securitySettings().activeSessions }}</strong>
+            </div>
+
+            <div class="settings-row">
+                <span>Two-factor authentication</span>
+                <strong>{{ securitySettings().twoFactorEnabled ? 'Enabled' : 'Disabled' }}</strong>
+            </div>
         </div>
 
-        <div class="settings-row">
-          <span>Last login</span>
-          <strong>{{ securitySettings().lastLogin }}</strong>
-        </div>
+        <p class="card-note">
+            Preferences are stored locally for now.
+        </p>
 
-        <div class="settings-row">
-          <span>Active sessions</span>
-          <strong>{{ securitySettings().activeSessions }}</strong>
-        </div>
-
-        <div class="settings-row">
-          <span>Two-factor authentication</span>
-          <strong>{{ securitySettings().twoFactorEnabled ? 'Enabled' : 'Disabled' }}</strong>
-        </div>
-      </div>
-
-      <button class="secondary-button" type="button">
-        Change password
-      </button>
+        <button class="secondary-button" type="button">
+            Change password · Coming soon
+        </button>
     </section>
 
     <section class="settings-card developer-card">
-      <div class="card-header">
-        <div>
-          <p class="eyebrow">Developer</p>
-          <h3>Admin / Developer Info</h3>
+        <div class="card-header">
+            <div>
+            <p class="eyebrow">Developer</p>
+            <h3>Admin / Developer Info</h3>
+            </div>
+
+            <span class="status-badge dev">
+            {{ developerInfo.environment }}
+            </span>
         </div>
 
-        <span class="status-badge dev">
-          {{ developerInfo.environment }}
-        </span>
-      </div>
+        <div class="developer-grid">
+            <div class="developer-item">
+            <span>WebSocket</span>
+            <strong class="success-dot">{{ developerInfo.websocketStatus }}</strong>
+            </div>
 
-      <div class="developer-grid">
-        <div class="developer-item">
-          <span>WebSocket</span>
-          <strong class="success-dot">{{ developerInfo.websocketStatus }}</strong>
-        </div>
+            <div class="developer-item">
+            <span>Backend API</span>
+            <strong class="success-dot">{{ developerInfo.apiStatus }}</strong>
+            </div>
 
-        <div class="developer-item">
-          <span>Backend API</span>
-          <strong class="success-dot">{{ developerInfo.apiStatus }}</strong>
+            <div class="developer-item">
+            <span>App version</span>
+            <strong>{{ developerInfo.appVersion }}</strong>
+            </div>
         </div>
-
-        <div class="developer-item">
-          <span>App version</span>
-          <strong>{{ developerInfo.appVersion }}</strong>
-        </div>
-      </div>
     </section>
   </div>
 </section>

@@ -242,6 +242,18 @@
   }
 }
 
+.secondary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.card-note {
+  margin-top: 14px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .settings-grid {
     grid-template-columns: 1fr;
