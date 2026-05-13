@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { AuthService } from '@tradeforge/auth-data-access';
+import { PageHeaderComponent } from '@tradeforge/shared-ui';
 import { NotificationPreferences, SecuritySettings, TradingPreferences } from '../models/settings.model';
 
 @Component({
   selector: 'lib-settings-page',
-  imports: [CommonModule],
+  imports: [CommonModule, PageHeaderComponent],
   standalone: true,
   templateUrl: './settings-page.component.html',
   styleUrls: ['./settings-page.component.scss'],
