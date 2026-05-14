@@ -38,6 +38,31 @@
   }
 }
 
+.watchlist-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #2a3441;
+  border-radius: 12px;
+  background: #131a22;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: #64748b;
+  }
+
+  &:focus {
+    border-color: #3b82f6;
+    background: #18212b;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+}
+
 .watchlist-offline {
   padding: 0.25rem 0.55rem;
   border-radius: 999px;

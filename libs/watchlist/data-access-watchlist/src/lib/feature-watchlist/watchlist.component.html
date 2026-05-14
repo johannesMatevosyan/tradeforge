@@ -7,6 +7,17 @@
 
   <div class="watchlist-header">
 
+    <div class="watchlist-search">
+      <input
+        type="search"
+        class="watchlist-search-input"
+        placeholder="Search watchlist..."
+        [value]="searchTerm()"
+        (input)="onSearchChanged($event)"
+      />
+    </div>
+
+
     <div class="watchlist-add">
       <select [value]="selectedSymbolToAdd()" class="watchlist-select" (change)="onSymbolToAddChanged($event)">
         <option value="">Add symbol</option>
@@ -33,11 +44,11 @@
     <div class="watchlist-state">Loading watchlist...</div>
   } @else if (error()) {
     <div class="watchlist-state">{{ error() }}</div>
-  } @else if (items().length === 0) {
+  } @else if (filteredItems().length === 0) {
     <div class="watchlist-state">No matching symbols found.</div>
   } @else {
     <ul class="watchlist-data">
-      @for (item of items(); track item.id) {
+      @for (item of filteredItems(); track item.id) {
 
       <li class="watchlist-data-item">
         @let live = getLivePrice(item.symbolCode);
@@ -51,7 +62,7 @@
           (click)="selectForOrder(item.symbolCode)"
         >
           <div class="watchlist-left">
-            <strong>{{ item.symbolCode }}</strong>
+            <strong>{{ item.normalizedSymbol }}</strong>
             <span>{{ item.displayName }}</span>
           </div>
 

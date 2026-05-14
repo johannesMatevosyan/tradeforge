@@ -4,10 +4,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MarketDataWsService, MarketSymbol } from '@tradeforge/market-data/market-data-access';
 import { OrderSelectionService } from '@tradeforge/orders/order-data-access';
 import { PageHeaderComponent } from '@tradeforge/shared-ui';
-import { SearchService } from '@tradeforge/shared/data-access';
+import { formatSymbolValue } from '@tradeforge/shared-utils';
 import { WatchlistFacade } from '../..';
 import { LivePriceState, PriceDirection } from '../data-access-watchlist/models/watchlist-item.model';
-import { WatchlistApiService } from '../data-access-watchlist/services/watchlist-api.service';
 
 @Component({
   selector: 'app-watchlist',
@@ -17,8 +16,6 @@ import { WatchlistApiService } from '../data-access-watchlist/services/watchlist
     styleUrls: ['./watchlist.component.scss'],
 })
 export class WatchlistComponent implements OnInit {
-    private readonly searchService = inject(SearchService);
-    private readonly watchlistApiService = inject(WatchlistApiService);
     private readonly marketDataWs = inject(MarketDataWsService);
     private readonly orderSelection = inject(OrderSelectionService);
     private readonly watchlistFacade = inject(WatchlistFacade);
@@ -38,11 +35,18 @@ export class WatchlistComponent implements OnInit {
         initialValue: [],
     });
 
+    readonly viewItems = computed(() =>
+        this.items().map((item) => ({
+            ...item,
+            normalizedSymbol: formatSymbolValue(item.symbolCode),
+        }))
+    );
+
     readonly searchTerm = signal('');
 
     readonly filteredItems = computed(() => {
         const term = this.searchTerm().toLowerCase().trim();
-        const items = this.items();
+        const items = this.viewItems();
 
         if (!term) {
             return items;
@@ -50,12 +54,23 @@ export class WatchlistComponent implements OnInit {
 
         return items.filter((item) => {
             const code = item.symbolCode.toLowerCase();
+            const normalizedCode = item.normalizedSymbol.toLowerCase();
             const name = item.displayName.toLowerCase();
             const label = item.label.toLowerCase();
 
-            return code.includes(term) || name.includes(term) || label.includes(term);
+            return (
+                code.includes(term) ||
+                normalizedCode.includes(term) ||
+                name.includes(term) ||
+                label.includes(term)
+            );
         });
     });
+
+    onSearchChanged(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        this.searchTerm.set(input.value);
+    }
 
     getLivePrice(symbolCode: string): LivePriceState | null {
         return this.livePrices()[symbolCode] ?? null;
