@@ -5,6 +5,7 @@ import { NotificationService } from '@tradeforge/notifications/notification-data
 import { OrdersApiService } from '@tradeforge/orders/order-data-access';
 import { PlaceOrderPayload, TradingOrder } from '@tradeforge/shared-types';
 import { PageHeaderComponent } from '@tradeforge/shared-ui';
+import { normalizeSymbol } from '@tradeforge/shared-utils';
 import { TradingOrdersService, TradingSymbolsService } from '@tradeforge/trading/trading-data-access';
 import {
   ChartComponent,
@@ -74,7 +75,7 @@ export class TradingPageComponent {
     this.pricesView$,
   ]).pipe(
     map(([symbol, prices]) => {
-      const normalizedSymbol = symbol.replace('/', '');
+      const normalizedSymbol = normalizeSymbol(symbol);
 
       return prices.find((item) => item.symbol === normalizedSymbol) ?? null;
     })

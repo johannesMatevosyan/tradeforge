@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { OrdersApi, PositionsApi } from '@tradeforge/orders/order-data-access';
 import { EmptyStateComponent } from '@tradeforge/shared-ui';
+import { normalizeSymbol } from '@tradeforge/shared-utils';
 import { combineLatest, map } from 'rxjs';
 
 @Component({
@@ -26,7 +27,7 @@ export class PositionsComponent {
   ]).pipe(
     map(([positions, prices]) =>
       positions.map((position) => {
-        const normalizedSymbol = position.symbol.replace('/', '');
+        const normalizedSymbol = normalizeSymbol(position.symbol);
         const livePrice = prices.find((p) => p.symbol === normalizedSymbol)?.price ?? null;
 
         const marketValue =

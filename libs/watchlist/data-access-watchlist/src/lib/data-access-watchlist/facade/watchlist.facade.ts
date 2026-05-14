@@ -1,5 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { MarketDataWsService, MarketSymbol, SymbolsApiService } from "@tradeforge/market-data/market-data-access";
+import { normalizeSymbol } from '@tradeforge/shared-utils';
 import { BehaviorSubject, combineLatest, map, shareReplay, switchMap, tap } from "rxjs";
 import { calculatePercentageChange } from "../../util/calculate-percentage-change";
 import { WatchlistApiService } from "../services/watchlist-api.service";
@@ -35,8 +36,7 @@ export class WatchlistFacade {
   ]).pipe(
     map(([items, prices]) =>
       items.map((item) => {
-        const normalizedSymbol = item.symbolCode.replace('/', '');
-
+        const normalizedSymbol = normalizeSymbol(item.symbolCode);
         const price = prices.find(
           (priceItem) => priceItem.symbol === normalizedSymbol
         );

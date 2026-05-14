@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MarketPriceView } from 'libs/shared-types/src/lib/market/market-price-view.model';
+import { MarketPriceView } from '@tradeforge/shared-types';
+import { normalizeSymbol } from '@tradeforge/shared-utils';
 
 @Component({
   selector: 'lib-market-watch',
@@ -16,7 +17,8 @@ export class MarketWatchComponent {
   @Output() symbolSelected = new EventEmitter<string>();
 
   getPrice(symbol: string): MarketPriceView | undefined {
-    const normalizedSymbol = symbol.replace('/', '');
+    const normalizedSymbol = normalizeSymbol(symbol);
+
     return this.prices.find((item) => item.symbol === normalizedSymbol);
   }
 }
