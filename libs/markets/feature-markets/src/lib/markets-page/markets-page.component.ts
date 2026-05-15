@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MarketDataWsService, SymbolsApiService } from '@tradeforge/market-data/market-data-access';
 import {
     MarketOverviewView,
     MarketRowView
 } from '@tradeforge/shared-types';
 import { PageHeaderComponent } from '@tradeforge/shared-ui';
+import { normalizeSymbol } from '@tradeforge/shared-utils';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, shareReplay, startWith } from 'rxjs';
 
 @Component({
@@ -17,6 +19,7 @@ import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, sha
   styleUrls: ['./markets-page.component.scss'],
 })
 export class MarketsPageComponent {
+    private readonly router = inject(Router);
     private readonly symbolsApi = inject(SymbolsApiService);
     private readonly marketDataService = inject(MarketDataWsService);
     readonly searchControl = new FormControl('', { nonNullable: true });
@@ -128,11 +131,11 @@ export class MarketsPageComponent {
         )
     );
 
-    onSymbolSelected(symbol: string): void {
-        // TODO: Navigate to Trading page with selected symbol.
-        // Example later:
-        // this.router.navigate(['/trading'], {
-        //   queryParams: { symbol },
-        // });
+    onSymbolSelected(symbolCode: string): void {
+        this.router.navigate(['/trading'], {
+            queryParams: {
+            symbol: normalizeSymbol(symbolCode),
+        },
+  });
     }
 }

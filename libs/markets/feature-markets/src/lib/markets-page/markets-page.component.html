@@ -89,7 +89,9 @@
 
               <tbody>
                 @for (market of markets; track market.symbol) {
-                  <tr (click)="onSymbolSelected(market.symbol)">
+                  <tr
+                    (click)="onSymbolSelected(market.symbol)"
+                    (keydown.enter)="onSymbolSelected(market.symbol)">
                     <td>
                       <div class="symbol-cell">
                         <strong>{{ formatSymbol(market.symbol) }}</strong>
