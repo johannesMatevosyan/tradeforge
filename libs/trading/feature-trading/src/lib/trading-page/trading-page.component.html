@@ -11,7 +11,7 @@
     <div class="trading-main">
       <div class="chart-card">
         <lib-chart
-          [symbol]="(selectedPriceView$ | async)?.symbol ?? 'BTC/USD'"
+          [symbol]="formatSymbolValue((selectedPriceView$ | async)?.symbol ?? defaultSymbol)"
           [price]="(selectedPriceView$ | async)?.price ?? 0"
           [direction]="(selectedPriceView$ | async)?.direction ?? 'neutral'"
           [history]="(selectedPriceHistory$ | async) ?? []"
@@ -30,7 +30,7 @@
     <aside class="trading-side">
       <div class="order-card">
         <lib-place-order
-          [symbol]="(selectedSymbol$ | async) ?? 'BTC/USD'"
+          [symbol]="formatSymbolValue((selectedSymbol$ | async) ?? defaultSymbol)"
           [price]="(selectedPrice$ | async) ?? 0"
           (orderPlaced)="onOrderPlaced($event)">
         </lib-place-order>
