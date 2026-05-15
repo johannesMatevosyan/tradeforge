@@ -3,11 +3,13 @@ export function normalizeSymbol(symbol: string): string {
 }
 
 export function formatSymbolValue(symbol: string): string {
-  if (symbol.includes('/')) return symbol;
+  const value = symbol.toUpperCase();
 
-  if (symbol.endsWith('USD')) {
-    return `${symbol.replace('USD', '')}/USD`;
+  if (value.includes('/')) return value;
+
+  if (value.endsWith('USD')) {
+    return `${value.slice(0, -3)}/USD`;
   }
 
-  return symbol;
+  return value;
 }
