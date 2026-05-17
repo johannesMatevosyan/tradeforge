@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { MarketDataWsService } from '@tradeforge/market-data/market-data-access';
 import { NotificationService } from '@tradeforge/notifications/notification-data-access';
 import { OrdersApiService, OrderSelectionService } from '@tradeforge/orders/order-data-access';
 import { PlaceOrderPayload, TradingOrder } from '@tradeforge/shared-types';
 import { PageHeaderComponent } from '@tradeforge/shared-ui';
-import { formatSymbolValue, normalizeSymbol } from '@tradeforge/shared-utils';
+import { DEFAULT_SYMBOL, formatSymbolValue, normalizeSymbol } from '@tradeforge/shared-utils';
 import { TradingOrdersService, TradingSymbolsService } from '@tradeforge/trading/trading-data-access';
 import {
   ChartComponent,
@@ -42,14 +42,13 @@ export class TradingPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef)
   readonly pricesMap$ = this.marketDataService.pricesMap$;
   readonly pricesView$ = this.marketDataService.pricesView$;
-  defaultSymbol = 'BTCUSD'
-  formatSymbolValue = formatSymbolValue;
+  readonly defaultSymbol = DEFAULT_SYMBOL;
+  readonly formatSymbolValue = formatSymbolValue;
 
-  orders$ = this.ordersService.orders$;
-  symbols = this.symbolsService.symbols;
-  selectedSymbol$ = this.symbolsService.selectedSymbol$;
+  readonly orders$ = this.ordersService.orders$;
+  readonly symbols = this.symbolsService.symbols;
+  readonly selectedSymbol$ = toObservable(this.orderSelection.selectedSymbol);
 
-  selectedSymbol: string = 'BTC/USD';
   orders: TradingOrder[] = [];
 
   readonly selectedPrice$ = combineLatest([
@@ -63,10 +62,10 @@ export class TradingPageComponent implements OnInit {
     this.route.queryParamMap
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((params) => {
-        const symbol = params?.get('symbol');
-console.log('Query param symbol:', symbol);
+        const symbol = params.get('symbol');
+
         if (symbol) {
-          this.orderSelection.selectSymbol(formatSymbolValue(symbol));
+          this.orderSelection.selectSymbol(normalizeSymbol(symbol));
         }
       });
   }
