@@ -13,3 +13,5 @@ export function formatSymbolValue(symbol: string): string {
 
   return value;
 }
+
+export const DEFAULT_SYMBOL = 'BTCUSD';
